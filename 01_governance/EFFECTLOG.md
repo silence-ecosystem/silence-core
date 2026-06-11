@@ -1256,3 +1256,31 @@ STATUS:           PASS
 - `pnpm typecheck` → EXIT 0 (placeholder)
 - `pnpm install` → EXIT 0 (37 workspace projects)
 
+
+### ENTRY 034 — Git Repository Initialisation and Review Branch
+
+```
+EFFECTLOG.ID:     PHI-KIMI-GIT-INIT-20260611
+TIMESTAMP:        2026-06-11T20:55:00Z
+EVENT_TYPE:       GOVERNANCE
+ACTOR:            kimi-code CLI
+PREV_HASH:        5724a2dc81ab7f2fd9809604e3736b92ce9748a80e8f03f75d1a9457b9ba27f3
+ENTRY_HASH:       42032f8885d0b673fe0a63c7e74944a7294d184e387222c2bfd5b51036b27c38
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Initialised git repository in `/home/ewa/silence`.
+- Created canonical branch `main` with baseline commit `7329e80`.
+- Created working branch `feature/hardening-vercel-typecheck` for next hardening package.
+- Baseline commit includes: DCI Brief v3.0 compliance, S11 clean public layer, `[PATH]` tags, `step()` engine, EE migration, scripts/ and EffectLog entries 031-033.
+
+**RATIONALE:**
+- Without version control and review branch, further enforcement actions lack auditable change chain.
+- Git history is required for deploy gates, rollback procedures and governance traceability per SILENCE_STRUCT_v2_0 section 12.
+
+**VERIFIED:**
+- `git status` → clean working tree on `feature/hardening-vercel-typecheck`
+- `git log --oneline` → baseline commit present on `main`
+- All previous gates remain green: boundary-check, s11-check, test:determinism, test:vitest
+
