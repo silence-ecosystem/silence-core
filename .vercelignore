@@ -1,0 +1,31 @@
+# Enterprise / proprietary layer — must not be deployed or uploaded to public edge
+03_ee/
+
+# Archives and governance — not part of runtime build
+07_archive/
+01_governance/
+02_protocols/
+
+# Documentation and design artifacts — not part of runtime build
+docs/
+design/
+
+# Development / local-only files
+.env
+.env.local
+.env.*.local
+*.log
+
+# Build outputs (reproducible on CI)
+dist/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# Rust target (rebuilt on CI)
+04_packages/@silence/engine/target/
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/

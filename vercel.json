@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "buildCommand": "pnpm install && pnpm turbo run build",
+  "ignoreCommand": "(git diff --quiet HEAD^ HEAD -- . ':!03_ee' ':!07_archive' ':!01_governance' ':!02_protocols' ':!docs' ':!design' && exit 1) || exit 0",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "framework": null,
+  "github": {
+    "deploymentEnabled": {
+      "main": true,
+      "feature/hardening-vercel-typecheck": false
+    },
+    "silent": true
+  }
+}
