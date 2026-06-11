@@ -1284,3 +1284,39 @@ STATUS:           PASS
 - `git log --oneline` → baseline commit present on `main`
 - All previous gates remain green: boundary-check, s11-check, test:determinism, test:vitest
 
+
+### ENTRY 035 — Vercel Scope Hardening + Typecheck Orchestration
+
+```
+EFFECTLOG.ID:     PHI-KIMI-VERCEL-TYPECHECK-20260611
+TIMESTAMP:        2026-06-11T21:00:00Z
+EVENT_TYPE:       INFRA
+ACTOR:            kimi-code CLI
+PREV_HASH:        42032f8885d0b673fe0a63c7e74944a7294d184e387222c2bfd5b51036b27c38
+ENTRY_HASH:       cbd3ee13f9572a1517f209dcb34d5f057d75b9cac6ed2f35f3a8d9c82e797c57
+STATUS:           PARTIAL
+```
+
+**CHANGE:**
+- Created root `.vercelignore` excluding `03_ee/`, `07_archive/`, `01_governance/`, `02_protocols/`, `docs/`, `design/` from upload.
+- Created root `vercel.json` with `ignoreCommand` that skips build when only excluded scopes changed, and `github.deploymentEnabled` gate.
+- Replaced root `typecheck` placeholder with `turbo run typecheck --continue`.
+- Added `typecheck: "tsc --noEmit"` to 14 packages with existing `tsconfig.json`.
+- Added `typecheck` task to `turbo.json`.
+
+**RATIONALE:**
+- DCI Brief v3.0 requires explicit deploy scope restriction and real type validation.
+- `.vercelignore` prevents proprietary EE artifacts from reaching public edge.
+- `ignoreCommand` ensures changes in `03_ee` do not trigger public app rebuilds.
+
+**VERIFIED:**
+- `pnpm typecheck` → real execution via turbo (11/19 packages pass, 8 packages require tsconfig/code fixes)
+- `pnpm boundary-check` → EXIT 0, 0 violations
+- `pnpm s11-check` → EXIT 0, 0 violations
+- `pnpm test:vitest` → EXIT 0, 11/11 tests passed
+- Git commit `2197e87` on `feature/hardening-vercel-typecheck`
+
+**WARNINGS:**
+- 8 packages fail typecheck due to pre-existing tsconfig misconfigurations or source encoding issues (validator, legal, language, symbolic, ui, dashboard, sequences, voice). These require separate remediation.
+- Vercel `ignoreCommand` logic assumes `git diff --quiet` against `HEAD^`; first deploy on a fresh branch may behave differently.
+
