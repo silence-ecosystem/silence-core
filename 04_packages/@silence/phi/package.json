@@ -1,0 +1,17 @@
+{
+  "name": "@silence/phi",
+  "version": "0.1.0-mvp",
+  "description": "Single source of truth for phi-derived mathematics and temporal constants",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "pnpm exec tsx --test src/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.9.0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@silence/rhythmic-patterns",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "status": "deprecated",
+  "description": "DEPRECATED — Do not use in new modules."
+}

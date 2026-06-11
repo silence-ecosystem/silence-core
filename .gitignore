@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+out/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# Rust
+04_packages/@silence/engine/target/
+04_packages/@silence/engine/Cargo.lock
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archives (large, historical)
+07_archive/
+
+# Legacy / unused packages
+04_packages/packages/
+packages/
+00_identity/
+
+# Misc
+CLAUDE.md

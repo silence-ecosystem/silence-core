@@ -1,0 +1,26 @@
+{
+  "name": "@silence/monorepo",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "boundary-check": "depcruise --config .dependency-cruiser.js 03_ee 04_packages 05_apps",
+    "s11-check": "s11-lint 01_governance 02_protocols 04_packages 05_apps",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test --filter=@silence/core --filter=@silence/phi --filter=@silence/jitai --filter=@silence/telemetry --filter=@silence/s11-lint --filter=@silence/engine --filter=@silence/billing",
+    "test:vitest": "vitest run",
+    "test:watch": "vitest",
+    "test:determinism": "vitest run packages/@silence/core/src/__tests__/determinism.test.ts",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "echo '[SKIP] typecheck not yet configured for monorepo' && exit 0"
+  },
+  "devDependencies": {
+    "@silence/s11-lint": "workspace:*",
+    "dependency-cruiser": "^16.0.0",
+    "tsx": "^4.19.0",
+    "turbo": "^2.4.1",
+    "vitest": "^2.1.8",
+    "@vitest/ui": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8"
+  }
+}

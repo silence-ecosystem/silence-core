@@ -1,0 +1,17 @@
+{
+    "version":  "0.1.0",
+    "name":  "@silence/dashboard",
+    "types":  "dist/index.d.ts",
+    "scripts":  {
+                    "type-check":  "tsc --noEmit",
+                    "build":  "tsc",
+                    "lint":  "eslint \"src/**/*.ts\""
+                },
+    "devDependencies":  {
+                            "typescript":  "^5.3.3"
+                        },
+    "dependencies":  {
+                         "tslib":  "^2.6.2"
+                     },
+    "main":  "dist/index.js"
+}

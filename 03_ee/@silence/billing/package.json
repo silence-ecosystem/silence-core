@@ -1,0 +1,22 @@
+{
+  "name": "@silence/billing",
+  "version": "0.1.0-mvp",
+  "description": "Enterprise billing, metering and 402 response — SILENCE.OBJECTS",
+  "type": "module",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit",
+    "test": "pnpm exec tsx --test src/**/*.test.ts"
+  },
+  "dependencies": {
+    "@silence/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  },
+  "license": "PROPRIETARY"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@silence/sdk",
+  "version": "0.0.0-deprecated",
+  "private": true,
+  "status": "deprecated",
+  "description": "DEPRECATED — Do not use in new modules.",
+  "main": "src/index.ts",
+  "license": "MIT"
+}

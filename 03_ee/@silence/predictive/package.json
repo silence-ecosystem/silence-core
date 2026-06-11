@@ -1,0 +1,17 @@
+{
+  "name": "@silence/predictive",
+  "version": "0.1.0",
+  "description": "Predictive inference models — ENTERPRISE ONLY",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": false,
+  "private": true,
+  "license": "PROPRIETARY",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "tslib": "^2.6.2"
+  }
+}

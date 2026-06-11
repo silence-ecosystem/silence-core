@@ -1,0 +1,12 @@
+{
+  "name": "@silence/attention-profiles",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Attention pattern profiling for neurodiversity-affirming design",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "@silence/contracts": "workspace:*",
+    "tslib": "^2.0.0"
+  }
+}

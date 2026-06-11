@@ -1,0 +1,123 @@
+# [PATH]: .github/workflows/ci.yml
+#
+# Full monorepo CI pipeline for SILENCE.OBJECTS MVP.
+# Sequence: boundary-check → s11-check → build → test → engine-equivalence → garden-export
+#
+
+name: Monorepo CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  boundary-check:
+    name: RULE-DOM-001 Boundary Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm boundary-check
+
+  s11-check:
+    name: S11 Linguistic Sterility Check
+    runs-on: ubuntu-latest
+    needs: boundary-check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm s11-check
+
+  build:
+    name: Build All Packages + Apps
+    runs-on: ubuntu-latest
+    needs: s11-check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+
+  engine-equivalence:
+    name: Engine Native Equivalence (G8)
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.96.0
+          targets: x86_64-unknown-linux-gnu
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: 04_packages/@silence/engine
+      - name: Native unit + integration tests (release)
+        run: cargo test --release
+        working-directory: 04_packages/@silence/engine
+      - name: Equivalence suite (release)
+        run: cargo test --test equivalence --release
+        working-directory: 04_packages/@silence/engine
+
+  garden-export:
+    name: Garden Static Export
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: Verify export output
+        run: |
+          test -f 05_apps/garden/dist/index.html
+          test -f 05_apps/garden/dist/garden.html
+          test -f 05_apps/garden/dist/breath.html
+          test -f 05_apps/garden/dist/quiet.html
+          test -f 05_apps/garden/dist/onboarding.html
+          test -f 05_apps/garden/dist/404.html
+          test -f 05_apps/garden/dist/silence-engine.wasm
+          echo "Static export verified: all routes + WASM present"

@@ -1,0 +1,9 @@
+{
+    "main":  "src/index.ts",
+    "name":  "@silence/narrative-engine",
+    "version":  "0.1.0",
+    "dependencies":  {
+                         "@silence/contracts":  "workspace:*",
+                         "@silence/events":  "workspace:*"
+                     }
+}

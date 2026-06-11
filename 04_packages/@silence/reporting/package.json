@@ -1,0 +1,8 @@
+{
+    "main":  "src/index.ts",
+    "name":  "@silence/reporting",
+    "version":  "0.1.0",
+    "dependencies":  {
+                         "@silence/contracts":  "workspace:*"
+                     }
+}

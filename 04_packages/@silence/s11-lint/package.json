@@ -1,0 +1,32 @@
+{
+  "name": "@silence/s11-lint",
+  "version": "2.1.0",
+  "description": "S11 Language Standard linter for SILENCE.OBJECTS",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "s11-lint": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit",
+    "test": "pnpm exec tsx --test src/*.test.ts"
+  },
+  "dependencies": {
+    "@silence/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.7.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "directory": "04_packages/@silence/s11-lint"
+  }
+}

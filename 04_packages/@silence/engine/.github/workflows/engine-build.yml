@@ -1,0 +1,119 @@
+name: Engine Build — Rust + WASM + Reproducibility + Signing
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '04_packages/@silence/engine/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - '04_packages/@silence/engine/**'
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  lint:
+    name: Clippy + Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt -- --check
+      - run: cargo clippy --all-targets --all-features
+
+  test-native:
+    name: Native Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test --release
+
+  build-wasm:
+    name: WASM Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release --target wasm32-unknown-unknown --features wasm
+      - run: sha256sum target/wasm32-unknown-unknown/release/silence_engine.wasm > wasm.hash
+      - uses: actions/upload-artifact@v4
+        with:
+          name: silence-engine-wasm
+          path: |
+            target/wasm32-unknown-unknown/release/silence_engine.wasm
+            wasm.hash
+
+  reproducibility:
+    name: Reproducible Build Verification
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        run: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo clean
+      - run: cargo build --release
+      - run: sha256sum target/release/libsilence_engine.rlib > build-${{ matrix.run }}.hash
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-hash-${{ matrix.run }}
+          path: build-${{ matrix.run }}.hash
+
+  compare-hashes:
+    name: Compare Build Hashes
+    needs: reproducibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: hashes
+          pattern: build-hash-*
+          merge-multiple: true
+      - run: |
+          echo "Build 1: $(cat hashes/build-1.hash)"
+          echo "Build 2: $(cat hashes/build-2.hash)"
+          echo "Build 3: $(cat hashes/build-3.hash)"
+          HASH1=$(awk '{print $1}' hashes/build-1.hash)
+          HASH2=$(awk '{print $1}' hashes/build-2.hash)
+          HASH3=$(awk '{print $1}' hashes/build-3.hash)
+          if [ "$HASH1" = "$HASH2" ] && [ "$HASH2" = "$HASH3" ]; then
+            echo "REPRODUCIBLE: PASS"
+          else
+            echo "REPRODUCIBLE: FAIL"
+            exit 1
+          fi
+
+  sign:
+    name: Sign Engine Artifacts
+    needs: [build-wasm, test-native]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release --bin engine-cli
+      - name: Sign engine-cli
+        run: ./scripts/sign-engine.sh target/release/engine-cli
+        env:
+          KEY_DIR: ${{ github.workspace }}/01_governance/RELEASE_KEYS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: signed-engine-cli
+          path: |
+            target/release/engine-cli
+            target/release/engine-cli.hash
+            target/release/engine-cli.sig
+            target/release/engine-cli.sig.b64

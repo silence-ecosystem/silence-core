@@ -1,0 +1,14 @@
+{
+  "name": "@silence/behaviour-engine",
+  "version": "3.0.0",
+  "description": "Behaviour engine — ENTERPRISE ONLY",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": false,
+  "private": true,
+  "license": "PROPRIETARY",
+  "dependencies": {
+    "@silence/contracts": "workspace:*"
+  }
+}

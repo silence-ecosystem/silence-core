@@ -1,0 +1,11 @@
+version: 2.1
+policies:
+  - id: S11-DIAGNOSIS-CORE
+    severity: MUST_NOT
+    forbidden_terms:
+      - diagnose
+      - depression
+      - anxiety
+      - disorder
+      - therapy
+      - psychiatrist

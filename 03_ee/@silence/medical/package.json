@@ -1,0 +1,11 @@
+{
+  "name": "@silence/medical",
+  "version": "0.1.0",
+  "description": "Medical and clinical inference logic — ENTERPRISE ONLY",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "sideEffects": false,
+  "private": true,
+  "license": "PROPRIETARY"
+}

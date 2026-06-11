@@ -1,0 +1,20 @@
+{
+  "name": "@silence/core",
+  "version": "2.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "pnpm exec tsx --test src/*.test.ts"
+  },
+  "dependencies": {
+    "@silence/jitai": "workspace:*",
+    "@silence/phi": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.9.0"
+  }
+}

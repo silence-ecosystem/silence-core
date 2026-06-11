@@ -1,0 +1,76 @@
+/**
+ * [PATH]: 05_apps/garden/app/globals.css
+ *
+ * SoftNoir φ-driven global styles.
+ * CSS custom properties mirror lib/tokens.ts as runtime contract.
+ */
+
+:root {
+  /* Surfaces */
+  --sn-surface-base: #101318;
+  --sn-surface-raised: #171b22;
+  --sn-surface-elevated: #1f2430;
+  --sn-surface-hover: #272d3a;
+  --sn-surface-active: #2f3545;
+
+  /* Text */
+  --sn-text-primary: #e6ecf5;
+  --sn-text-secondary: #a7b0c2;
+  --sn-text-muted: #6b7487;
+
+  /* Accents */
+  --sn-accent-primary: #d8a45a;
+  --sn-accent-secondary: #7fb0b8;
+  --sn-accent-alert: #c93c3c;
+
+  /* Brand accents — accent-only, never surface bg */
+  --sn-brand-teal: #6b8f96;
+  --sn-brand-blue: #5a7a9a;
+  --sn-brand-purple: #8a7a9c;
+
+  /* Timing (ms) */
+  --sn-time-instant: 100ms;
+  --sn-time-micro: 162ms;
+  --sn-time-fast: 262ms;
+  --sn-time-base: 424ms;
+  --sn-time-ease: 685ms;
+  --sn-time-slow: 1109ms;
+  --sn-time-golden: 1618ms;
+
+  /* Easing */
+  --sn-ease-phi: cubic-bezier(0.618, 0, 0.382, 1);
+  --sn-ease-motion: cubic-bezier(0.236, 0, 0.236, 1);
+
+  /* Radius */
+  --sn-radius-sm: 4px;
+  --sn-radius-md: 6.47px;
+  --sn-radius-lg: 10.47px;
+  --sn-radius-xl: 16.94px;
+}
+
+html,
+body {
+  background: var(--sn-surface-base);
+  color: var(--sn-text-primary);
+}
+
+/* Deterministic float animation for garden particles.
+   Duration is φ-derived and respects prefers-reduced-motion. */
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

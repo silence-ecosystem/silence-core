@@ -1,0 +1,4 @@
+packages:
+  - "04_packages/@silence/*"
+  - "03_ee/@silence/*"
+  - "05_apps/*"

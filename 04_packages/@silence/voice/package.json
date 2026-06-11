@@ -1,0 +1,8 @@
+{
+    "main":  "src/index.ts",
+    "name":  "@silence/voice",
+    "version":  "0.1.0",
+    "dependencies":  {
+                         "@silence/events":  "workspace:*"
+                     }
+}

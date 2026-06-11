@@ -1,0 +1,17 @@
+{
+  "name": "@silence/jitai",
+  "version": "0.1.0-mvp",
+  "description": "Deterministic JITAI rule engine — threshold-based, no AI/ML",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "pnpm exec tsx --test src/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.9.0"
+  }
+}

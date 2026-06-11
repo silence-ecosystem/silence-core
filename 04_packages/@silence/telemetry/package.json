@@ -1,0 +1,17 @@
+{
+  "name": "@silence/telemetry",
+  "version": "0.1.0-mvp",
+  "description": "Open-core telemetry layer for SILENCE.OBJECTS",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "test": "pnpm exec tsx --test src/*.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.9.0"
+  }
+}

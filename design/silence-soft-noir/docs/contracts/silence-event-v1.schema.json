@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "silence-event-v1",
+  "title": "SilenceEventV1",
+  "description": "Kontrakt telemetrii dla interakcji Soft-Noir w systemie SILENCE. Nie zawiera PII ani danych klinicznych.",
+  "type": "object",
+  "required": [
+    "eventType",
+    "visualMode",
+    "theme",
+    "systemState",
+    "breathingPhase",
+    "timestamp",
+    "componentId",
+    "pcsSnapshot"
+  ],
+  "properties": {
+    "eventType": {
+      "type": "string",
+      "enum": [
+        "theme_change",
+        "state_transition",
+        "breath_phase_change",
+        "session_start",
+        "session_end",
+        "breath_cycle_complete",
+        "interaction_tap",
+        "interaction_scroll",
+        "reduced_motion_active",
+        "pcs_alert"
+      ],
+      "description": "Typ zdarzenia. Lista jest zamknięta — nowy typ wymaga ADR."
+    },
+    "visualMode": {
+      "type": "string",
+      "enum": ["soft-noir"],
+      "description": "Tryb wizualny. Zawsze soft-noir w kontekście Soft-Noir."
+    },
+    "theme": {
+      "type": "string",
+      "enum": [
+        "ember_silence",
+        "graphite_drift",
+        "midnight_paper",
+        "ion_haze"
+      ],
+      "description": "Aktywny Motyw Ciszy."
+    },
+    "systemState": {
+      "type": "string",
+      "enum": ["flow", "focus", "calm"],
+      "description": "Aktywny stan systemowy."
+    },
+    "breathingPhase": {
+      "type": "string",
+      "enum": ["entry", "deepening", "silence", "return", "idle"],
+      "description": "Aktywna faza cyklu oddechowego."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601. Bez strefy czasowej użytkownika (UTC)."
+    },
+    "componentId": {
+      "type": "string",
+      "description": "Identyfikator komponentu. Np. PhiBreathSurface, GoldenSilenceScreen."
+    },
+    "pcsSnapshot": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Aktualny wynik PCS w momencie zdarzenia. Poniżej 0.97 = pcs_alert."
+    },
+    "previousState": {
+      "type": "string",
+      "enum": ["flow", "focus", "calm", null],
+      "description": "Stan poprzedni (dla state_transition). Null przy session_start."
+    },
+    "reducedMotionActive": {
+      "type": "boolean",
+      "description": "Czy prefers-reduced-motion jest aktywny."
+    },
+    "sessionId": {
+      "type": "string",
+      "description": "Identyfikator sesji (UUID v4). Nie może zawierać PII."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "eventType": "state_transition",
+      "visualMode": "soft-noir",
+      "theme": "ember_silence",
+      "systemState": "focus",
+      "breathingPhase": "idle",
+      "timestamp": "2026-06-11T09:00:00Z",
+      "componentId": "PhiBreathSurface",
+      "pcsSnapshot": 0.998,
+      "previousState": "calm",
+      "reducedMotionActive": false,
+      "sessionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    }
+  ]
+}
