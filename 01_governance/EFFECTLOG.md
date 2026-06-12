@@ -1320,3 +1320,44 @@ STATUS:           PARTIAL
 - 8 packages fail typecheck due to pre-existing tsconfig misconfigurations or source encoding issues (validator, legal, language, symbolic, ui, dashboard, sequences, voice). These require separate remediation.
 - Vercel `ignoreCommand` logic assumes `git diff --quiet` against `HEAD^`; first deploy on a fresh branch may behave differently.
 
+
+### ENTRY 036 — Typecheck Repair for 8 Packages
+
+```
+EFFECTLOG.ID:     PHI-KIMI-TYPECHECK-EIGHT-PACKAGES-20260612
+TIMESTAMP:        2026-06-12T08:58:00Z
+EVENT_TYPE:       FIX
+ACTOR:            kimi-code CLI
+PREV_HASH:        cbd3ee13f9572a1517f209dcb34d5f057d75b9cac6ed2f35f3a8d9c82e797c57
+ENTRY_HASH:       4a9c732f3bbc58230679e863559a161c9baa6845db03fbdc75b479f37d388efd
+STATUS:           PASS
+```
+
+**CHANGE:**
+Repaired TypeScript typecheck for 8 packages in priority order:
+
+1. **validator, language** (base layers)
+   - Fixed broken `/** */` comment headers caused by automated `[PATH]` injection.
+   - Replaced invalid `extends: ../../../tsconfig.base.json` with self-contained `tsconfig.json`.
+
+2. **ui, dashboard**
+   - Replaced invalid `extends: ../../tsconfig.base.json` with self-contained `tsconfig.json`.
+
+3. **legal, symbolic, sequences, voice**
+   - legal: self-contained `tsconfig.json`.
+   - symbolic: self-contained `tsconfig.json` + added workspace deps `@silence/contracts`, `@silence/events`.
+   - sequences: self-contained `tsconfig.json` + added `@types/node` for `crypto` import.
+   - voice: self-contained `tsconfig.json` + added `typescript` and `@types/node` devDependencies.
+
+**RATIONALE:**
+- Base-layer type errors propagate upward through the dependency graph.
+- All open-core packages with `tsconfig.json` must pass `tsc --noEmit` before merge.
+
+**VERIFIED:**
+- `pnpm typecheck` → EXIT 0, 19/19 tasks successful (FULL TURBO)
+- `pnpm boundary-check` → EXIT 0, 0 violations
+- `pnpm s11-check` → EXIT 0, 0 violations
+- `pnpm test:determinism` → EXIT 0, 7/7
+- `pnpm test:vitest` → EXIT 0, 11/11
+- Git commit `5ece44f` on `fix/typecheck-eight-packages`
+
