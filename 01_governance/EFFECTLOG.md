@@ -1361,3 +1361,35 @@ Repaired TypeScript typecheck for 8 packages in priority order:
 - `pnpm test:vitest` → EXIT 0, 11/11
 - Git commit `5ece44f` on `fix/typecheck-eight-packages`
 
+
+
+### ENTRY 037 — PR Post-Merge Checklist Established for silence-core
+
+```
+EFFECTLOG.ID:     PHI-PR_POST_MERGE_CHECKLIST_silence-core_ESTABLISHED-20260612-037
+TIMESTAMP:        2026-06-12T10:05:00Z
+EVENT_TYPE:       DECISION
+ACTOR:            kimi-code CLI
+PREV_HASH:        4a9c732f3bbc58230679e863559a161c9baa6845db03fbdc75b479f37d388efd
+ENTRY_HASH:       3f8e174416095a78ce7bd8e12c899f9136b38d4ee554e715cf2f668ec94b3e0e
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Added governance artefact `01_governance/PR_POST_MERGE_CHECKLIST_silence-core.md`.
+- Added the checklist file to `S11_META_FILES` in `04_packages/@silence/s11-lint/src/index.ts` so it can reference forbidden terminology structurally without self-scanning violations.
+- Rebuilt `@silence/s11-lint` (`pnpm --filter @silence/s11-lint build`) so the runtime `dist/` stays in sync with the updated exemption list.
+- Documented target repository: `silence-ecosystem/silence-core`.
+
+**RATIONALE:**
+- `silence-core` needs a canonical, repeatable verification checklist for every PR to maintain the Iron Boundary between open-core and enterprise.
+- The checklist enforces CI gates, Vercel scope hardening, S11 language audit, SSoT consistency, and GitHub rulesets.
+- Meta-policy documents must be able to name forbidden terms explicitly while remaining exempt from S11 self-scanning.
+
+**VERIFIED:**
+- `pnpm boundary-check` → EXIT 0, 0 violations
+- `pnpm s11-check` → EXIT 0, 0 violations
+- `pnpm test:determinism` → EXIT 0, 7/7
+- `pnpm test:vitest` → EXIT 0, 11/11
+- `pnpm typecheck` → EXIT 0, 19/19 tasks successful
+- Git commit `6550a38` on `fix/typecheck-eight-packages`
