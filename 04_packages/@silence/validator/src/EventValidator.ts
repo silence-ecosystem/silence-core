@@ -4,7 +4,7 @@
  * Deterministic validators for event taxonomy payloads.
  */
 
-import type { ValidationError, ValidationResult } from './types';
+import type { ValidationError, ValidationResult } from './types.js';
 
 export const ALLOWED_EVENT_TYPES = [
   'SILENCE.SESSION.STARTED',

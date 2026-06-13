@@ -8,7 +8,7 @@ import {
   validateEventPayload,
   isValidEventType,
   ALLOWED_EVENT_TYPES,
-} from '../index';
+} from '../index.js';
 
 const validEffectLogEntry = {
   seq: 1,

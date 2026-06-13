@@ -4,11 +4,11 @@
  * Public barrel for @silence/validator.
  */
 
-export type { ValidationError, ValidationResult } from './types';
-export { validateEffectLogEntry } from './EffectLogValidator';
+export type { ValidationError, ValidationResult } from './types.js';
+export { validateEffectLogEntry } from './EffectLogValidator.js';
 export {
   validateEventPayload,
   isValidEventType,
   ALLOWED_EVENT_TYPES,
-} from './EventValidator';
-export type { AllowedEventType } from './EventValidator';
+} from './EventValidator.js';
+export type { AllowedEventType } from './EventValidator.js';

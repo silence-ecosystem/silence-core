@@ -4,7 +4,7 @@
  * Deterministic validators for hash-chain / effect-log structures.
  */
 
-import type { ValidationError, ValidationResult } from './types';
+import type { ValidationError, ValidationResult } from './types.js';
 
 const REQUIRED_EFFECT_LOG_FIELDS = [
   'seq',
