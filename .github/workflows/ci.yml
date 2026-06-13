@@ -67,7 +67,7 @@ jobs:
         run: pnpm --filter @silence/s11-lint... build
 
       - name: Run S11 linguistic sterility check
-        run: node 04_packages/@silence/s11-lint/dist/cli.js 01_governance 02_protocols 04_packages 05_apps
+        run: pnpm s11-check
 
   determinism:
     name: Determinism Test Suite
