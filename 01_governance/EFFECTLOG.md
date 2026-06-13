@@ -1426,4 +1426,4 @@ STATUS:           PASS
 - `pnpm test:determinism` → EXIT 0, 7/7
 - `pnpm test:vitest` → EXIT 0, 11/11
 - `pnpm typecheck` → EXIT 0, 19/19 tasks successful
-- Git commit `<TBD>` on `fix/ci-align-silence-core`
+- Git commit `86194b1` on `fix/ci-align-silence-core`
