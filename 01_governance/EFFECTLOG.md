@@ -1393,3 +1393,37 @@ STATUS:           PASS
 - `pnpm test:vitest` → EXIT 0, 11/11
 - `pnpm typecheck` → EXIT 0, 19/19 tasks successful
 - Git commit `6550a38` on `fix/typecheck-eight-packages`
+
+
+### ENTRY 038 — GitHub Ruleset Bootstrap Established for silence-core
+
+```
+EFFECTLOG.ID:     PHI-GITHUB-RULESET-BOOTSTRAP-silence-core-ESTABLISHED-20260613-038
+TIMESTAMP:        2026-06-13T11:21:01Z
+EVENT_TYPE:       DECISION
+ACTOR:            kimi-code CLI
+PREV_HASH:        3f8e174416095a78ce7bd8e12c899f9136b38d4ee554e715cf2f668ec94b3e0e
+ENTRY_HASH:       1c071faa5b5ad92050612870a703791c4b2bcc91df09d533ec1ac10ce1475178
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Established `01_governance/GITHUB_RULESET_BOOTSTRAP_silence-core.md` as the active canonical ruleset bootstrap artefact for `silence-ecosystem/silence-core`.
+- Bound the artefact to `EFFECTLOG.md` per section 12 of the bootstrap document.
+- Document defines `main-protection` ruleset, branch policies for `fix/*` and `feature/*`, required CI gate set, Vercel production gate, GitHub Actions security baseline, and ADR-004 / RULE-DOM-001 safeguards.
+
+**RATIONALE:**
+- `main` in `silence-core` must remain the sole canonical public open-core branch and continuously deployable.
+- Required checks must map only to actively maintained gates to avoid false-red merge blockers.
+- Heavy pipelines (full monorepo build, Garden export, engine equivalence) remain disabled until explicitly mapped to the repo.
+
+**VERIFIED:**
+- Document SHA-256: `47e99bb4f810d357cabf536a55da88e398eff7ac5590f79921168d73e2d73068`
+- Path: `01_governance/GITHUB_RULESET_BOOTSTRAP_silence-core.md`
+- PR reference: #3 (`fix/ci-align-silence-core`)
+- `pnpm boundary-check` → EXIT 0, 0 violations
+- `pnpm s11-check` → EXIT 0, 0 violations
+- `pnpm test:determinism` → EXIT 0, 7/7
+- `pnpm test:vitest` → EXIT 0, 11/11
+- `pnpm typecheck` → EXIT 0, 19/19 tasks successful
+- Git commit `<TBD>` on `fix/ci-align-silence-core`
