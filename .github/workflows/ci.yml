@@ -1,123 +1,58 @@
 # [PATH]: .github/workflows/ci.yml
 #
-# Full monorepo CI pipeline for SILENCE.OBJECTS MVP.
-# Sequence: boundary-check → s11-check → build → test → engine-equivalence → garden-export
+# Minimal CI pipeline for silence-core.
+# Mirrors locally enforced gates: boundary, S11, determinism, vitest, typecheck.
+# Heavy jobs (full build, engine equivalence, garden export) are disabled until
+# the public open-core repo is ready for them.
 #
 
-name: Monorepo CI
+name: silence-core gates
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
 
 jobs:
-  boundary-check:
-    name: RULE-DOM-001 Boundary Check
+  gates:
+    name: Boundary / S11 / Determinism / Vitest / Typecheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - name: Checkout repository
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@b307475762933b98ed359c036b0e51f26b63b74b # v5.0.0
         with:
           version: 9.15.9
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
           node-version: '22'
           cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm boundary-check
 
-  s11-check:
-    name: S11 Linguistic Sterility Check
-    runs-on: ubuntu-latest
-    needs: boundary-check
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm s11-check
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-  build:
-    name: Build All Packages + Apps
-    runs-on: ubuntu-latest
-    needs: s11-check
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - name: RULE-DOM-001 Boundary Check
+        run: pnpm boundary-check
 
-  test:
-    name: Test Suite
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm test
+      - name: Build S11 linter and its dependencies
+        run: pnpm --filter @silence/s11-lint... build
 
-  engine-equivalence:
-    name: Engine Native Equivalence (G8)
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
-        with:
-          toolchain: 1.96.0
-          targets: x86_64-unknown-linux-gnu
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: 04_packages/@silence/engine
-      - name: Native unit + integration tests (release)
-        run: cargo test --release
-        working-directory: 04_packages/@silence/engine
-      - name: Equivalence suite (release)
-        run: cargo test --test equivalence --release
-        working-directory: 04_packages/@silence/engine
+      - name: S11 Linguistic Sterility Check
+        run: node 04_packages/@silence/s11-lint/dist/cli.js 01_governance 02_protocols 04_packages 05_apps
 
-  garden-export:
-    name: Garden Static Export
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9.15.9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
-      - name: Verify export output
-        run: |
-          test -f 05_apps/garden/dist/index.html
-          test -f 05_apps/garden/dist/garden.html
-          test -f 05_apps/garden/dist/breath.html
-          test -f 05_apps/garden/dist/quiet.html
-          test -f 05_apps/garden/dist/onboarding.html
-          test -f 05_apps/garden/dist/404.html
-          test -f 05_apps/garden/dist/silence-engine.wasm
-          echo "Static export verified: all routes + WASM present"
+      - name: Build runtime dependencies for tests
+        run: pnpm --filter @silence/core... build
+
+      - name: Determinism Test Suite
+        run: pnpm test:determinism
+
+      - name: Vitest Test Suite
+        run: pnpm test:vitest
+
+      - name: TypeScript Typecheck
+        run: pnpm typecheck
