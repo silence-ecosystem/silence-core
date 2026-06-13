@@ -1,12 +1,15 @@
-﻿{
-    "private":  true,
-    "name":  "@silence/language",
-    "version":  "3.0.0",
-    "main":  "index.ts",
-    "devDependencies":  {
-                            "typescript":  "^5.9.3"
-                        },
-    "dependencies":  {
-                         "next":  "15.2.3"
-                     }
+{
+  "private": true,
+  "name": "@silence/language",
+  "version": "3.0.0",
+  "main": "index.ts",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "next": "15.2.3"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
 }

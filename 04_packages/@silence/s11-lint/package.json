@@ -11,7 +11,8 @@
   "scripts": {
     "build": "tsc",
     "lint": "tsc --noEmit",
-    "test": "pnpm exec tsx --test src/*.test.ts"
+    "test": "pnpm exec tsx --test src/*.test.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@silence/types": "workspace:*"

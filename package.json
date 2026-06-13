@@ -12,7 +12,7 @@
     "test:watch": "vitest",
     "test:determinism": "vitest run packages/@silence/core/src/__tests__/determinism.test.ts",
     "test:coverage": "vitest run --coverage",
-    "typecheck": "echo '[SKIP] typecheck not yet configured for monorepo' && exit 0"
+    "typecheck": "turbo run typecheck --continue"
   },
   "devDependencies": {
     "@silence/s11-lint": "workspace:*",

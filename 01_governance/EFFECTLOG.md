@@ -1256,3 +1256,140 @@ STATUS:           PASS
 - `pnpm typecheck` → EXIT 0 (placeholder)
 - `pnpm install` → EXIT 0 (37 workspace projects)
 
+
+### ENTRY 034 — Git Repository Initialisation and Review Branch
+
+```
+EFFECTLOG.ID:     PHI-KIMI-GIT-INIT-20260611
+TIMESTAMP:        2026-06-11T20:55:00Z
+EVENT_TYPE:       GOVERNANCE
+ACTOR:            kimi-code CLI
+PREV_HASH:        5724a2dc81ab7f2fd9809604e3736b92ce9748a80e8f03f75d1a9457b9ba27f3
+ENTRY_HASH:       42032f8885d0b673fe0a63c7e74944a7294d184e387222c2bfd5b51036b27c38
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Initialised git repository in `/home/ewa/silence`.
+- Created canonical branch `main` with baseline commit `7329e80`.
+- Created working branch `feature/hardening-vercel-typecheck` for next hardening package.
+- Baseline commit includes: DCI Brief v3.0 compliance, S11 clean public layer, `[PATH]` tags, `step()` engine, EE migration, scripts/ and EffectLog entries 031-033.
+
+**RATIONALE:**
+- Without version control and review branch, further enforcement actions lack auditable change chain.
+- Git history is required for deploy gates, rollback procedures and governance traceability per SILENCE_STRUCT_v2_0 section 12.
+
+**VERIFIED:**
+- `git status` → clean working tree on `feature/hardening-vercel-typecheck`
+- `git log --oneline` → baseline commit present on `main`
+- All previous gates remain green: boundary-check, s11-check, test:determinism, test:vitest
+
+
+### ENTRY 035 — Vercel Scope Hardening + Typecheck Orchestration
+
+```
+EFFECTLOG.ID:     PHI-KIMI-VERCEL-TYPECHECK-20260611
+TIMESTAMP:        2026-06-11T21:00:00Z
+EVENT_TYPE:       INFRA
+ACTOR:            kimi-code CLI
+PREV_HASH:        42032f8885d0b673fe0a63c7e74944a7294d184e387222c2bfd5b51036b27c38
+ENTRY_HASH:       cbd3ee13f9572a1517f209dcb34d5f057d75b9cac6ed2f35f3a8d9c82e797c57
+STATUS:           PARTIAL
+```
+
+**CHANGE:**
+- Created root `.vercelignore` excluding `03_ee/`, `07_archive/`, `01_governance/`, `02_protocols/`, `docs/`, `design/` from upload.
+- Created root `vercel.json` with `ignoreCommand` that skips build when only excluded scopes changed, and `github.deploymentEnabled` gate.
+- Replaced root `typecheck` placeholder with `turbo run typecheck --continue`.
+- Added `typecheck: "tsc --noEmit"` to 14 packages with existing `tsconfig.json`.
+- Added `typecheck` task to `turbo.json`.
+
+**RATIONALE:**
+- DCI Brief v3.0 requires explicit deploy scope restriction and real type validation.
+- `.vercelignore` prevents proprietary EE artifacts from reaching public edge.
+- `ignoreCommand` ensures changes in `03_ee` do not trigger public app rebuilds.
+
+**VERIFIED:**
+- `pnpm typecheck` → real execution via turbo (11/19 packages pass, 8 packages require tsconfig/code fixes)
+- `pnpm boundary-check` → EXIT 0, 0 violations
+- `pnpm s11-check` → EXIT 0, 0 violations
+- `pnpm test:vitest` → EXIT 0, 11/11 tests passed
+- Git commit `2197e87` on `feature/hardening-vercel-typecheck`
+
+**WARNINGS:**
+- 8 packages fail typecheck due to pre-existing tsconfig misconfigurations or source encoding issues (validator, legal, language, symbolic, ui, dashboard, sequences, voice). These require separate remediation.
+- Vercel `ignoreCommand` logic assumes `git diff --quiet` against `HEAD^`; first deploy on a fresh branch may behave differently.
+
+
+### ENTRY 036 — Typecheck Repair for 8 Packages
+
+```
+EFFECTLOG.ID:     PHI-KIMI-TYPECHECK-EIGHT-PACKAGES-20260612
+TIMESTAMP:        2026-06-12T08:58:00Z
+EVENT_TYPE:       FIX
+ACTOR:            kimi-code CLI
+PREV_HASH:        cbd3ee13f9572a1517f209dcb34d5f057d75b9cac6ed2f35f3a8d9c82e797c57
+ENTRY_HASH:       4a9c732f3bbc58230679e863559a161c9baa6845db03fbdc75b479f37d388efd
+STATUS:           PASS
+```
+
+**CHANGE:**
+Repaired TypeScript typecheck for 8 packages in priority order:
+
+1. **validator, language** (base layers)
+   - Fixed broken `/** */` comment headers caused by automated `[PATH]` injection.
+   - Replaced invalid `extends: ../../../tsconfig.base.json` with self-contained `tsconfig.json`.
+
+2. **ui, dashboard**
+   - Replaced invalid `extends: ../../tsconfig.base.json` with self-contained `tsconfig.json`.
+
+3. **legal, symbolic, sequences, voice**
+   - legal: self-contained `tsconfig.json`.
+   - symbolic: self-contained `tsconfig.json` + added workspace deps `@silence/contracts`, `@silence/events`.
+   - sequences: self-contained `tsconfig.json` + added `@types/node` for `crypto` import.
+   - voice: self-contained `tsconfig.json` + added `typescript` and `@types/node` devDependencies.
+
+**RATIONALE:**
+- Base-layer type errors propagate upward through the dependency graph.
+- All open-core packages with `tsconfig.json` must pass `tsc --noEmit` before merge.
+
+**VERIFIED:**
+- `pnpm typecheck` → EXIT 0, 19/19 tasks successful (FULL TURBO)
+- `pnpm boundary-check` → EXIT 0, 0 violations
+- `pnpm s11-check` → EXIT 0, 0 violations
+- `pnpm test:determinism` → EXIT 0, 7/7
+- `pnpm test:vitest` → EXIT 0, 11/11
+- Git commit `5ece44f` on `fix/typecheck-eight-packages`
+
+
+
+### ENTRY 037 — PR Post-Merge Checklist Established for silence-core
+
+```
+EFFECTLOG.ID:     PHI-PR_POST_MERGE_CHECKLIST_silence-core_ESTABLISHED-20260612-037
+TIMESTAMP:        2026-06-12T10:05:00Z
+EVENT_TYPE:       DECISION
+ACTOR:            kimi-code CLI
+PREV_HASH:        4a9c732f3bbc58230679e863559a161c9baa6845db03fbdc75b479f37d388efd
+ENTRY_HASH:       3f8e174416095a78ce7bd8e12c899f9136b38d4ee554e715cf2f668ec94b3e0e
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Added governance artefact `01_governance/PR_POST_MERGE_CHECKLIST_silence-core.md`.
+- Added the checklist file to `S11_META_FILES` in `04_packages/@silence/s11-lint/src/index.ts` so it can reference forbidden terminology structurally without self-scanning violations.
+- Rebuilt `@silence/s11-lint` (`pnpm --filter @silence/s11-lint build`) so the runtime `dist/` stays in sync with the updated exemption list.
+- Documented target repository: `silence-ecosystem/silence-core`.
+
+**RATIONALE:**
+- `silence-core` needs a canonical, repeatable verification checklist for every PR to maintain the Iron Boundary between open-core and enterprise.
+- The checklist enforces CI gates, Vercel scope hardening, S11 language audit, SSoT consistency, and GitHub rulesets.
+- Meta-policy documents must be able to name forbidden terms explicitly while remaining exempt from S11 self-scanning.
+
+**VERIFIED:**
+- `pnpm boundary-check` → EXIT 0, 0 violations
+- `pnpm s11-check` → EXIT 0, 0 violations
+- `pnpm test:determinism` → EXIT 0, 7/7
+- `pnpm test:vitest` → EXIT 0, 11/11
+- `pnpm typecheck` → EXIT 0, 19/19 tasks successful
+- Git commit `6550a38` on `fix/typecheck-eight-packages`

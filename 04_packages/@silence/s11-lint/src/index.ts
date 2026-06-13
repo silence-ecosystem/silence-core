@@ -25,6 +25,7 @@ const S11_META_FILES = [
   'SILENCE_SYSTEM_DCI_BRIEF_v3_0.md',
   'S11-01.md',
   'language/src/forbidden.ts',
+  'PR_POST_MERGE_CHECKLIST_silence-core.md',
 ];
 
 function shouldIgnore(filePath: string, ignorePatterns: readonly string[]): boolean {
