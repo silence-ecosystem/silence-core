@@ -1,0 +1,17 @@
+# Compliance metadata for silence-core
+# Canonical governance contract: 01_governance/GITHUB_RULESET_BOOTSTRAP_silence-core.md
+
+ci_gates:
+  - boundary-check
+  - s11-check
+  - test:determinism
+  - test:vitest
+  - typecheck
+
+excluded_from_public_deploy:
+  - 03_ee/
+  - 07_archive/
+  - 01_governance/
+  - 02_protocols/
+  - docs/
+  - design/

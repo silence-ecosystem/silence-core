@@ -1,0 +1,5 @@
+# CODEOWNERS for silence-core
+#
+# Canonical governance owner: PHI_CORE_GUARDIAN
+# Do not assign non-existent teams/users here; add per-path owners only after
+# the corresponding GitHub team or user exists in the organization.

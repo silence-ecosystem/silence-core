@@ -1,0 +1,19 @@
+{
+  "name": "short-lived-branches",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": [
+        "refs/heads/fix/*",
+        "refs/heads/feature/*"
+      ],
+      "exclude": []
+    }
+  },
+  "rules": {
+    "deletion": true,
+    "non_fast_forward": true,
+    "required_signatures": true
+  }
+}
