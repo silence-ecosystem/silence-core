@@ -11,10 +11,14 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json"],
-      include: ["04_packages/**/src/**/*.ts", "03_ee/**/src/**/*.ts"],
+      include: ["04_packages/**/src/**/*.ts", "03_ee/**/src/**/*.ts", "05_apps/**/*.ts"],
       exclude: ["**/__tests__", "**/*.test.ts", "**/dist"],
     },
-    include: ["04_packages/**/src/**/__tests__/**/*.test.ts", "03_ee/**/src/**/__tests__/**/*.test.ts"],
+    include: [
+      "04_packages/**/src/**/__tests__/**/*.test.ts",
+      "03_ee/**/src/**/__tests__/**/*.test.ts",
+      "05_apps/**/__tests__/**/*.test.ts",
+    ],
   },
   resolve: {
     alias: {
