@@ -91,7 +91,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build runtime dependencies for tests
-        run: pnpm --filter @silence/core... build
+        run: pnpm --filter @silence/core... --filter @silence/validator... --filter @silence/language... build
 
       - name: Run determinism test suite
         run: pnpm test:determinism
@@ -118,7 +118,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build runtime dependencies for tests
-        run: pnpm --filter @silence/core... build
+        run: pnpm --filter @silence/core... --filter @silence/validator... --filter @silence/language... build
 
       - name: Run Vitest test suite
         run: pnpm test:vitest
