@@ -4,7 +4,7 @@
   "packageManager": "pnpm@9.15.9",
   "scripts": {
     "boundary-check": "depcruise --config .dependency-cruiser.js 03_ee 04_packages 05_apps",
-    "s11-check": "s11-lint 01_governance 02_protocols 04_packages 05_apps",
+    "s11-check": "node 04_packages/@silence/s11-lint/dist/cli.js 01_governance 02_protocols 04_packages 05_apps",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test --filter=@silence/core --filter=@silence/phi --filter=@silence/jitai --filter=@silence/telemetry --filter=@silence/s11-lint --filter=@silence/engine --filter=@silence/billing",

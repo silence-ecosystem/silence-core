@@ -280,14 +280,13 @@ importers:
         version: 5.9.3
 
   04_packages/@silence/validator:
-    dependencies:
-      next:
-        specifier: 15.2.3
-        version: 15.2.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.20)(@vitest/ui@2.1.9)
 
   04_packages/@silence/voice:
     dependencies:

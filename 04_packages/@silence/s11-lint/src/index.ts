@@ -26,6 +26,7 @@ const S11_META_FILES = [
   'S11-01.md',
   'language/src/forbidden.ts',
   'PR_POST_MERGE_CHECKLIST_silence-core.md',
+  'validator/README.md',
 ];
 
 function shouldIgnore(filePath: string, ignorePatterns: readonly string[]): boolean {
