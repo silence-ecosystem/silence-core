@@ -25,3 +25,4 @@ VERCEL_DEPLOY_SKILL_ADDED:2026-06-17T02:15:00+02:00:REPLACE_WITH_ACTUAL_COMMIT:A
 
 AGENTS_MD_CREATED:2026-06-17T02:26:00+02:00:REPLACE_WITH_CURRENT_COMMIT:Created complete root AGENTS.md with full protocol suite (determinism, deployment, session start)
 AGENTS_MD_CREATED:2026-06-17T03:02:12+02:00:9af5d4f3506a3cbf76ddfcce9ff73c2cf335a146:Created complete root AGENTS.md with full protocol suite
+KIMI_FILE_SELECTION_SKILL_ADDED:2026-06-17T05:43:36+02:00:a1d7ee0a260232db8f32c74ac3af8d9773855616:Added kimi-file-selection skill for deterministic document classification
