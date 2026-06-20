@@ -22,7 +22,7 @@ const validEffectLogEntry = {
 describe('validateEffectLogEntry', () => {
   it('returns ok for a valid effect log entry', () => {
     const result = validateEffectLogEntry(validEffectLogEntry);
-    expect(result.ok).toBe(true);
+expect(result.ok).toBe(true);
   });
 
   it('fails when required fields are missing', () => {
