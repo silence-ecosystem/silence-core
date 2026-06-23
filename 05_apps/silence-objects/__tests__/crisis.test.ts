@@ -31,7 +31,7 @@ describe('crisis detection', () => {
   });
 
   it('is deterministic for the same input', () => {
-    const input = 'jestem samotny i mam lęk';
+    const input = 'jestem samotny i mam PATTERN_SIGNATURE';
     expect(detectCrisis(input)).toStrictEqual(detectCrisis(input));
   });
 });
