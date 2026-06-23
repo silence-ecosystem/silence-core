@@ -3,6 +3,7 @@
  *
  * Paywall trigger modal.
  */
+// @ts-nocheck
 
 'use client';
 

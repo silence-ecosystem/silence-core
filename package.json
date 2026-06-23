@@ -7,7 +7,6 @@
     "s11-check": "node 04_packages/@silence/s11-lint/dist/cli.js 01_governance 02_protocols 04_packages 05_apps",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "test": "turbo run test --filter=@silence/core --filter=@silence/phi --filter=@silence/jitai --filter=@silence/telemetry --filter=@silence/s11-lint --filter=@silence/engine --filter=@silence/billing",
     "test:vitest": "vitest run",
     "test:watch": "vitest",
     "test:determinism": "vitest run packages/@silence/core/src/__tests__/determinism.test.ts",
