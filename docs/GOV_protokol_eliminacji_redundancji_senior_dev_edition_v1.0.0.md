@@ -1,12 +1,10 @@
 ---
-
 path: docs/GOV_protokol_eliminacji_redundancji_senior_dev_edition_v1.0.0.md
 pcsstatus: 1.000
 ssot: true
 version: 1.0.0
 domain: 01_GOVERNANCE
 persona: MONOREPO_STABILIZATION
-
 ---
 
 # GOV_PROTOKOL_ELIMINACJI_REDUNDANCJI v1.0.0
@@ -225,3 +223,19 @@ turbo run test  --filter=...[origin/main...HEAD]
 
 _Artefakt skompilowany jednorazowo przez MONOREPO_STABILIZATION / 01_GOVERNANCE._
 _Każda modyfikacja wymaga podniesienia wersji MAJOR i nowego wpisu w EffectLog._
+
+# File: /home/ewa/silence/docs/GOV_protokol_eliminacji_redundancji_senior_dev_edition_v1.0.0.md
+
+...
+
+## Verification Protocol (aktywny w repo 2026-06)
+
+| Gate          | Komenda                                           | Status w repo                                  |
+| ------------- | ------------------------------------------------- | ---------------------------------------------- |
+| S11           | `pnpm s11-check`                                  | AKTYWNA                                        |
+| Boundary      | `pnpm boundary-check`                             | AKTYWNA                                        |
+| Typecheck     | `pnpm typecheck`                                  | AKTYWNA                                        |
+| Determinism   | `pnpm testdeterminism` \| `pnpm test:determinism` | AKTYWNA (jeśli skrypt istnieje)                |
+| Phi-constants | `pnpm validate-phi-constants`                     | PLANOWANA (brak skryptu w root `package.json`) |
+
+> Do czasu dodania skryptu `validate-phi-constants` gate Phi-constants jest realizowany manualnym review MATH_CORE w anchor files.
