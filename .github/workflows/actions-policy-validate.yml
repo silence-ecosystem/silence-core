@@ -1,0 +1,106 @@
+name: ACTIONS_POLICY_VALIDATE
+
+# Validates that all GitHub Actions workflows in this repository comply with
+# the organization-wide immutable-action policy: pinned SHA, approved actions,
+# no pull_request_target, no secret interpolation in run steps, and minimal
+# default permissions.
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/**'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/**'
+
+permissions:
+  contents: read
+
+jobs:
+  policy-check:
+    name: Immutable Action Policy Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: block
+          allowed-endpoints: |
+            github.com:443
+            api.github.com:443
+            objects.githubusercontent.com:443
+          disable-sudo: true
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate workflow policy
+        run: |
+          set -euo pipefail
+
+          # Org-approved actions (owner/repo) allowed in this repository.
+          # Any new action requires explicit ADR in 01_governance/ADR/.
+          ALLOWED_ACTIONS=(
+            "actions/checkout"
+            "actions/setup-node"
+            "actions/upload-artifact"
+            "actions/download-artifact"
+            "actions/cache"
+            "pnpm/action-setup"
+            "slsa-framework/slsa-github-generator"
+            "step-security/harden-runner"
+          )
+
+          VIOLATIONS=0
+          WORKFLOWS=(.github/workflows/*.yml .github/workflows/*.yaml)
+
+          for wf in "${WORKFLOWS[@]}"; do
+            [ -f "$wf" ] || continue
+            echo "Checking $wf"
+
+            # 1. Every `uses:` must be pinned to a full SHA.
+            while IFS= read -r line; do
+              action="${line#*uses: }"
+              action="${action%% #*}"
+              action="${action%% *}"
+              if ! echo "$action" | grep -qE '@[a-f0-9]{40}$'; then
+                echo "::error file=$wf::Action not pinned to full SHA: $action"
+                VIOLATIONS=$((VIOLATIONS + 1))
+              fi
+
+              owner_repo=$(echo "${action%@*}" | cut -d'/' -f1-2)
+              allowed=0
+              for allowed_action in "${ALLOWED_ACTIONS[@]}"; do
+                if [ "$owner_repo" = "$allowed_action" ]; then
+                  allowed=1
+                  break
+                fi
+              done
+              if [ "$allowed" -eq 0 ]; then
+                echo "::error file=$wf::Action not on org allowlist: $owner_repo"
+                VIOLATIONS=$((VIOLATIONS + 1))
+              fi
+            done < <(grep -nE '^\s*-?\s*uses:' "$wf" || true)
+
+            # 2. pull_request_target is forbidden without ADR.
+            if grep -qE '^\s*pull_request_target:' "$wf"; then
+              echo "::error file=$wf::Forbidden trigger: pull_request_target"
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+
+            # 3. Secrets must not be interpolated directly into run scripts.
+            if grep -nE '^\s*run:' "$wf" | grep -qE '\$\{\{\s*secrets\.'; then
+              echo "::error file=$wf::Secret interpolation detected inside run step"
+              VIOLATIONS=$((VIOLATIONS + 1))
+            fi
+          done
+
+          if [ "$VIOLATIONS" -ne 0 ]; then
+            echo "::error::ACTIONS_POLICY_VALIDATE failed with $VIOLATIONS violation(s)"
+            exit 1
+          fi
+
+          echo "✅ ACTIONS_POLICY_VALIDATE: CI-STATE=PASS"

@@ -1,0 +1,433 @@
+ φ-Design System v1.0 — Core Design Tokens */
+/* Single Source of Truth for all spacing, timing, colors, typography */
+/* Status: PRODUCTION-READY */
+
+:root {
+  /* ============================================================================
+     SECTION A: φ GOLDEN RATIO & BASE UNITS
+     ============================================================================ */
+
+  /* Golden Ratio constant */
+  --phi: 1.618033988749895;
+
+  /* Base units (immutable; change requires ADR) */
+  --space-base: 16px;
+  --time-base: 1618ms;
+  --font-base: 16px;
+
+  /* ============================================================================
+     SECTION B: SPACING SCALE (φⁿ formula: base × φⁿ)
+     ============================================================================ */
+
+  --space-phi-0: 10px;    /* 16 / 1.618 ≈ 9.9, rounded */
+  --space-phi-1: 16px;    /* 16 × φ⁰ (base) */
+  --space-phi-2: 26px;    /* 16 × φ¹ ≈ 25.9 */
+  --space-phi-3: 42px;    /* 16 × φ² ≈ 41.9 */
+  --space-phi-4: 68px;    /* 16 × φ³ ≈ 67.8 */
+  --space-phi-5: 110px;   /* 16 × φ⁴ ≈ 109.7 */
+  --space-phi-6: 178px;   /* 16 × φ⁵ ≈ 177.5 */
+  --space-phi-7: 288px;   /* 16 × φ⁶ ≈ 287.1 */
+
+  /* Micro spacing (sub-phi, for tight layouts) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+
+  /* ============================================================================
+     SECTION C: TIMING SCALE (φⁿ formula: 1618 × φⁿ in ms)
+     ============================================================================ */
+
+  --time-phi-0: 618ms;    /* 1618 / φ ≈ 1000, pragmatic rounding: 618 ms */
+  --time-phi-1: 1000ms;   /* 1618 / φ (standard rounding) */
+  --time-phi-2: 1618ms;   /* Golden Second — 1.618 seconds */
+  --time-phi-3: 2618ms;   /* 1618 × φ ≈ 2618 ms */
+  --time-phi-4: 4236ms;   /* 1618 × φ² ≈ 4236 ms (deep breathing) */
+  --time-phi-5: 6854ms;   /* 1618 × φ³ ≈ 6854 ms */
+
+  /* Breathing profile — Fibonacci-derived ratios */
+  --breath-in-ratio: 0.382;    /* 38.2% of cycle = inhalation */
+  --breath-hold-ratio: 0.236;  /* 23.6% of cycle = suspension */
+  --breath-out-ratio: 0.382;   /* 38.2% of cycle = exhalation */
+
+  /* Breathing times (as absolute values for ref) */
+  --breath-in-ms: 618ms;       /* 1618 × 0.382 */
+  --breath-hold-ms: 382ms;     /* 1618 × 0.236 */
+  --breath-out-ms: 618ms;      /* 1618 × 0.382 */
+
+  /* ============================================================================
+     SECTION D: TYPOGRAPHY SCALE (φⁿ formula: ~16 × φⁿ)
+     ============================================================================ */
+
+  --font-phi-xs: 13px;    /* caption, meta — 16 / 1.23 */
+  --font-phi-sm: 16px;    /* body, default, base */
+  --font-phi-md: 21px;    /* subheading, secondary heading — 16 × 1.3 */
+  --font-phi-lg: 27px;    /* heading 3 — 16 × 1.68 ≈ φ */
+  --font-phi-xl: 35px;    /* heading 2 — 16 × φ² / φ */
+  --font-phi-2xl: 45px;   /* heading 1 — approaching 16 × φ² */
+  --font-phi-3xl: 58px;   /* hero display — large φ-scale */
+
+  /* Line heights (ND-friendly, readable at all sizes) */
+  --leading-tight: 1.1;   /* headings, large text */
+  --leading-normal: 1.5;  /* body, default */
+  --leading-relaxed: 1.8; /* accessibility, captions, long paragraphs */
+
+  /* ============================================================================
+     SECTION E: EASING CURVES (φ-modulated, deterministic)
+     ============================================================================ */
+
+  /* General easing curves */
+  --ease-phi-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-phi-in: cubic-bezier(0.25, 0.1, 0.25, 0.8);
+  --ease-phi-out: cubic-bezier(0.0, 0.4, 0.75, 1);
+  --ease-linear: linear;
+
+  /* Breathing-specific easing (fixed points at 61.8%) */
+  --ease-phi-breath-in: cubic-bezier(0.2, 0.0, 0.3, 1.0);
+  --ease-phi-breath-out: cubic-bezier(0.7, 0.0, 0.8, 1.0);
+
+  /* ============================================================================
+     SECTION F: WARM OBSIDIAN PALETTE — Focus State (Baseline)
+     ============================================================================ */
+
+  /* Surfaces (semantic layering: base < raised < elevated) */
+  --surface-base: #101318;      /* Page background, darkest layer */
+  --surface-raised: #171B22;    /* Cards, sections, layer +1 */
+  --surface-elevated: #1F2430;  /* Modals, overlays, layer +2 */
+
+  /* Text (semantic hierarchy) */
+  --text-primary: #E6ECF5;      /* Body text, headings — max contrast: 12.1:1 AA+ */
+  --text-secondary: #A7B0C2;    /* Subheadings, meta — 4.5:1 AA */
+  --text-muted: #6B7487;        /* Labels, hints, captions — 2.1:1 */
+  --text-invert: var(--surface-base); /* Inverted text on accent backgrounds */
+
+  /* Accents (semantic meaning, not decorative) */
+  --accent-primary: #D8A45A;    /* CTA, main actions, φ-symbol (warm gold) */
+  --accent-secondary: #7FB0B8;  /* Links, secondary actions (muted teal) */
+
+  /* Borders & dividers */
+  --border-subtle: rgba(230, 236, 245, 0.08);  /* Soft visual separation */
+  --border-strong: rgba(230, 236, 245, 0.16);  /* Stronger division */
+  --border-focus: var(--accent-primary);       /* Focus indicator ring */
+
+  /* Shadows (soft, Soft Noir philosophy) */
+  --shadow-sm: 0 1px 2px rgba(16, 19, 24, 0.5);
+  --shadow-md: 0 4px 12px rgba(16, 19, 24, 0.6);
+  --shadow-lg: 0 12px 32px rgba(16, 19, 24, 0.7);
+
+  /* Glow (subtle accent glow, never neon) */
+  --glow-subtle: 0 0 8px rgba(216, 164, 90, 0.2);
+
+  /* Border radius (gentle, ND-friendly, no sharp corners) */
+  --radius-s1: 4px;
+  --radius-s2: 8px;
+  --radius-s3: 12px;
+  --radius-s4: 18px;
+
+  /* ============================================================================
+     SECTION G: MOTION CONTROL (state-dependent intensity)
+     ============================================================================ */
+
+  /* Motion intensity multiplier (Calm=0.5, Focus=1.0, Flow=1.2) */
+  --motion-intensity: 1;
+
+  /* Sensory toggles (set by SilenceProvider based on user prefs) */
+  --audio-default: 0;     /* Audio off by default (avoid startling in public) */
+  --audio-enabled: var(--audio-default);
+  --haptic-enabled: 1;
+
+  /* ============================================================================
+     SECTION H: SENSORY PROFILES (Metadata — not CSS values, but documented)
+     ============================================================================ */
+
+  /* These are references to sensory qualities; actual implementation
+     in audio/haptic engines. Documented here for completeness. */
+
+  --noise-grain-intensity: 0.25;  /* film grain opacity on backgrounds */
+  --audio-noise-type: brown;      /* brown noise (warm, ~80–150 Hz) */
+  --haptic-pattern: single;       /* single impulse, 30–40 ms */
+
+  /* ============================================================================
+     SECTION I: COLOR MODE & ACCESSIBILITY DEFAULTS
+     ============================================================================ */
+
+  /* Force dark mode (light mode is not supported by design) */
+  color-scheme: dark;
+
+  /* Smooth transitions for state changes (not abrupt) */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================================
+   SECTION J: STATE MODIFIERS (Calm / Focus / Flow)
+   ============================================================================ */
+
+/* === CALM STATE — Reduced stimulation === */
+:root[data-state="calm"] {
+  /* Darken surfaces */
+  --surface-base: #0C1014;       /* -1 luminance point */
+  --surface-raised: #141821;
+  --surface-elevated: #1B202A;
+
+  /* Mute text brightness */
+  --text-primary: #D8E0EB;       /* -4 lum points, less aggressive */
+  --text-secondary: #98A1B3;     /* -8 lum points, softer */
+  --text-muted: #5F687A;         /* -8 lum points */
+
+  /* Desaturate & dim accents */
+  --accent-primary: #B7874A;     /* HSL: 38°, 52%, 50% — muted gold */
+  --accent-secondary: #6B8F96;   /* Muted teal */
+
+  /* Reduce motion */
+  --motion-intensity: 0.5;
+
+  /* No audio/haptics in Calm by default */
+  --audio-enabled: 0;
+  --haptic-enabled: 0;
+}
+
+/* === FOCUS STATE (Default, Baseline) === */
+:root[data-state="focus"],
+:root {
+  /* Use baseline values from :root (above) */
+  --motion-intensity: 1.0;
+  --audio-enabled: var(--audio-default);
+  --haptic-enabled: 1;
+}
+
+/* === FLOW STATE — Increased stimulation tolerance === */
+:root[data-state="flow"] {
+  /* Brighten surfaces */
+  --surface-base: #12161C;       /* +1 lum point */
+  --surface-raised: #1A1F28;
+  --surface-elevated: #252B37;
+
+  /* Brighten text */
+  --text-primary: #F0F5FF;       /* +3 lum points, closer to white */
+  --text-secondary: #B3BCD0;     /* +4 lum points */
+  --text-muted: #727C91;         /* +10 lum points, more visible */
+
+  /* Saturate & brighten accents */
+  --accent-primary: #E0B064;     /* HSL: 38°, 63%, 60% — more vibrant gold */
+  --accent-secondary: #8EC0C7;   /* More saturated teal */
+
+  /* Increase motion */
+  --motion-intensity: 1.2;
+
+  /* Haptics can be more frequent */
+  --haptic-intensity: 1.3;
+}
+
+/* ============================================================================
+   SECTION K: THEME MODIFIERS (Ember, Graphite, Midnight Paper, Ion)
+   ============================================================================ */
+
+/* === THEME: EMBER SILENCE === */
+:root[data-silence-theme="ember"] {
+  --surface-base: #101318;
+  --surface-raised: #171B22;
+  --surface-elevated: #1F2430;
+
+  --text-primary: #E6ECF5;
+  --text-secondary: #A7B0C2;
+  --text-muted: #6B7487;
+
+  --accent-primary: #D8A45A;     /* Warm gold (φ-symbol) */
+  --accent-secondary: #7FB0B8;   /* Smoke blue */
+
+  /* Sensory profile */
+  --noise-grain-intensity: 0.25;
+  --audio-noise-type: brown;     /* Warm brown noise */
+  --haptic-pattern: ember-single;
+}
+
+/* === THEME: GRAPHITE DRIFT === */
+:root[data-silence-theme="graphite"] {
+  --surface-base: #0E1116;       /* Colder, darker */
+  --surface-raised: #191E26;
+  --surface-elevated: #232935;
+
+  --text-primary: #E6ECF5;
+  --text-secondary: #A7B0C2;
+  --text-muted: #6E7A8C;
+
+  --accent-primary: #7FB0B8;     /* Teal primary */
+  --accent-secondary: #6B8F96;   /* Muted steel */
+
+  /* Sensory profile */
+  --noise-grain-intensity: 0.2;
+  --audio-noise-type: pink;      /* Pink noise (less harsh) */
+  /* Audio: slow L-R pan in ~16 s cycle */
+  --haptic-pattern: graphite-double;
+}
+
+/* === THEME: MIDNIGHT PAPER === */
+:root[data-silence-theme="paper"] {
+  --surface-base: #111218;       /* Warm-neutral black */
+  --surface-raised: #1A1B22;
+  --surface-elevated: #22232B;
+
+  --text-primary: #E6ECF5;
+  --text-secondary: #98A1B3;     /* Slightly different neutral */
+  --text-muted: #5F687A;
+
+  --accent-primary: #C49A6A;     /* Sepia tone (warm, muted) */
+  --accent-secondary: #7FB0B8;
+
+  /* Sensory profile */
+  --noise-grain-intensity: 0.3;  /* More visible "paper" texture */
+  --audio-noise-type: room;      /* Room tone (library-like) */
+  --haptic-pattern: paper-single-soft;
+}
+
+/* === THEME: ION HAZE === */
+:root[data-silence-theme="ion"] {
+  --surface-base: #0E1318;       /* Cool with haze */
+  --surface-raised: #151B22;
+  --surface-elevated: #1D252E;
+
+  --text-primary: #E6ECF5;
+  --text-secondary: #A7B0C2;
+  --text-muted: #6B7487;
+
+  --accent-primary: #8EC0C7;     /* Cyan, desaturated (not neon) */
+  --accent-secondary: #6B8F96;   /* Cool steel */
+
+  /* Sensory profile */
+  --noise-grain-intensity: 0.18; /* Very subtle */
+  --audio-noise-type: air;       /* Air hum (ventilation-like) */
+  --haptic-pattern: ion-triple-fade;
+}
+
+/* ============================================================================
+   SECTION L: VISUAL MODES (Quiet-Cards, Rhythm-Line, Cluster-Pulse, Bare-Numbers)
+   ============================================================================ */
+
+:root[data-visual-mode="quiet-cards"] {
+  --info-density: low;
+  --motion-type: breathing;
+  --chart-style: card;
+  --max-elements-per-screen: 3;
+}
+
+:root[data-visual-mode="rhythm-line"] {
+  --info-density: medium;
+  --motion-type: drift;
+  --chart-style: line;
+  --max-elements-per-screen: 5;
+}
+
+:root[data-visual-mode="cluster-pulse"] {
+  --info-density: medium-high;
+  --motion-type: pulse;
+  --chart-style: cluster;
+  --max-elements-per-screen: 12;
+}
+
+:root[data-visual-mode="bare-numbers"] {
+  --info-density: low;
+  --motion-type: none;
+  --chart-style: numeric;
+  --max-elements-per-screen: 3;
+}
+
+/* ============================================================================
+   SECTION M: MOTION KEYFRAMES (All animations)
+   ============================================================================ */
+
+/* === PHI-BREATHING CYCLE (1618 ms base, scaled by motion-intensity) === */
+@keyframes phi-breath {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  38.2% {  /* End of inhalation phase (fixed-point at 61.8% of in-duration) */
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  61.8% {  /* Holding at peak expansion */
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  100% {  /* Return to baseline */
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+
+/* === PHI-DRIFT (Slow horizontal scroll) === */
+@keyframes phi-drift {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-4px);
+  }
+}
+
+/* === PHI-PULSE (Gentle scale oscillation) === */
+@keyframes phi-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* === FADE-IN-SILENT (No motion, pure opacity) === */
+@keyframes fade-in-silent {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   SECTION N: ACCESSIBILITY & MOTION PREFERENCES
+   ============================================================================ */
+
+/* Respect user motion preference — eliminate ALL animation for sensitive users */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  --text-secondary: #BFBFC4;              /* Higher contrast */
+  --border-subtle: rgba(230, 236, 245, 0.16);
+  --border-strong: rgba(230, 236, 245, 0.32);
+}
+
+/* Focus visible for keyboard navigation (accessible, non-intrusive) */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================================================
+   END OF silence-tokens.css
+   
+   Version: 1.0.0
+   Status: PRODUCTION
+   Compliance: S11 Language Standard, φ-Deterministic Engine, EU AI Act Annex IV
+   
+   NOTES:
+   - All values are immutable until formal ADR/changelog entry
+   - This file is the Single Source of Truth (SSoT) for all φ-derived constants
+   - Do NOT override values in component CSS — use these variables
+   - Changes must be tracked in CHANGELOG.md with date + reason
+   ============================================================================ */
+
+

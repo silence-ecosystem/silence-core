@@ -1,0 +1,40 @@
+# .github/workflows/deploy-guard.yml
+name: deploy-guard
+on: [push, pull_request]
+
+jobs:
+  boundary-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7 # FIB(13) × GOLDENSECONDMS ÷ 1000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - run: pnpm install --frozen-lockfile
+      - name: RULE-DOM-001 boundary scan
+        run: pnpm boundary-check
+      - name: S11 vocabulary scan
+        run: pnpm s11-check
+
+  determinism-gate:
+    needs: boundary-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - run: pnpm install --frozen-lockfile
+      - name: core determinism test
+        run: pnpm --filter=@silence/core test:determinism
+
+  build-gate:
+    needs: determinism-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - run: pnpm install --frozen-lockfile
+      - run: turbo run build --filter=...affected

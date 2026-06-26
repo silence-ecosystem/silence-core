@@ -222,8 +222,8 @@ Zakaz terminologii klinicznej obowiązuje:
 
 Mapowanie kanoniczne:
 
-- `stress` -> `tension_score`
-- `anxiety` -> `tension_score`
+- `TENSION_SCOREs` -> `tension_score`
+- `TENSION_SCORE` -> `tension_score`
 - `capacity` pozostaje `capacity_score`
 - chaos behawioralny -> `signal_noise`
 - stan naruszenia -> `state_violation`

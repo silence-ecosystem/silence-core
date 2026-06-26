@@ -9,7 +9,7 @@ import { useEngine } from '@/hooks/useEngine';
 import GardenCanvas from '@/components/GardenCanvas';
 import GardenHUD from '@/components/GardenHUD';
 import SignalPanel from '@/components/SignalPanel';
-import { trackSilenceEvent } from '@silence/telemetry';
+import { trackSilenceEvent } from '@silence/sdk';
 import { getInitialDashboardConfig } from '@/lib/quietMapping';
 import { consumeRitualResult } from '@/lib/breathRitualBridge';
 import { colors, timing, easing, radius } from '@/lib/tokens';

@@ -4,32 +4,45 @@
  * Event tracking with adapter pattern.
  * MVP: console adapter + noop adapter + consent-aware kill-switch.
  * Production target: Supabase batch insert, edge function, or analytics provider.
+ *
+ * SESSION ID POLICY:
+ * - No Math.random(), no crypto.getRandomValues().
+ * - Session IDs are derived deterministically from a seed context via SHA-256.
+ * - The same seed context yields the same session ID (determinism/replay safety).
  */
 
-import { SilenceEventV1, SilenceEventType, TelemetryAdapter, VALID_EVENT_TYPES } from './types';
+import { SilenceEventV1, SilenceEventType, TelemetryAdapter, VALID_EVENT_TYPES } from './types.js';
 
 let _adapter: TelemetryAdapter = consoleAdapter();
 let _appVersion = '0.1.0-mvp';
 let _environment: 'development' | 'staging' | 'production' = 'development';
 let _sessionId: string | null = null;
+let _sessionIdPromise: Promise<string> | null = null;
 let _killSwitchChecked = false;
 let _killSwitchActive = false;
 
-function generateSessionId(): string {
-  const arr = new Uint8Array(8);
-  if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-    crypto.getRandomValues(arr);
-  } else {
-    for (let i = 0; i < arr.length; i++) arr[i] = Math.floor(Math.random() * 256);
-  }
-  return Array.from(arr, (b) => b.toString(16).padStart(2, '0')).join('');
+async function sha256Hex(input: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  const digest = new Uint8Array(await globalThis.crypto.subtle.digest('SHA-256', data));
+  return Array.from(digest)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 }
 
-function getSessionId(): string {
-  if (_sessionId === null) {
-    _sessionId = generateSessionId();
+async function generateSessionId(seedContext: string): Promise<string> {
+  return (await sha256Hex(seedContext)).slice(0, 16);
+}
+
+async function getSessionId(seedContext: string): Promise<string> {
+  if (_sessionId !== null) return _sessionId;
+  if (_sessionIdPromise === null) {
+    _sessionIdPromise = generateSessionId(seedContext).then((id) => {
+      _sessionId = id;
+      return id;
+    });
   }
-  return _sessionId;
+  return _sessionIdPromise;
 }
 
 function checkKillSwitch(): boolean {
@@ -61,30 +74,33 @@ export function setTelemetryContext(
 
 export function resetSessionId(): void {
   _sessionId = null;
+  _sessionIdPromise = null;
 }
 
 interface TrackOptions {
   eventType: SilenceEventType;
-  timestamp?: string;
+  timestamp: string;
   observerId?: string;
   sessionId?: string;
   payload?: Record<string, unknown>;
   context?: Record<string, unknown>;
 }
 
-export function trackSilenceEvent(options: TrackOptions): void;
-export function trackSilenceEvent(
+export async function trackSilenceEvent(options: TrackOptions): Promise<void>;
+export async function trackSilenceEvent(
   eventType: SilenceEventType,
   observerId: string,
   sessionId: string,
+  timestamp: string,
   payload?: Record<string, unknown>
-): void;
-export function trackSilenceEvent(
+): Promise<void>;
+export async function trackSilenceEvent(
   arg1: SilenceEventType | TrackOptions,
   observerId?: string,
   sessionId?: string,
+  timestamp?: string,
   payload?: Record<string, unknown>
-): void {
+): Promise<void> {
   if (checkKillSwitch()) {
     return;
   }
@@ -97,12 +113,14 @@ export function trackSilenceEvent(
       console.error('[Telemetry] Invalid event type:', opts.eventType);
       return;
     }
+    const seedContext = JSON.stringify(opts.context ?? {});
+    const resolvedSessionId = await getSessionId(seedContext);
     event = {
       version: 1,
       eventType: opts.eventType,
-      timestamp: opts.timestamp ?? new Date().toISOString(),
+      timestamp: opts.timestamp,
       observerId: opts.observerId ?? 'anonymous',
-      sessionId: opts.sessionId ?? getSessionId(),
+      sessionId: opts.sessionId ?? resolvedSessionId,
       payload: opts.payload ?? opts.context ?? {},
       appVersion: _appVersion,
       environment: _environment,
@@ -112,24 +130,29 @@ export function trackSilenceEvent(
       console.error('[Telemetry] Invalid event type:', arg1);
       return;
     }
+    if (timestamp === undefined) {
+      console.error('[Telemetry] timestamp is required for positional call');
+      return;
+    }
+    const seedContext = JSON.stringify(payload ?? {});
+    const resolvedSessionId = await getSessionId(seedContext);
     event = {
       version: 1,
       eventType: arg1,
-      timestamp: new Date().toISOString(),
+      timestamp,
       observerId: observerId ?? 'anonymous',
-      sessionId: sessionId ?? getSessionId(),
+      sessionId: sessionId ?? resolvedSessionId,
       payload: payload ?? {},
       appVersion: _appVersion,
       environment: _environment,
     };
   }
 
-  const result = _adapter.emit(event);
-  if (result instanceof Promise) {
-    result.catch((err) => {
-      // Telemetry must never crash the app
-      console.error('[Telemetry] async emit failed:', err);
-    });
+  try {
+    await _adapter.emit(event);
+  } catch (err) {
+    // Telemetry must never crash the app
+    console.error('[Telemetry] emit failed:', err);
   }
 }
 

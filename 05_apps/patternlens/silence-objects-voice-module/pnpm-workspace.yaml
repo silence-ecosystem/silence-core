@@ -1,0 +1,6 @@
+packages:
+  - "packages/*"
+  - "apps/*"
+  - "apps/patternslab/web"
+  - "apps/patternslab/cli"
+  - "apps/patternlens"

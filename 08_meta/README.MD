@@ -5,13 +5,13 @@ classification: SSoT
 sentinel: S11_ENFORCED
 determinism_profile: best-effort
 phi_anchor: true
-created: 2026-06-06
+created: 2026-06-23
 ---
 
 # 08_meta
 
 ## Operational Mandate
-Directory `/home/ewa/08_meta` operates under S11 governance with determinism profile `best-effort`.
+Directory `/home/ewa/silence/08_meta` operates under S11 governance with determinism profile `best-effort`.
 
 ## Constraints
 - All operational parameters require explicit φ-derivation proof [T].

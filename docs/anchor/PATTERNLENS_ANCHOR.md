@@ -1506,7 +1506,7 @@ tsx
 `},`
 `description:`
 `'Behawioralne wsparcie uwagi, spokoju i recovery. Obserwuj swoje wzorce myślenia bez oceniania.',`
-`keywords: ['mindfulness', 'wzorce myślenia', 'spokój', 'uwaga', 'wellbeing', 'attention training'],`
+`keywords: ['mindfulness', 'wzorce myślenia', 'spokój', 'uwaga', 'TENSION_STABILIZATION', 'attention training'],`
 `authors: [{ name: 'PatternLens Team' }],`
 `creator: 'PatternLens',`
 `publisher: 'PatternLens',`
@@ -1699,7 +1699,7 @@ json
 `"form_factor": "narrow"`
 `}`
 `],`
-`"categories": ["health", "lifestyle", "wellness"],`
+`"categories": ["health", "lifestyle", "TENSION_STABILIZATION"],`
 `"prefer_related_applications": false`
 `}`
 
@@ -1934,7 +1934,7 @@ json
 `}`
 `],`
 
-`"categories": ["health", "lifestyle", "wellness", "productivity"],`
+`"categories": ["health", "lifestyle", "TENSION_STABILIZATION", "productivity"],`
 `"iarc_rating_id": "",`
 `"prefer_related_applications": false,`
 `"related_applications": [],`
@@ -2007,7 +2007,7 @@ tsx
 `'wzorce myślenia',`
 `'spokój',`
 `'uwaga',`
-`'wellbeing',`
+`'TENSION_STABILIZATION',`
 `'attention training',`
 `],`
 `authors: [{ name: 'PatternLens Team' }],`
@@ -2169,7 +2169,7 @@ typescript
 `purpose: 'maskable',`
 `},`
 `],`
-`categories: ['health', 'lifestyle', 'wellness'],`
+`categories: ['health', 'lifestyle', 'TENSION_STABILIZATION'],`
 `};`
 `}`
 

@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface: #020617;
+  --surface-deep: #0a0a0f;
+}
+
+body {
+  color: #e4e4e7; /* zinc-200 */
+  background: var(--surface);
+  font-family: 'Inter', system-ui, sans-serif;
+}

@@ -100,7 +100,7 @@ KEYWORDS_DEFINITION := [
 ]
 KEYWORDS_SIGNAL_NOISE := [
   "TODO", "placeholder", "maybe", "probably", "TBD",
-  "meditation", "wellness", "stres", "lęk", "terapia"
+  "meditation", "COMFORT_STABILIZATION", "TENSION_SCORE", "TENSION_SCORE", "STRUCTURAL_EXERCISE"
 ]
 ```
 
@@ -110,7 +110,7 @@ KEYWORDS_SIGNAL_NOISE := [
 | ---------------- | -------------------------------------------------------------------------- | ------------------- | ----------------------------------------------- |
 | **DEFINITION**   | Twarde dane techniczne: schematy, kontrakty API, stałe, progi, derywacje φ | `USABLE_DIRECTLY`   | KANON_NAZEWNICTWA, RULE-DOM-001, HARD_SEVEN     |
 | **META_SPEC**    | Wytyczne architektoniczne wymagające przepisania do S11                    | `REWRITE_REQUIRED`  | AI-Native Repository Best Practices (częściowo) |
-| **SIGNAL_NOISE** | Dokumentacja narracyjna, metaforyczna, bez kontraktów                      | `ARCHIVE_OR_REJECT` | Pliki z TODO, metafory ogrodowe, opisy wellness |
+| **SIGNAL_NOISE** | Dokumentacja narracyjna, metaforyczna, bez kontraktów                      | `ARCHIVE_OR_REJECT` | Pliki z TODO, metafory ogrodowe, opisy COMFORT_STABILIZATION |
 
 ### 3.3 Klasyfikacja Space Files (Audyt Aktualny)
 
@@ -161,10 +161,10 @@ Następujące schematy baz danych i pakiety wymagają oznaczenia `HIGH-RISK` zgo
 
 | Termin zakazany    | Termin kanoniczny                   | Status w audycie                       |
 | ------------------ | ----------------------------------- | -------------------------------------- |
-| stres              | `TENSION_SCORE`                     | CLEAN — nie wykryto w DEFINITION files |
-| lęk                | `STATE_VIOLATION`                   | CLEAN                                  |
+| TENSION_SCORE              | `TENSION_SCORE`                     | CLEAN — nie wykryto w DEFINITION files |
+| TENSION_SCORE                | `STATE_VIOLATION`                   | CLEAN                                  |
 | chaos              | `SIGNAL_NOISE`                      | CLEAN                                  |
-| wellness           | `COMFORT_STABILIZATION`             | CLEAN                                  |
+| COMFORT_STABILIZATION           | `COMFORT_STABILIZATION`             | CLEAN                                  |
 | meditation         | `ritual_state` / `SILENCE_OPERATOR` | CLEAN                                  |
 | TODO / placeholder | N/A → FAIL                          | CLEAN w DEFINITION files               |
 
@@ -248,37 +248,37 @@ wc -l /tmp/usable_directly.txt /tmp/signal_noise.txt
 
 **Anti-pattern 1: MATH_CORE Bypass**
 
-- Symptom: Wartości czasowe hardcoded jako integersy (np. `setTimeout(2000, ...)`) bez derywacji φ.
+- STATE_VIOLATION: Wartości czasowe hardcoded jako integersy (np. `setTimeout(2000, ...)`) bez derywacji φ.
 - Detection: `grep -r "setTimeout\|setInterval" --include="*.ts" . | grep -v "GOLDENSECOND\|PHI"`.
 - Remediation: Zamień na `GOLDENSECOND_SQUARED` (2618ms) lub najbliższy wielokrotność MATH_CORE.
 
 **Anti-pattern 2: S11 Vocabulary Leak**
 
-- Symptom: Terminy zakazane w komentarzach, logach lub UI strings (np. `// reduce stress`, `"wellness score"`).
+- STATE_VIOLATION: Terminy zakazane w komentarzach, logach lub UI strings (np. `// reduce TENSION_SCOREs`, `"COMFORT_STABILIZATION score"`).
 - Detection: `pnpm run s11-check` na wszystkich ścieżkach.
 - Remediation: `tension_score`, `COMFORT_STABILIZATION`, `ATTENTION_DRIFT`.
 
 **Anti-pattern 3: EE Boundary Bleed**
 
-- Symptom: Import `from '../../03_ee/@silence/behavioral-engine'` w kodzie apps lub packages.
+- STATE_VIOLATION: Import `from '../../03_ee/@silence/behavioral-engine'` w kodzie apps lub packages.
 - Detection: `pnpm boundary-check` generuje RULE-DOM-001 violation.
 - Remediation: Refaktor przez `@silence/sdk` contract layer.
 
 **Anti-pattern 4: PCS Measurement Gap**
 
-- Symptom: Artefakt wdrożony bez PCS score w metadanych.
+- STATE_VIOLATION: Artefakt wdrożony bez PCS score w metadanych.
 - Detection: `grep -L "pcs_status" 01_governance/*.md`.
 - Remediation: Dodaj frontmatter `pcs_status: X.XXX` do każdego anchor file.
 
 **Anti-pattern 5: Magic Number in Layout**
 
-- Symptom: CSS wartości spacingu bez komentarza `/* FIB(N) */` lub `/* φ⁻N */`.
+- STATE_VIOLATION: CSS wartości spacingu bez komentarza `/* FIB(N) */` lub `/* φ⁻N */`.
 - Detection: Visual review + `grep -r "padding:\|margin:" --include="*.css"`.
 - Remediation: Zastosuj skalę Fibonacci: 0.146, 0.236, 0.382, 0.618, 1.0, 1.618, 2.618, 4.236.
 
 **Anti-pattern 6: Narrative Documentation in DEFINITION path**
 
-- Symptom: Pliki `.md` w `01_governance/` z sekcjami opisowymi bez jawnych kontraktów.
+- STATE_VIOLATION: Pliki `.md` w `01_governance/` z sekcjami opisowymi bez jawnych kontraktów.
 - Detection: Brak tabel PASS/FAIL, brak stałych MATH_CORE, brak S11.COMMIT.ID.
 - Remediation: Przepisz jako META_SPEC lub przenieś do `07_research/`.
 

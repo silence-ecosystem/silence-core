@@ -5,13 +5,13 @@ classification: SSoT
 sentinel: S11_ENFORCED
 determinism_profile: audit
 phi_anchor: true
-created: 2026-06-06
+created: 2026-06-23
 ---
 
 # 03_ee
 
 ## Operational Mandate
-Directory `/home/ewa/03_ee` operates under S11 governance with determinism profile `audit`.
+Directory `/home/ewa/silence/03_ee` operates under S11 governance with determinism profile `audit`.
 
 ## Constraints
 - All operational parameters require explicit φ-derivation proof [T].

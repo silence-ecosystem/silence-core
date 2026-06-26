@@ -6,7 +6,7 @@
  */
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { trackSilenceEvent } from '@silence/telemetry';
+import { trackSilenceEvent } from '@silence/sdk';
 
 interface WasmExports {
   compute_schedule_json(input_json: string): string;

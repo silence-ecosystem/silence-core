@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { evaluate, JitaiContext, JitaiSignal, ALL_RULES } from '@silence/jitai';
+import { evaluate, JitaiContext, JitaiSignal, ALL_RULES } from '@silence/sdk';
 import type { GardenState } from '@/lib/gardenTypes';
 
 function buildContext(state: GardenState | null): JitaiContext {

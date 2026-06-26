@@ -1,9 +1,31 @@
 {
   "name": "@silence/sdk",
-  "version": "0.0.0-deprecated",
-  "private": true,
-  "status": "deprecated",
-  "description": "DEPRECATED — Do not use in new modules.",
-  "main": "src/index.ts",
+  "version": "0.1.0-mvp",
+  "type": "module",
+  "description": "Public Silence SDK — deterministic facade for apps. No EE logic.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@silence/contracts": "workspace:*",
+    "@silence/core": "workspace:*",
+    "@silence/events": "workspace:*",
+    "@silence/jitai": "workspace:*",
+    "@silence/phi": "workspace:*",
+    "@silence/telemetry": "workspace:*",
+    "@silence/types": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  },
   "license": "MIT"
 }

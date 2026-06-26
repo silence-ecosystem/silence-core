@@ -1,0 +1,60 @@
+{
+  "name": "PatternLens",
+  "short_name": "PatternLens",
+  "description": "Structural behavioral pattern analysis. 15 composable modules. 12 archetype classification. Dual-lens interpretation.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08080a",
+  "theme_color": "#21808d",
+  "orientation": "portrait",
+  "categories": ["productivity", "developer tools"],
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192x192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon-512x512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot-dashboard.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dashboard — objects, patterns, timeline"
+    },
+    {
+      "src": "/screenshots/screenshot-analysis.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Dual-lens structural analysis"
+    },
+    {
+      "src": "/screenshots/screenshot-voice.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Voice input — transcribe and analyze"
+    }
+  ]
+}

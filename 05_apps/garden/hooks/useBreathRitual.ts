@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { BREATH_CYCLE_MS } from '@silence/phi';
+import { BREATH_CYCLE_MS } from '@silence/sdk';
 
 export type BreathPhase = 'idle' | 'inhale' | 'hold' | 'exhale';
 

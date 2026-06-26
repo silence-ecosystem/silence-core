@@ -7,7 +7,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { phiRandom } from '@/lib/tokens';
-import { EffectLog, EffectLogEntry } from '@silence/core';
+import { EffectLog, EffectLogEntry } from '@silence/sdk';
 
 const DB_NAME = 'silence-effectlog-db';
 const DB_VERSION = 1;

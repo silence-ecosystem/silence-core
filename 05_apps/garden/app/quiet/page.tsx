@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { useEffectLog } from '@/hooks/useEffectLog';
-import { trackSilenceEvent } from '@silence/telemetry';
+import { trackSilenceEvent } from '@silence/sdk';
 import { colors, timing, easing, radius } from '@/lib/tokens';
 
 export default function QuietPage() {

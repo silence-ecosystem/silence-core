@@ -6,7 +6,7 @@
  */
 
 import { colors, timing, easing, radius } from '@/lib/tokens';
-import type { JitaiSignal } from '@silence/jitai';
+import type { JitaiSignal } from '@silence/sdk';
 
 interface SignalPanelProps {
   readonly signals: readonly JitaiSignal[];

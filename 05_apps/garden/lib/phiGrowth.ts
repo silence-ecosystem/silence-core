@@ -4,7 +4,7 @@
  * Growth calculations for garden — phi-derived, deterministic.
  */
 
-import { PHI } from '@silence/phi';
+import { PHI } from '@silence/sdk';
 import type { Plant, GardenState } from './gardenTypes.js';
 
 export function calculateRitualGrowth(

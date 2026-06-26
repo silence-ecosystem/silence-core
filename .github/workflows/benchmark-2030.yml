@@ -1,0 +1,81 @@
+// File: /home/ewa/silence/.github/workflows/benchmark-2030.yml
+name: Benchmark 2030 Master Gate
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  boundary-check:
+    name: Boundary Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm boundary-check
+
+  s11-check:
+    name: S11 Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm s11-check
+
+  determinism:
+    name: Determinism
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Run determinism gate
+        run: |
+          if pnpm run | grep -q "test:determinism"; then
+            pnpm test:determinism
+          elif pnpm run | grep -q "testdeterminism"; then
+            pnpm testdeterminism
+          else
+            echo "Missing determinism script"
+            exit 1
+          fi

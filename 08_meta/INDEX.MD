@@ -2,14 +2,14 @@
 title: 08_meta-INDEX
 type: structural_metadata
 sentinel: S11_ENFORCED
-generated: 2026-06-06T15:40:20Z
+generated: 2026-06-23T06:17:55Z
 phi_anchor: true
 ---
 
 # Index: 08_meta
 
 ## Structural Metadata
-- **Path:** `/home/ewa/08_meta`
+- **Path:** `/home/ewa/silence/08_meta`
 - **Node Type:** ROOT-NODE
 - **Determinism Profile:** See README.MD
 

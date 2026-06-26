@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useBreathRitual } from '@/hooks/useBreathRitual';
 import { useEffectLog } from '@/hooks/useEffectLog';
 import BreathIndicator from '@/components/BreathIndicator';
-import { trackSilenceEvent } from '@silence/telemetry';
+import { trackSilenceEvent } from '@silence/sdk';
 import { transferRitualResult, incrementBreathCount24h } from '@/lib/breathRitualBridge';
 import { colors, timing, easing, radius } from '@/lib/tokens';
 
