@@ -8,7 +8,7 @@ We expect all contributors to:
 - Accept constructive criticism gracefully.
 - Focus on what is best for the system and its users.
 - Respect domain boundaries and governance decisions.
-- Avoid clinical, therapeutic or wellness framing in operational discussions.
+- Avoid pattern-signature, support-protocol or wellness framing in operational discussions.
 
 ## Unacceptable behavior
 
@@ -19,4 +19,16 @@ We expect all contributors to:
 
 ## Enforcement
 
-Report violations to the maintainers listed in `.github/CODEOWNERS`. Enforcement follows the governance process documented in `01_governance/`.
+Report conduct concerns privately:
+
+**Email:** `conduct@patternslab.dev`
+**What to include:**
+- Description of the incident
+- Parties involved (use pseudonyms if preferred)
+- Date and location (chat thread, meeting, etc.)
+- Impact on you or the community
+- Any documentation (screenshots, logs)
+
+**Confidentiality:** Your report will be kept private. We will not disclose your identity without explicit consent.
+
+Enforcement follows the governance process documented in `01_governance/`.

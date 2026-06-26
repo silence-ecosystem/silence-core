@@ -19,7 +19,7 @@ Thank you for contributing. This repository is governed by `AGENTS.md` — read 
 
 ## S11 language lock
 
-- Forbidden terms: clinical, therapeutic, wellness, diagnostic language.
+- Forbidden terms: pattern-signature, support-protocol, wellness-adjacent, diagnostic language.
 - Preferred operational terms: `TENSION_SCORE`, `SIGNAL_NOISE`, `STATE_VIOLATION`, `SIGNAL_PURITY`, `RITUAL_STATE`, `DETERMINISTIC_FLOW`.
 - `pnpm s11-check` must pass.
 

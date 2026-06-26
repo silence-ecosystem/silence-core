@@ -8,7 +8,7 @@ SILENCE is a hybrid monorepo built around:
 
 - **Determinism** — identical input always produces identical output.
 - **φ-derived design** — all timing, spacing and rhythm derive from `PHI = 1.618...` and `GOLDENSECOND = 1618 ms`.
-- **S11 language lock** — no clinical, therapeutic or wellness terminology in operational code.
+- **S11 language lock** — no pattern-signature, support-protocol or wellness terminology in operational code.
 - **RULE-DOM-001** — strict domain boundaries; open-core frontend never imports `03_ee/` enterprise logic.
 
 ## Repository structure
@@ -47,4 +47,6 @@ Applications consume only `@silence/sdk`. Direct imports from `03_ee/` are forbi
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+The open-core part of the repository is MIT-licensed, while enterprise and high-risk modules under `03_ee/` remain proprietary and require separate licensing terms.
+
+For details, see `LICENSE.md`.

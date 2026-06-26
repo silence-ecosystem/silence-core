@@ -204,6 +204,40 @@ SUMMARY: <opis>
 
 Nadpisanie `prevHash` jest zakazane. Brak wpisu = brak zmiany operacyjnej. [1]
 
+---
+
+## AGENTS — DEFINICJA ROLI
+
+Agenty to logiczne role funkcjonalne w systemie, nie konkretne implementacje.
+Każdy agent może być realizowany jako:
+
+- Skrypt CI (`boundary-check.sh`, `s11-check.sh`)
+- Agent Claude (na bazie `CLAUDE.md`)
+- Proces zautomatyzowany (typecheck, lint, build)
+
+**RULE:** Implementacja agenta nie zmienia jego logicznej roli ani kontraktu.
+
+---
+
+## AGENTS — TERMINOLOGY
+
+**WORLDHALT**: Stan całkowitego blokowania zmian. Równoważne:
+- `git push` zablokowany przez CI gate
+- PR nie może być mergowany
+- Zmiana musi być wycofana ALBO przywrócona do compliance
+- Wymaga ręcznej eskalacji do governance team
+
+**Tier**: Priorytet agenta
+- **T0** — Runtime execution (zero access to governance)
+- **T1** — Strategic gates (full governance access for gating decisions)
+- **T2** — Operational execution (read-only access to contracts)
+
+**Layer (L0-L3)**: Dostęp do danych
+- **L0** — TIMING_WINDOW, JITAI kernel, φ-events (core logic, top secret)
+- **L1** — BEHAVIORAL_CLUSTER, signal processing (semi-sensitive)
+- **L2** — SIGNAL_VECTOR, aggregate metrics (operational)
+- **L3** — PCS, AUDIT_TRAIL, governance (governance-only)
+
 ## 21. KIMI LOCAL ACTIVATION
 
 Docelowa ścieżka kontraktu operatora:

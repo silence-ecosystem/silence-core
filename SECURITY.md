@@ -8,9 +8,19 @@ Only the latest state of the `main` branch is actively supported. Releases use i
 
 Do not open public issues for security problems. Instead:
 
-1. Email the maintainers listed in `.github/CODEOWNERS`.
-2. Include reproduction steps, impact assessment and affected paths.
-3. Allow reasonable time for remediation before public disclosure.
+Use private disclosure through GitHub Security Advisories when possible, or contact:
+
+**Email:** `security@patternslab.io` (preferred)
+**Alternative:** Private GitHub Security Advisory
+
+Include in your report:
+- Affected component (`03_ee/`, `04_packages/`, `05_apps/`, etc.)
+- Reproduction steps
+- Impact assessment
+- Proof-of-concept (if applicable)
+- Your contact information (name, email, PGP key if available)
+
+Allow reasonable time for remediation before public disclosure.
 
 ## Crisis and self-harm detection
 
