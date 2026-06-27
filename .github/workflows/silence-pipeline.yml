@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           fetch-depth: 2
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5df2
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
@@ -63,7 +63,7 @@ jobs:
           egress-policy: audit
           disable-sudo: true
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5df2
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
@@ -84,7 +84,7 @@ jobs:
           egress-policy: audit
           disable-sudo: true
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5df2
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
@@ -106,7 +106,7 @@ jobs:
           egress-policy: audit
           disable-sudo: true
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5df2
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
@@ -128,7 +128,7 @@ jobs:
           egress-policy: audit
           disable-sudo: true
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5df2
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
@@ -151,7 +151,7 @@ jobs:
           egress-policy: audit
           disable-sudo: true
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5df2
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
         with:
           version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
