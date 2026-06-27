@@ -17,7 +17,7 @@ jobs:
       - name: RULE-DOM-001 boundary scan
         run: pnpm boundary-check
       - name: Build s11-lint with dependencies
-        run: pnpm exec turbo run build --filter=@silence/s11-lint
+        run: pnpm --filter=@silence/s11-lint... run build
       - name: S11 vocabulary scan
         run: pnpm s11-check
 
