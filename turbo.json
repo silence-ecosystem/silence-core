@@ -25,9 +25,8 @@
     "build": {
       "dependsOn": [
         "^build",
-        "typecheck",
-        "lint",
-        "test"
+        "^typecheck",
+        "^lint"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
@@ -46,7 +45,7 @@
     },
     "test": {
       "dependsOn": [
-        "^test"
+        "^build"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
