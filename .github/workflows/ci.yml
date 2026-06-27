@@ -1,88 +1,71 @@
 // File: /home/ewa/silence/.github/workflows/ci.yml
 name: CI
-
-on:
+true:
   push:
     branches:
-      - main
+    - main
   pull_request:
     types:
-      - opened
-      - synchronize
-      - reopened
-
+    - opened
+    - synchronize
+    - reopened
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 permissions:
   contents: read
   actions: read
   checks: write
-
 jobs:
   build-and-test:
     name: Build and Test
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
-        with:
-          version: 9
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build affected
-        run: turbo run build --filter=...[origin/main...HEAD]
-
-      - name: Test affected
-        run: turbo run test --filter=...[origin/main...HEAD]
-
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+    - name: Setup pnpm
+      uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: pnpm
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Build affected
+      run: turbo run build --filter=...[origin/main...HEAD]
+    - name: Test affected
+      run: turbo run test --filter=...[origin/main...HEAD]
   lint:
     name: Lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
-        with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: turbo run lint --filter=...[origin/main...HEAD]
-
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+    - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: pnpm
+    - run: pnpm install --frozen-lockfile
+    - run: turbo run lint --filter=...[origin/main...HEAD]
   typecheck:
     name: Typecheck
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
-        with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm typecheck
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 2
+    - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: pnpm
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm typecheck

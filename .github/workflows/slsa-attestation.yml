@@ -1,88 +1,65 @@
 name: SLSA_PROVENANCE_GENERATOR
-
-# Generates SLSA Level 3 provenance ONLY for open-core artifacts.
-# Enterprise/proprietary artifacts in 03_ee/ are explicitly excluded from
-# build scope, subject collection, and provenance generation.
-
-on:
+true:
   release:
-    types: [created]
-
+    types:
+    - created
 permissions:
   contents: read
   actions: read
   id-token: write
-
 jobs:
   build:
     name: Build Open-Core Artifacts
     runs-on: ubuntu-latest
     outputs:
       subjects: ${{ steps.subjects.outputs.base64_subjects }}
-
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
-        with:
-          egress-policy: audit
-          disable-sudo: true
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+    - name: Harden Runner
+      uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+      with:
+        egress-policy: audit
+        disable-sudo: true
+    - name: Checkout
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - name: Setup pnpm
+      uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+    - name: Setup Node.js
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+      with:
+        node-version: '22'
+        cache: pnpm
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Build open-core packages only
+      run: 'set -euo pipefail
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4.0.0
-        with:
-          version: 9.15.9
+        # Build only 04_packages/@silence/* and their dependencies.
 
-      - name: Setup Node.js
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
-        with:
-          node-version: '22'
-          cache: 'pnpm'
+        # Explicitly exclude 03_ee/ and 05_apps/ from SLSA subject scope.
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        pnpm turbo run build --filter=./04_packages/@silence/*...
 
-      - name: Build open-core packages only
-        run: |
-          set -euo pipefail
-          # Build only 04_packages/@silence/* and their dependencies.
-          # Explicitly exclude 03_ee/ and 05_apps/ from SLSA subject scope.
-          pnpm turbo run build --filter=./04_packages/@silence/*...
-
-      - name: Verify no enterprise artifact leakage
-        run: |
-          set -euo pipefail
-          if find 04_packages/@silence -type d -name dist -print0 | xargs -0 grep -RqI "03_ee/\|@silence/billing\|@silence/intervention-timing"; then
-            echo "::error::Open-core artifacts contain enterprise references. Refusing to attest."
-            exit 1
-          fi
-          echo "✅ No enterprise artifact leakage detected"
-
-      - name: Calculate subject hashes
-        id: subjects
-        run: |
-          set -euo pipefail
-          SUBJECTS=""
-          while IFS= read -r -d '' file; do
-            digest=$(sha256sum "$file" | awk '{print $1}')
-            SUBJECTS+="$file:$digest,"
-          done < <(find 04_packages/@silence -path '*/dist/*' -type f -print0 | sort -z)
-
-          if [ -z "$SUBJECTS" ]; then
-            echo "::error::No open-core artifacts found in 04_packages/@silence/*/dist"
-            exit 1
-          fi
-
-          SUBJECTS=${SUBJECTS%,}
-          encoded=$(echo -n "$SUBJECTS" | base64 -w0)
-          echo "base64_subjects=${encoded}" >> "$GITHUB_OUTPUT"
-          echo "Subjects: ${SUBJECTS//,/, }"
-
+        '
+    - name: Verify no enterprise artifact leakage
+      run: "set -euo pipefail\nif find 04_packages/@silence -type d -name dist -print0\
+        \ | xargs -0 grep -RqI \"03_ee/\\|@silence/billing\\|@silence/intervention-timing\"\
+        ; then\n  echo \"::error::Open-core artifacts contain enterprise references.\
+        \ Refusing to attest.\"\n  exit 1\nfi\necho \"✅ No enterprise artifact leakage\
+        \ detected\"\n"
+    - name: Calculate subject hashes
+      id: subjects
+      run: "set -euo pipefail\nSUBJECTS=\"\"\nwhile IFS= read -r -d '' file; do\n\
+        \  digest=$(sha256sum \"$file\" | awk '{print $1}')\n  SUBJECTS+=\"$file:$digest,\"\
+        \ndone < <(find 04_packages/@silence -path '*/dist/*' -type f -print0 | sort\
+        \ -z)\n\nif [ -z \"$SUBJECTS\" ]; then\n  echo \"::error::No open-core artifacts\
+        \ found in 04_packages/@silence/*/dist\"\n  exit 1\nfi\n\nSUBJECTS=${SUBJECTS%,}\n\
+        encoded=$(echo -n \"$SUBJECTS\" | base64 -w0)\necho \"base64_subjects=${encoded}\"\
+        \ >> \"$GITHUB_OUTPUT\"\necho \"Subjects: ${SUBJECTS//,/, }\"\n"
   provenance:
     name: Generate SLSA Provenance
-    needs: [build]
-    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@5a7753e71fafe88713d94247596041ef0652613b # v2.0.0
+    needs:
+    - build
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@5a7753e71fafe88713d94247596041ef0652613b
     with:
-      base64-subjects: '${{ needs.build.outputs.subjects }}'
+      base64-subjects: ${{ needs.build.outputs.subjects }}
       upload-assets: true
