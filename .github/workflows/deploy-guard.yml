@@ -12,6 +12,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: RULE-DOM-001 boundary scan
         run: pnpm boundary-check
+      - name: Build s11-lint
+        run: pnpm --filter=@silence/s11-lint build
       - name: S11 vocabulary scan
         run: pnpm s11-check
 
