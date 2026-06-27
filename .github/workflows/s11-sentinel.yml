@@ -1,44 +1,51 @@
 name: S11_SENTINEL_SCAN
-true:
+
+on:
   pull_request:
-    branches:
-    - main
+    branches: [main]
   push:
-    branches:
-    - main
+    branches: [main]
+
 permissions:
   contents: read
+
 jobs:
   s11-validation:
     name: S11 Linguistic Sterility Check
     runs-on: ubuntu-latest
+
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
-      with:
-        egress-policy: audit
-        disable-sudo: true
-    - name: CHECKOUT_CODE
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      with:
-        fetch-depth: 2
-    - name: SETUP_PNPM
-      uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
-    - name: SETUP_NODE
-      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
-      with:
-        node-version: '22'
-        cache: pnpm
-    - name: INSTALL_DEPENDENCIES
-      run: pnpm install --frozen-lockfile
-    - name: BUILD_S11_LINTER
-      run: pnpm --filter @silence/s11-lint... build
-    - name: RUN_S11_SCANNER
-      run: 'set -euo pipefail
+      - name: Harden Runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+          disable-sudo: true
 
-        pnpm s11-check
+      - name: CHECKOUT_CODE
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 2
 
-        '
-    - name: REPORT_SUCCESS
-      if: success()
-      run: 'echo "S11_SENTINEL: CI-STATE=PASS"'
+      - name: SETUP_PNPM
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4.0.0
+
+      - name: SETUP_NODE
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: INSTALL_DEPENDENCIES
+        run: pnpm install --frozen-lockfile
+
+      - name: BUILD_S11_LINTER
+        run: pnpm --filter @silence/s11-lint... build
+
+      - name: RUN_S11_SCANNER
+        run: |
+          set -euo pipefail
+          pnpm s11-check
+
+      - name: REPORT_SUCCESS
+        if: success()
+        run: 'echo "S11_SENTINEL: CI-STATE=PASS"'
