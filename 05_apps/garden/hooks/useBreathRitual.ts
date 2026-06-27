@@ -41,7 +41,7 @@ export function useBreathRitual(onComplete: (breathCount: number) => void) {
 
       setPhase('inhale');
       setProgress(0);
-      let start = performance.now();
+      const start = performance.now();
 
       const animate = () => {
         if (abortRef.current) return;
