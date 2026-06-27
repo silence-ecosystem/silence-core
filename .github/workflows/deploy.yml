@@ -43,7 +43,7 @@ jobs:
         run: pnpm boundary-check
 
       - name: build-s11-lint
-        run: pnpm --filter=@silence/s11-lint build
+        run: pnpm exec turbo run build --filter=@silence/s11-lint
       - name: s11-check
         run: pnpm s11-check
 
