@@ -10,7 +10,7 @@ interface HeaderProps {
   remainingObjects?: number | null;
 }
 
-export function Header({ tier = 'FREE', remainingObjects }: HeaderProps) {
+export function Header({ tier: _tier = 'FREE', remainingObjects: _remainingObjects }: HeaderProps) {
   const router = useRouter();
   const { lang, setLang, t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);

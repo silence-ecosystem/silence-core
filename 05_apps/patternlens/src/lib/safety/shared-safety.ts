@@ -9,8 +9,10 @@
 // INPUT NORMALIZATION — Zero-width character stripping
 // ═══════════════════════════════════════════════════════════
 export function normalizeInput(text: string): string {
+  // eslint-disable-next-line no-misleading-character-class
   let normalized = text.replace(/[\u200B\u200C\u200D\uFEFF\u00AD\u034F\u2028\u2029]/g, '')
   normalized = normalized.replace(/\s+/g, ' ').trim()
+  // eslint-disable-next-line no-control-regex
   normalized = normalized.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '')
   return normalized
 }
@@ -33,12 +35,14 @@ export const FORBIDDEN_OUTPUT = [
 ]
 
 export function scanOutput(text: string): { clean: boolean; violations: string[] } {
+  // eslint-disable-next-line no-misleading-character-class
   const normalized = text.toLowerCase().replace(/[\u200B\u200C\u200D\uFEFF\u00AD]/g, '')
   const violations = FORBIDDEN_OUTPUT.filter(term => normalized.includes(term))
   return { clean: violations.length === 0, violations }
 }
 
 export function sanitizeOutput(text: string): string {
+  // eslint-disable-next-line no-misleading-character-class
   let result = text.replace(/[\u200B\u200C\u200D\uFEFF\u00AD]/g, '')
   const replacements: Record<string, string> = {
     'therapy': 'structural analysis', 'therapist': 'analyst',

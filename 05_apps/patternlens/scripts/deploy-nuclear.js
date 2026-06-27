@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable @typescript-eslint/no-require-imports */
 
 /**
  * Nuclear Framework Production Deployment Script
@@ -15,7 +14,6 @@
  */
 
 const fs = require('fs');
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const path = require('path');
 const { execSync } = require('child_process');
 

@@ -25,7 +25,7 @@ interface SystemOverviewProps {
   pendingCount: number;
 }
 
-export function SystemOverview({ objectCount, completedCount, pendingCount }: SystemOverviewProps) {
+export function SystemOverview({ objectCount, completedCount, pendingCount: _pendingCount }: SystemOverviewProps) {
   const activeCommitments = objectCount - completedCount;
   const conditionsActive = MOCK_CONDITIONS.filter(c => c.affected > 0).length;
 

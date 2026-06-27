@@ -136,11 +136,11 @@ export function ObjectCard({
                     { key: 'meaning_phase', label: t.results.meaning },
                     { key: 'function_phase', label: t.results.function },
                   ].map(({ key, label }) => {
-                    const text = (lensA as any)[key];
+                    const text = (lensA as unknown as Record<string, unknown>)[key];
                     return text ? (
                       <div key={key} style={{ marginBottom: 6 }}>
                         <span style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase' }}>{label}</span>
-                        <p style={{ fontSize: 12, color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>{text}</p>
+                        <p style={{ fontSize: 12, color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>{String(text)}</p>
                       </div>
                     ) : null;
                   })}
@@ -158,11 +158,11 @@ export function ObjectCard({
                     { key: 'meaning_phase', label: t.results.meaning },
                     { key: 'function_phase', label: t.results.function },
                   ].map(({ key, label }) => {
-                    const text = (lensB as any)[key];
+                    const text = (lensB as unknown as Record<string, unknown>)[key];
                     return text ? (
                       <div key={key} style={{ marginBottom: 6 }}>
                         <span style={{ fontSize: 10, color: 'var(--text-muted)', textTransform: 'uppercase' }}>{label}</span>
-                        <p style={{ fontSize: 12, color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>{text}</p>
+                        <p style={{ fontSize: 12, color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>{String(text)}</p>
                       </div>
                     ) : null;
                   })}

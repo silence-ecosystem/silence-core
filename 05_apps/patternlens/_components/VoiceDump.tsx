@@ -14,8 +14,6 @@ import {
   WhisperEngine,
   cleanTranscription,
   VOICE_PROFILES,
-  type TranscriptionResult,
-  type VoiceError,
 } from '@silence/voice';
 
 type DumpState = 'idle' | 'loading' | 'ready' | 'recording' | 'processing' | 'done' | 'error';

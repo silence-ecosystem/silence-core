@@ -7,9 +7,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useObjects, useInterpret } from '@/hooks/useApi';
+import type { CrisisResource } from '@/types/crisis';
 import { VoiceDump } from '@/components/VoiceDump';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
@@ -29,13 +29,12 @@ const SYSTEM_CONDITIONS = [
 ];
 
 export default function NewObject() {
-  const router = useRouter();
   const { t } = useLanguage();
   const [step, setStep] = useState(1);
   const [objectType, setObjectType] = useState<ObjectType | null>(null);
   const [text, setText] = useState('');
   const [crisisLock, setCrisisLock] = useState(false);
-  const [crisisResources, setCrisisResources] = useState<any[]>([]);
+  const [crisisResources, setCrisisResources] = useState<CrisisResource[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const { createObject, loading: creating } = useObjects();
@@ -258,14 +257,14 @@ export default function NewObject() {
                   {t.crisis.disclaimer}
                 </p>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                  {crisisResources.map((r: any, i: number) => (
-                    <a key={i} href={`tel:${String(r.phone || '').replace(/\s/g, '')}`} style={{
+                  {crisisResources.map((r: CrisisResource, i: number) => (
+                    <a key={i} href={`tel:${String(r.number || '').replace(/\s/g, '')}`} style={{
                       display: 'block', padding: 16, background: 'rgba(239,68,68,0.08)',
                       border: '1px solid rgba(239,68,68,0.2)', borderRadius: 10,
                       textDecoration: 'none', textAlign: 'center',
                     }}>
                       <p style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: 'var(--danger)', marginBottom: 4 }}>
-                        {String(r.phone)}
+                        {String(r.number)}
                       </p>
                       <p style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{String(r.name)}</p>
                     </a>
@@ -318,12 +317,12 @@ export default function NewObject() {
                     <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 8 }}>Current pattern</span>
                   </div>
                   {['context_phase', 'tension_phase', 'meaning_phase', 'function_phase'].map(key => {
-                    const val = (lensA as any)[key];
+                    const val = (lensA as unknown as Record<string, unknown>)[key];
                     const labels: Record<string, string> = { context_phase: t.results.context, tension_phase: t.results.tension, meaning_phase: t.results.meaning, function_phase: t.results.function };
                     return val ? (
                       <div key={key} style={{ marginBottom: 8, padding: 8, background: 'rgba(0,0,0,0.2)', borderRadius: 6 }}>
                         <p style={{ fontSize: 10, color: 'var(--accent-cyan)', textTransform: 'uppercase', marginBottom: 4 }}>{labels[key]}</p>
-                        <p style={{ fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5 }}>{val}</p>
+                        <p style={{ fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5 }}>{String(val)}</p>
                       </div>
                     ) : null;
                   })}
@@ -336,12 +335,12 @@ export default function NewObject() {
                     <span style={{ fontSize: 11, color: 'var(--text-muted)', marginLeft: 8 }}>Alternative pattern</span>
                   </div>
                   {['context_phase', 'tension_phase', 'meaning_phase', 'function_phase'].map(key => {
-                    const val = (lensB as any)[key];
+                    const val = (lensB as unknown as Record<string, unknown>)[key];
                     const labels: Record<string, string> = { context_phase: t.results.context, tension_phase: t.results.tension, meaning_phase: t.results.meaning, function_phase: t.results.function };
                     return val ? (
                       <div key={key} style={{ marginBottom: 8, padding: 8, background: 'rgba(0,0,0,0.2)', borderRadius: 6 }}>
                         <p style={{ fontSize: 10, color: 'var(--accent-purple)', textTransform: 'uppercase', marginBottom: 4 }}>{labels[key]}</p>
-                        <p style={{ fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5 }}>{val}</p>
+                        <p style={{ fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5 }}>{String(val)}</p>
                       </div>
                     ) : null;
                   })}

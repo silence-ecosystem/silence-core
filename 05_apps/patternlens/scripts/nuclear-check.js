@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-/* eslint-disable @typescript-eslint/no-require-imports */
 
 /**
  * Nuclear Framework Safety Check Pipeline
@@ -14,7 +13,6 @@
  */
 
 const fs = require('fs');
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const path = require('path');
 const { execSync } = require('child_process');
 

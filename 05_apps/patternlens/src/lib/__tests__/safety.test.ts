@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { detectLocalPatterns, normalizeInput, scanOutput, sanitizeOutput, checkRateLimit } from '../safety'
+import { detectLocalPatterns, normalizeInput, scanOutput } from '../safety'
 
 describe('detectLocalPatterns', () => {
   test('past tense dominant', () => {

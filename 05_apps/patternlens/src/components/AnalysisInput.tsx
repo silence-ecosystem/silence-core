@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useObjects, useInterpret } from '@/hooks/useApi';
+import type { CrisisResource } from '@/types/crisis';
 import { CrisisModal } from '@/components/safety/CrisisModal';
 import { VoiceDump } from '@/components/VoiceDump';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
@@ -12,11 +13,11 @@ interface AnalysisInputProps {
   remaining?: number | null;
 }
 
-export function AnalysisInput({ onSuccess, canCreate = true, remaining }: AnalysisInputProps) {
+export function AnalysisInput({ onSuccess, canCreate = true, remaining: _remaining }: AnalysisInputProps) {
   const { t } = useLanguage();
   const [text, setText] = useState('');
   const [showCrisis, setShowCrisis] = useState(false);
-  const [crisisResources, setCrisisResources] = useState<any[]>([]);
+  const [crisisResources, setCrisisResources] = useState<CrisisResource[]>([]);
 
   const { createObject, loading: creating } = useObjects();
   const { interpret, interpreting } = useInterpret();

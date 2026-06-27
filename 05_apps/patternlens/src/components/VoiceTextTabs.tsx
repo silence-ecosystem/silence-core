@@ -24,7 +24,7 @@ const MIN_CHARS = 50;
 const MAX_CHARS = 5000;
 const MAX_RECORDING_SECONDS = 300;
 
-export function VoiceTextTabs({ onSuccess, canCreate = true, remaining }: VoiceTextTabsProps) {
+export function VoiceTextTabs({ onSuccess, canCreate = true, remaining: _remaining }: VoiceTextTabsProps) {
   const [activeTab, setActiveTab] = useState<InputTab>('text');
   const [text, setText] = useState('');
   const [showCrisis, setShowCrisis] = useState(false);

@@ -12,6 +12,7 @@ import AnalysisInput from '@/components/AnalysisInput';
 import ObjectCard from '@/components/ObjectCard';
 import { CrisisModal } from '@/components/safety/CrisisModal';
 import { useObjects, useInterpret, useProfile, getProcessingStatus } from '@/hooks/useApi';
+import type { CrisisResource } from '@/types/crisis';
 import { useLanguage } from '@/lib/i18n/LanguageContext';
 
 export default function DashboardPage() {
@@ -32,10 +33,10 @@ export default function DashboardPage() {
 
   const [loading, setLoading] = useState(true);
   const [showCrisis, setShowCrisis] = useState(false);
-  const [crisisResources, setCrisisResources] = useState<any[]>([]);
+  const [crisisResources, setCrisisResources] = useState<CrisisResource[]>([]);
 
   const { objects, fetchObjects } = useObjects();
-  const { interpret, interpreting, result } = useInterpret();
+  const { interpret, result } = useInterpret();
   const { profile, fetchProfile, remainingObjects, canCreateObject } = useProfile();
 
   useEffect(() => {

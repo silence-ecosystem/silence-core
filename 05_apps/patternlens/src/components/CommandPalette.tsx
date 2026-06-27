@@ -282,13 +282,14 @@ export function CommandPalette({ commands, onClose }: CommandPaletteProps): JSX.
         e.preventDefault();
         setSelectedIndex(prev => (prev - 1 + totalCommands) % totalCommands);
         break;
-      case 'Enter':
+      case 'Enter': {
         e.preventDefault();
         const selected = filteredCommands[selectedIndex];
         if (selected !== undefined) {
           executeCommand(selected);
         }
         break;
+      }
       case 'Escape':
         e.preventDefault();
         onClose?.();

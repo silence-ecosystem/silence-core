@@ -5,7 +5,7 @@ import { saveProtocolBaseline } from '@/lib/api/protocols';
 export function QuietLoopSession({ userId, onComplete }) {
     const [phase, setPhase] = useState('intro');
     const [timerSeconds, setTimerSeconds] = useState(20);
-    const [currentDuration, setCurrentDuration] = useState(20);
+    const [currentDuration] = useState(20);
     const [baselineSeconds, setBaselineSeconds] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
     const timerRef = useRef(null);

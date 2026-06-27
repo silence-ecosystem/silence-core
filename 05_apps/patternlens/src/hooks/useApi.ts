@@ -56,12 +56,8 @@ export interface Profile {
   onboarding_completed: boolean;
 }
 
-export interface CrisisResource {
-  id: string;
-  name: string;
-  phone: string;
-  description: string;
-}
+import type { CrisisResource } from '@/types/crisis';
+export type { CrisisResource };
 
 // ============================================
 // useObjects Hook
@@ -222,7 +218,7 @@ export function useProfile() {
 // usePatterns Hook
 // ============================================
 export function usePatterns() {
-  const [patterns, setPatterns] = useState<any[]>([]);
+  const [patterns, setPatterns] = useState<unknown[]>([]);
   const [synthesizing, setSynthesizing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

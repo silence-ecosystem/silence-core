@@ -13,7 +13,7 @@ type Phase = 'intro' | 'focus' | 'check' | 'complete';
 export function QuietLoopSession({ userId, onComplete }: QuietLoopSessionProps) {
   const [phase, setPhase] = useState<Phase>('intro');
   const [timerSeconds, setTimerSeconds] = useState(20);
-  const [currentDuration, setCurrentDuration] = useState(20);
+  const [currentDuration] = useState(20);
   const [baselineSeconds, setBaselineSeconds] = useState<number | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);

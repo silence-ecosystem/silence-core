@@ -181,7 +181,7 @@ Respond ONLY in valid JSON:
     // Save patterns to separate table
     if (analysis.patterns?.length) {
       await supabase.from('patterns').insert(
-        analysis.patterns.map((p: any) => ({
+        analysis.patterns.map((p: Record<string, unknown>) => ({
           object_id: object.id,
           user_id: user.id,
           pattern_name: p.name,

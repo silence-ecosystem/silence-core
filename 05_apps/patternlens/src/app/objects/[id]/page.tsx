@@ -172,7 +172,7 @@ export default function ObjectDetailPage() {
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               {phaseKeys.map((key) => {
-                const text = (lensA as any)[key];
+                const text = (lensA as unknown as Record<string, unknown>)[key];
                 return (
                   <div key={key} style={{ padding: 16, background: 'var(--bg-surface)', borderRadius: 8, border: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
@@ -186,7 +186,7 @@ export default function ObjectDetailPage() {
                       )}
                     </div>
                     <p style={{ color: 'var(--text-secondary)', fontSize: 13, lineHeight: 1.5 }}>
-                      {text || t.results.awaitingAnalysis}
+                      {String(text || t.results.awaitingAnalysis)}
                     </p>
                   </div>
                 );

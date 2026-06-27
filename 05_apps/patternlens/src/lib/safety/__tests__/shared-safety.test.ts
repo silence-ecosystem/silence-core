@@ -3,9 +3,7 @@ import {
   normalizeInput,
   scanOutput,
   sanitizeOutput,
-  detectLocalPatterns,
-  checkRateLimit,
-  FORBIDDEN_OUTPUT
+  detectLocalPatterns
 } from '../shared-safety'
 
 // ═══════════════════════════════════════════════════════════

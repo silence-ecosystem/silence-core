@@ -1,4 +1,3 @@
-import { PrimaryIntent, PracticeExperience, PracticeAnchor, OnboardingIntention } from '@silence/contracts/intention';
 
 // S11 Sentinel: Terms that must NOT appear in user-facing copy
 // These represent medical/clinical terminology that violates S11 linguistic sterility
