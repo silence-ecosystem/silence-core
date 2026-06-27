@@ -23,8 +23,17 @@
   ],
   "tasks": {
     "build": {
-      "dependsOn": ["^build", "typecheck", "lint", "test"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*", "01_governance/**"],
+      "dependsOn": [
+        "^build",
+        "typecheck",
+        "lint",
+        "test"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*",
+        "01_governance/**"
+      ],
       "outputs": [
         "dist/**",
         ".next/**",
@@ -36,18 +45,35 @@
       ]
     },
     "test": {
-      "dependsOn": ["^test"],
-      "inputs": ["$TURBO_DEFAULT$", "01_governance/**"],
-      "outputs": ["coverage/**"]
+      "dependsOn": [
+        "^test"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "01_governance/**"
+      ],
+      "outputs": [
+        "coverage/**"
+      ]
     },
     "lint": {
-      "dependsOn": ["^lint"],
-      "inputs": ["$TURBO_DEFAULT$", "01_governance/**"],
+      "dependsOn": [
+        "^lint"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "01_governance/**"
+      ],
       "outputs": []
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"],
-      "inputs": ["$TURBO_DEFAULT$", "01_governance/**"],
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "01_governance/**"
+      ],
       "outputs": [],
       "cache": false
     },

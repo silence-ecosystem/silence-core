@@ -48,4 +48,4 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: turbo run build --filter=...affected
+      - run: pnpm exec turbo run build --filter=...affected
