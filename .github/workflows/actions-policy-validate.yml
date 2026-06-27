@@ -49,6 +49,7 @@ jobs:
             "actions/upload-artifact"
             "actions/download-artifact"
             "actions/cache"
+            "github/codeql-action"
             "pnpm/action-setup"
             "slsa-framework/slsa-github-generator"
             "step-security/harden-runner"
