@@ -1,0 +1,1 @@
+packages:  - 'apps/*'       # PatternLens, PatternsLab, Portal  - 'packages/*'   # Kernel / Open Core (@silence/*)  - 'ee/*'         # Enterprise / Closed (@silence/*)  - 'research/*'   # Projekty badawcze  - 'docs/*'       # Dokumentacja jako kod

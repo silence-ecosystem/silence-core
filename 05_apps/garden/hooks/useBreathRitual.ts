@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { BREATH_CYCLE_MS } from '@silence/phi';
+import { BREATH_CYCLE_MS } from '@silence/sdk';
 
 export type BreathPhase = 'idle' | 'inhale' | 'hold' | 'exhale';
 
@@ -41,7 +41,7 @@ export function useBreathRitual(onComplete: (breathCount: number) => void) {
 
       setPhase('inhale');
       setProgress(0);
-      let start = performance.now();
+      const start = performance.now();
 
       const animate = () => {
         if (abortRef.current) return;

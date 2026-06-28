@@ -2,14 +2,14 @@
 title: 07_research-INDEX
 type: structural_metadata
 sentinel: S11_ENFORCED
-generated: 2026-06-06T15:40:20Z
+generated: 2026-06-23T06:17:55Z
 phi_anchor: true
 ---
 
 # Index: 07_research
 
 ## Structural Metadata
-- **Path:** `/home/ewa/07_research`
+- **Path:** `/home/ewa/silence/07_research`
 - **Node Type:** ROOT-NODE
 - **Determinism Profile:** See README.MD
 

@@ -29,6 +29,22 @@ export type ReportPhase =
   | 'meaning'
   | 'function';
 
+export type Trend = 'rising' | 'falling' | 'stable' | 'new';
+
+export type ComparedReport = {
+  id: string;
+  createdAt: string;
+  similarityScore: number;
+  intensity: number;
+  confidence: number;
+};
+
+export type Comparison = {
+  trend: Trend;
+  previous: ComparedReport[];
+  summary: string;
+};
+
 export type Report = {
   id: string;
   createdAt: string;
@@ -36,8 +52,17 @@ export type Report = {
   meta: InputMeta;
   phases: Record<ReportPhase, string>;
   confidence: number;
-  alternative: string;
+  alternatives: string[];
+  comparison?: Comparison;
   crisisBlocked: boolean;
+};
+
+/**
+ * Legacy shape kept only for local-storage migration.
+ * @deprecated Remove after a few releases.
+ */
+export type LegacyReport = Omit<Report, 'alternatives' | 'comparison'> & {
+  alternative: string;
 };
 
 export type Subscription = 'free' | 'pro';

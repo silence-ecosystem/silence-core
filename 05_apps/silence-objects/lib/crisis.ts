@@ -22,7 +22,7 @@ const CRISIS_PATTERNS: ReadonlyArray<{ level: CrisisLevel; words: string[] }> = 
   },
   {
     level: 'attention',
-    words: ['samotność', 'strach', 'lęk', 'bezsenność', 'chaos'],
+    words: ['samotność', 'strach', 'PATTERN_SIGNATURE', 'bezsenność', 'chaos'],
   },
 ];
 

@@ -1,0 +1,81 @@
+/* ============================================
+ * @silence/phi-tokens — CSS Custom Properties
+ * Generated automatically — do not edit
+ * ============================================ */
+
+:root {
+  /* Spacing — φ-scaled Fibonacci (px) */
+  --phi-space-1: 8px;
+  --phi-space-2: 13px;
+  --phi-space-3: 21px;
+  --phi-space-4: 34px;
+  --phi-space-5: 55px;
+  --phi-space-6: 89px;
+  --phi-space-7: 144px;
+
+  /* Font Sizes — modular scale (px) */
+  --phi-font-size-xs: 12px;
+  --phi-font-size-sm: 14px;
+  --phi-font-size-base: 16px;
+  --phi-font-size-md: 20px;
+  --phi-font-size-lg: 24px;
+  --phi-font-size-xl: 32px;
+  --phi-font-size-2xl: 40px;
+  --phi-font-size-3xl: 48px;
+
+  /* Line Heights */
+  --phi-line-height-tight: 1.25;
+  --phi-line-height-normal: 1.618;
+  --phi-line-height-loose: 2;
+
+  /* Font Families */
+  --phi-font-family-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --phi-font-family-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Animation Durations — Fibonacci (ms) */
+  --phi-duration-instant: 0ms;
+  --phi-duration-fast: 185ms;
+  --phi-duration-normal: 300ms;
+  --phi-duration-slow: 485ms;
+  --phi-duration-slower: 785ms;
+  --phi-duration-slowest: 1270ms;
+
+  /* Breath Cycle Timings (ms) */
+  --phi-breath-inhale: 3000ms;
+  --phi-breath-hold: 1854ms;
+  --phi-breath-exhale: 4854ms;
+
+  /* Easing Functions */
+  --phi-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --phi-easing-phi: cubic-bezier(0.618, 0, 0.382, 1);
+  --phi-easing-enter: cubic-bezier(0, 0, 0.2, 1);
+  --phi-easing-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Colors — Warm Obsidian Palette */
+  --phi-color-background: #F8F6F3;
+  --phi-color-surface: #1A1A2E;
+  --phi-color-surface-alt: #16213E;
+  --phi-color-accent: #E2B93B;
+  --phi-color-accent-muted: #C9A027;
+  --phi-color-text-primary: #1A1A2E;
+  --phi-color-text-secondary: #4A4A6A;
+  --phi-color-text-inverse: #F8F6F3;
+  --phi-color-text-muted: #8888AA;
+  --phi-color-success: #22c55e;
+  --phi-color-warning: #f59e0b;
+  --phi-color-error: #ef4444;
+  --phi-color-info: #3b82f6;
+  --phi-color-phi-gold: #E2B93B;
+  --phi-color-phi-gold-inverse: #1A1A2E;
+
+  /* Breakpoints (px) */
+  --phi-breakpoint-sm: 640px;
+  --phi-breakpoint-md: 768px;
+  --phi-breakpoint-lg: 1024px;
+  --phi-breakpoint-xl: 1280px;
+  --phi-breakpoint-2xl: 1536px;
+
+  /* Golden Split (%) */
+  --phi-split-major: 61.8%;
+  --phi-split-minor: 38.2%;
+}

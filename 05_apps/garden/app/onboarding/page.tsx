@@ -9,7 +9,7 @@ import SelfReport, { type AhaDifficulty } from '@/components/SelfReport';
 import ConsentsScreen from '@/components/ConsentsScreen';
 import OnboardingProgress from '@/components/OnboardingProgress';
 import { useEffectLog } from '@/hooks/useEffectLog';
-import { trackSilenceEvent } from '@silence/telemetry';
+import { trackSilenceEvent } from '@silence/sdk';
 import { colors, timing, easing, radius } from '@/lib/tokens';
 
 type OnboardingStep =

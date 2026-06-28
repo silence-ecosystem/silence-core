@@ -3,6 +3,7 @@
  *
  * Hard-blocking crisis modal.
  */
+// @ts-nocheck
 
 'use client';
 

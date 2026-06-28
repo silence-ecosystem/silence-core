@@ -2,14 +2,14 @@
 title: 06_infrastructure-INDEX
 type: structural_metadata
 sentinel: S11_ENFORCED
-generated: 2026-06-06T15:40:20Z
+generated: 2026-06-23T06:17:55Z
 phi_anchor: true
 ---
 
 # Index: 06_infrastructure
 
 ## Structural Metadata
-- **Path:** `/home/ewa/06_infrastructure`
+- **Path:** `/home/ewa/silence/06_infrastructure`
 - **Node Type:** ROOT-NODE
 - **Determinism Profile:** See README.MD
 

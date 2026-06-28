@@ -1,11 +1,9 @@
 /**
- * [PATH]: 04_packages/@silence/contracts/src/index.ts
+ * [PATH]: /home/ewa/silence/04_packages/@silence/contracts/src/index.ts
  * @silence/contracts
  * Shared contracts and types for the Silence ecosystem.
  *
- * Originally extracted from legacy monorepo and reconstructed
- * from cross-package usage patterns. Acts as the canonical SSoT
- * for inter-package type boundaries.
+ * Acts as the canonical SSoT for inter-package type boundaries.
  */
 
 // ─── Primitive Aliases ─────────────────────────────────────────
@@ -14,6 +12,8 @@ export type Timestamp = string;
 export type TenantID = string;
 
 // ─── Event System ──────────────────────────────────────────────
+export * from './events/pulseTap';
+
 export enum BehavioralEventType {
   CAPACITY_SHIFTED = 'CAPACITY_SHIFTED',
   CAPACITY_CHANGED = 'CAPACITY_CHANGED',
@@ -27,14 +27,23 @@ export interface SilenceEvent {
   type: string;
   timestamp: string;
   userId: string;
-  payload: any;
+  payload: unknown;
 }
+
+// ─── Crisis / Safety ───────────────────────────────────────────
+export * from './crisis';
+
+// ─── Audio / Voice / Objects ───────────────────────────────────
+export * from './audio';
+
+// ─── Protocols ─────────────────────────────────────────────────
+export * from './protocols';
 
 // ─── Narrative Engine ──────────────────────────────────────────
 export interface SituationSummaryInput {
   objectId: string;
   relationalContext: { selfRole: string };
-  relationalTurns?: any[];
+  relationalTurns?: unknown[];
   patternLabels: string[];
 }
 
@@ -53,27 +62,25 @@ export interface SessionSummary {
 
 export interface SessionCommentary {
   overview: string;
-  relationalHighlights: any;
+  relationalHighlights: unknown;
 }
 
-// ─── Behaviour Engine ──────────────────────────────────────────
-export interface UserInteractionPreferences {
-  activeCoCreateMode: boolean;
-}
-
-export interface OnboardingIntention {
-  primaryIntent: string;
-  anchor: PracticeAnchor;
-}
-
+// ─── Onboarding / Intention ────────────────────────────────────
 export type PracticeAnchor = string;
 export type ProtocolPriority = string;
+
+export interface OnboardingIntention {
+  readonly userId: string;
+  readonly primaryIntent: string;
+  readonly experience: string;
+  readonly anchor: PracticeAnchor;
+}
 
 export function mapIntentToProtocolPriorities(_intent: string): ProtocolPriority[] {
   return [];
 }
 
-// ─── Behavioral Engine (EE) ────────────────────────────────────
+// ─── Behaviour Engine (EE) ────────────────────────────────────
 export interface AttentionMonitorSnapshot {
   facialPresence: { facePresent: boolean };
   engagementLevel: string;

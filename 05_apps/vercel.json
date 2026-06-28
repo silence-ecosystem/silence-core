@@ -1,0 +1,4 @@
+{
+  "buildCommand": "turbo run build --filter=...[origin/main...HEAD]",
+  "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1"
+}

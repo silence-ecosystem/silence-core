@@ -43,3 +43,6 @@ packages/
 
 # Misc
 CLAUDE.md
+# EffectLog — intentionally tracked (immutable deployment/effect registry)
+!02_protocols/effectlog/DEPLOYS.log
+ghost _patterns/

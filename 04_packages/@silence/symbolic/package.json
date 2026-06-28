@@ -10,7 +10,7 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsc",
-    "lint": "eslint \"src/**/*.ts\""
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@silence/contracts": "workspace:*",

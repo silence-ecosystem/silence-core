@@ -2,14 +2,14 @@
 title: 04_packages-INDEX
 type: structural_metadata
 sentinel: S11_ENFORCED
-generated: 2026-06-06T15:40:20Z
+generated: 2026-06-23T06:17:55Z
 phi_anchor: true
 ---
 
 # Index: 04_packages
 
 ## Structural Metadata
-- **Path:** `/home/ewa/04_packages`
+- **Path:** `/home/ewa/silence/04_packages`
 - **Node Type:** ROOT-NODE
 - **Determinism Profile:** See README.MD
 

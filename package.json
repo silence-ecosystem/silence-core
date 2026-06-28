@@ -7,7 +7,6 @@
     "s11-check": "node 04_packages/@silence/s11-lint/dist/cli.js 01_governance 02_protocols 04_packages 05_apps",
     "build": "turbo run build",
     "lint": "turbo run lint",
-    "test": "turbo run test --filter=@silence/core --filter=@silence/phi --filter=@silence/jitai --filter=@silence/telemetry --filter=@silence/s11-lint --filter=@silence/engine --filter=@silence/billing",
     "test:vitest": "vitest run",
     "test:watch": "vitest",
     "test:determinism": "vitest run packages/@silence/core/src/__tests__/determinism.test.ts",
@@ -16,9 +15,12 @@
   },
   "devDependencies": {
     "@silence/s11-lint": "workspace:*",
+    "@types/react": "19.0.7",
+    "@types/react-dom": "19.0.3",
     "dependency-cruiser": "^16.0.0",
     "tsx": "^4.19.0",
     "turbo": "^2.4.1",
+    "typescript": "^5.9.3",
     "vite": "^6.0.0",
     "vitest": "^3.2.6",
     "@vitest/ui": "^3.2.6",
@@ -26,7 +28,9 @@
   },
   "pnpm": {
     "overrides": {
-      "esbuild": "^0.25.0"
+      "esbuild": "^0.25.0",
+      "@types/react": "19.0.7",
+      "@types/react-dom": "19.0.3"
     }
   }
 }

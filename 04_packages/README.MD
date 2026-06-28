@@ -5,13 +5,13 @@ classification: SSoT
 sentinel: S11_ENFORCED
 determinism_profile: strict
 phi_anchor: true
-created: 2026-06-06
+created: 2026-06-23
 ---
 
 # 04_packages
 
 ## Operational Mandate
-Directory `/home/ewa/04_packages` operates under S11 governance with determinism profile `strict`.
+Directory `/home/ewa/silence/04_packages` operates under S11 governance with determinism profile `strict`.
 
 ## Constraints
 - All operational parameters require explicit φ-derivation proof [T].

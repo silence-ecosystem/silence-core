@@ -1,0 +1,35 @@
+{
+  "name": "silence-objects-monorepo",
+  "version": "5.0.0",
+  "private": true,
+  "description": "SILENCE.OBJECTS v5.0 — Structural pattern analysis framework",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:web": "turbo dev --filter=patternslab-web",
+    "dev:cli": "turbo dev --filter=patternslab-cli",
+    "dev:lens": "turbo dev --filter=patternlens",
+    "build": "turbo build",
+    "build:web": "turbo build --filter=patternslab-web",
+    "build:packages": "turbo build --filter='./packages/*'",
+    "test": "turbo test",
+    "test:e2e": "turbo test:e2e",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "contract:validate": "node scripts/contract-validator.js",
+    "contract:validate:ci": "node scripts/contract-validator.js --ci",
+    "clean": "turbo clean && rm -rf node_modules",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "prettier": "^3.3.0",
+    "turbo": "^2.3.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

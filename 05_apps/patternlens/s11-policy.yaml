@@ -1,0 +1,21 @@
+# S11-POLICY: Sterility Guardrails v1.0
+policies:
+  - id: "NO_PERSONIFICATION"
+    forbidden_terms:
+      - "asystent"
+      - "pomocnik"
+      - "twoja rola"
+      - "jestem tu by"
+    forbidden_patterns:
+      - "(?i)myślę, że"
+      - "(?i)moim zdaniem"
+
+  - id: "NO_EMOTION"
+    forbidden_terms:
+      - "przepraszam"
+      - "rozumiem"
+      - "chętnie"
+      - "niestety"
+    forbidden_patterns:
+      - "czuję"
+      - "emocje"

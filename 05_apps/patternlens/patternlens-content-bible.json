@@ -1,0 +1,388 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "brand": "PatternLens",
+    "last_updated": "2026-01-31",
+    "document_type": "Master Content Bible"
+  },
+  
+  "voice_matrix": {
+    "core_identity": {
+      "archetype": "Cold Structural Analyst",
+      "personality_traits": ["Direct", "Technical", "Respectful", "Non-judgmental", "Autonomous"],
+      "forbidden_traits": ["Motivational", "Cheerful", "Gamified", "Patronizing", "Advice-giving"]
+    },
+    "tone_spectrum": {
+      "default": "Clinical-warm (technical but not cold)",
+      "onboarding": "Welcoming-honest (no false promises)",
+      "error_states": "Matter-of-fact (problem + solution)",
+      "crisis": "Calm-supportive (redirect to professionals)",
+      "upgrade": "Value-focused (no pressure tactics)",
+      "success": "Acknowledged (no celebration)"
+    },
+    "language_rules": {
+      "do": [
+        "Use 'wzorzec' not 'pattern' in Polish UI",
+        "Use 'struktura' not 'feeling'",
+        "Use 'interpretacja' not 'advice'",
+        "Use 'wybierasz' not 'we recommend'",
+        "Use active voice",
+        "Use second person (ty)",
+        "Keep sentences under 15 words"
+      ],
+      "never": [
+        "Exclamation marks (except crisis)",
+        "Emojis in core UI",
+        "Words: 'gratulacje', 'super', 'świetnie', 'udało się'",
+        "Phrases: 'spróbuj', 'może warto', 'polecamy'",
+        "Conditional language: 'mógłbyś', 'warto by'",
+        "Hedging: 'być może', 'prawdopodobnie'"
+      ]
+    }
+  },
+
+  "messaging_hierarchy": {
+    "primary_hook": {
+      "pl": "Twój mózg widzi wzorce. My je nazywamy.",
+      "en": "You write what happened. AI shows two ways to see it. You decide which fits."
+    },
+    "secondary_hook": {
+      "pl": "Piszesz co się stało. AI pokazuje 2 struktury. Wybierasz która pasuje.",
+      "en": "Your brain sees patterns. We name them."
+    },
+    "value_proposition": {
+      "pl": "AI dla mózgów które myślą strukturami, nie emocjami.",
+      "en": "AI for brains that think in structures, not emotions."
+    },
+    "elevator_pitch_30s": {
+      "pl": "Piszesz co się stało. AI pokazuje 2 interpretacje. Wybierasz którą czujesz. To PatternLens - dla ludzi którzy myślą wzorcami, nie nastrojami."
+    }
+  },
+
+  "ui_copy": {
+    "navigation": {
+      "dashboard": "Panel",
+      "archive": "Archiwum",
+      "settings": "Ustawienia",
+      "upgrade": "PRO",
+      "crisis": "Pomoc kryzysowa",
+      "logout": "Wyloguj"
+    },
+    "dashboard": {
+      "page_title": "Panel główny",
+      "usage_label": "Użycie tygodniowe",
+      "usage_format": "{used}/{limit} wzorców",
+      "input_mode_voice": "Głos",
+      "input_mode_text": "Tekst",
+      "placeholder_text": "Opisz sytuację (min. 50 znaków)...",
+      "submit_button": "Analizuj wzorzec",
+      "recent_title": "Ostatnie analizy"
+    },
+    "recording": {
+      "start": "Nagrywaj",
+      "stop": "Zakończ",
+      "processing": "Przetwarzanie...",
+      "timer_format": "{mm}:{ss}",
+      "quality_excellent": "Jakość: Doskonała",
+      "quality_good": "Jakość: Dobra",
+      "quality_fair": "Jakość: Wystarczająca",
+      "max_duration_warning": "Maksymalny czas: 60s"
+    },
+    "analysis_result": {
+      "lens_a_label": "Soczewka A",
+      "lens_b_label": "Soczewka B",
+      "confidence_label": "Pewność analizy",
+      "risk_label": "Poziom ryzyka",
+      "save_button": "Zapisz do archiwum",
+      "discard_button": "Odrzuć"
+    },
+    "archive": {
+      "page_title": "Archiwum wzorców",
+      "filter_label": "Filtruj",
+      "filter_all": "Wszystkie",
+      "filter_time_7d": "Ostatnie 7 dni",
+      "filter_time_30d": "Ostatnie 30 dni",
+      "filter_time_custom": "Zakres dat",
+      "empty_state": "Brak zapisanych wzorców",
+      "export_button": "Eksportuj (JSON)"
+    },
+    "settings": {
+      "page_title": "Ustawienia",
+      "section_account": "Konto",
+      "section_privacy": "Prywatność",
+      "section_accessibility": "Dostępność",
+      "section_analysis": "Analiza",
+      "section_subscription": "Subskrypcja",
+      "section_data": "Dane",
+      "display_name_label": "Nazwa wyświetlana",
+      "email_label": "Email",
+      "theme_label": "Motyw",
+      "theme_dark": "Ciemny",
+      "theme_light": "Jasny",
+      "theme_system": "Systemowy",
+      "confidence_threshold_label": "Próg pewności",
+      "delete_account_button": "Usuń konto",
+      "export_data_button": "Eksportuj dane"
+    },
+    "upgrade": {
+      "page_title": "PatternLens PRO",
+      "free_tier_name": "DISCOVERY",
+      "pro_tier_name": "MASTERY",
+      "free_limit": "7 wzorców/tydzień",
+      "pro_limit": "Bez limitu",
+      "free_archive": "30 dni archiwum",
+      "pro_archive": "Pełne archiwum",
+      "pro_price": "49 PLN/miesiąc",
+      "trial_text": "Pierwszy miesiąc gratis",
+      "cta_free": "Kontynuuj za darmo",
+      "cta_pro": "Rozpocznij trial PRO",
+      "cancel_anytime": "Anuluj kiedy chcesz"
+    },
+    "auth": {
+      "login_title": "Zaloguj się",
+      "register_title": "Załóż konto",
+      "email_placeholder": "Email",
+      "password_placeholder": "Hasło",
+      "login_button": "Zaloguj",
+      "register_button": "Zarejestruj",
+      "magic_link_button": "Wyślij magic link",
+      "consent_text": "Akceptuję regulamin i politykę prywatności"
+    }
+  },
+
+  "error_messages": {
+    "validation": {
+      "text_too_short": "Minimum 50 znaków. Opisz sytuację dokładniej.",
+      "text_too_long": "Maximum 5000 znaków.",
+      "email_invalid": "Nieprawidłowy format email.",
+      "password_weak": "Hasło: min. 8 znaków, 1 cyfra, 1 wielka litera."
+    },
+    "limits": {
+      "weekly_limit_reached": "Osiągnięto limit tygodniowy (7 wzorców). Reset w poniedziałek lub przejdź na PRO.",
+      "archive_limit_reached": "Archiwum FREE: 30 dni. Starsze wpisy są usuwane. PRO = pełne archiwum."
+    },
+    "technical": {
+      "network_error": "Błąd połączenia. Sprawdź internet i spróbuj ponownie.",
+      "server_error": "Błąd serwera. Spróbuj za chwilę.",
+      "mic_permission_denied": "Brak dostępu do mikrofonu. Włącz w ustawieniach przeglądarki.",
+      "mic_not_found": "Nie wykryto mikrofonu.",
+      "recording_failed": "Nagrywanie nie powiodło się. Spróbuj ponownie.",
+      "analysis_failed": "Analiza nie powiodła się. Spróbuj ponownie lub użyj tekstu."
+    },
+    "auth": {
+      "invalid_credentials": "Nieprawidłowy email lub hasło.",
+      "email_taken": "Email już zarejestrowany.",
+      "session_expired": "Sesja wygasła. Zaloguj się ponownie.",
+      "magic_link_sent": "Link wysłany na {email}. Sprawdź skrzynkę."
+    },
+    "data": {
+      "export_failed": "Eksport nie powiódł się. Spróbuj ponownie.",
+      "delete_confirm": "Usunięcie konta jest nieodwracalne. Wszystkie dane zostaną usunięte w 48h."
+    }
+  },
+
+  "success_messages": {
+    "analysis_saved": "Wzorzec zapisany.",
+    "settings_saved": "Ustawienia zapisane.",
+    "export_complete": "Dane wyeksportowane.",
+    "account_created": "Konto utworzone.",
+    "password_changed": "Hasło zmienione.",
+    "subscription_updated": "Subskrypcja zaktualizowana."
+  },
+
+  "crisis_resources": {
+    "header": "Potrzebujesz wsparcia?",
+    "disclaimer": "PatternLens nie zastępuje pomocy profesjonalnej. Jeśli jesteś w kryzysie, skontaktuj się z pomocą.",
+    "resources_pl": [
+      {
+        "name": "Telefon Zaufania dla Dorosłych",
+        "number": "116 123",
+        "availability": "24/7",
+        "type": "crisis"
+      },
+      {
+        "name": "Centrum Wsparcia dla osób w kryzysie psychicznym",
+        "number": "800 70 2222",
+        "availability": "24/7",
+        "type": "crisis"
+      },
+      {
+        "name": "Telefon Zaufania dla Dzieci i Młodzieży",
+        "number": "116 111",
+        "availability": "24/7",
+        "type": "youth"
+      },
+      {
+        "name": "Pogotowie Ratunkowe",
+        "number": "112",
+        "availability": "24/7",
+        "type": "emergency"
+      }
+    ],
+    "cta_text": "Zadzwoń teraz"
+  },
+
+  "faq": {
+    "items": [
+      {
+        "id": "faq_therapy",
+        "question": "Czy PatternLens to terapia?",
+        "answer": "Nie. To narzędzie do obserwowania wzorców. Jeśli potrzebujesz terapii - idź do terapeuty. PatternLens może uzupełniać terapię, ale nigdy jej nie zastępuje.",
+        "category": "general"
+      },
+      {
+        "id": "faq_difference",
+        "question": "Czym różni się od aplikacji wellness?",
+        "answer": "Aplikacje wellness mówią 'poczuj się lepiej'. My mówimy 'zobacz strukturę'. Nie trackujemy nastroju. Nie motywujemy. Nie dajemy rad. Nie gamifiujemy.",
+        "category": "general"
+      },
+      {
+        "id": "faq_dual_lens",
+        "question": "Dlaczego 2 interpretacje zamiast 1?",
+        "answer": "Twoje doświadczenie ma kilka prawidłowych wyjaśnień. Zamiast udawać że wiemy które jest 'prawdziwe' - pokazujemy 2 równorzędne opcje. Twoja intuicja wie która pasuje.",
+        "category": "feature"
+      },
+      {
+        "id": "faq_adhd",
+        "question": "Czy to dla mnie jeśli mam ADHD/autyzm?",
+        "answer": "PatternLens został zbudowany dla analitycznych, strukturalnie myślących mózgów. Jeśli myślisz wzorcami a nie emocjami - prawdopodobnie tak. Spróbuj za darmo.",
+        "category": "audience"
+      },
+      {
+        "id": "faq_data",
+        "question": "Czy moje dane są bezpieczne?",
+        "answer": "Tak. Szyfrowanie end-to-end. Eksportuj dane kiedy chcesz. Usuń konto i wszystko znika. Nie sprzedajemy danych.",
+        "category": "privacy"
+      },
+      {
+        "id": "faq_price",
+        "question": "Ile to kosztuje?",
+        "answer": "FREE: 7 wzorców/tydzień. PRO: 49 PLN/miesiąc (unlimited + archiwum + analiza częstości). Pierwszy miesiąc PRO gratis. Anuluj kiedy chcesz.",
+        "category": "pricing"
+      },
+      {
+        "id": "faq_cancel",
+        "question": "Mogę anulować PRO?",
+        "answer": "Tak. Zero zobowiązań. Kliknij 'anuluj' i koniec. Bez ukrytych opłat.",
+        "category": "pricing"
+      },
+      {
+        "id": "faq_crisis",
+        "question": "Co jeśli mam myśli samobójcze?",
+        "answer": "PatternLens NIE jest do kryzysów. Zadzwoń: 116 123 (Telefon Zaufania, 24/7) lub 112. Aplikacja automatycznie pokaże zasoby kryzysowe jeśli wykryje słowa ostrzegawcze.",
+        "category": "safety"
+      },
+      {
+        "id": "faq_therapist",
+        "question": "Mogę używać z terapeutą?",
+        "answer": "Tak. Tworzysz opisy między sesjami, zbierasz materiał, pracujesz nad interpretacjami z terapeutą. Terapeuta prowadzi - PatternLens wspomaga.",
+        "category": "usage"
+      },
+      {
+        "id": "faq_integration",
+        "question": "Czy integruje się z innymi aplikacjami?",
+        "answer": "Na razie nie. PRO może eksportować wszystko do JSON. Chcesz konkretną integrację? Napisz do nas.",
+        "category": "feature"
+      }
+    ]
+  },
+
+  "email_sequences": {
+    "welcome": {
+      "subject": "PatternLens: Dlaczego to nie jest kolejna wellness app",
+      "timing": "Day 0, immediate",
+      "tone": "Direct, honest",
+      "cta": "Rozpocznij analizę"
+    },
+    "education": {
+      "subject": "Jak nazwać wzorzec który cię blokuje",
+      "timing": "Day 3",
+      "tone": "Educational, practical",
+      "cta": "Nazwij wzorzec"
+    },
+    "retention": {
+      "subject": "Czy PatternLens działa dla ciebie? (Powiedz szczerze)",
+      "timing": "Day 7",
+      "tone": "Honest inquiry",
+      "cta": "Odpowiedz"
+    },
+    "conversion": {
+      "subject": "Dla ludzi którzy polubili PatternLens - PRO czeka",
+      "timing": "Day 14, if active",
+      "tone": "Value-focused, no pressure",
+      "cta": "Spróbuj PRO za darmo"
+    }
+  },
+
+  "social_media": {
+    "bio": {
+      "pl": "PatternLens → AI do rozpoznawania wzorców. Dla ADHD/autyzm brains. Nie wellness. Nie mood tracking. Tylko struktura.",
+      "en": "PatternLens → Pattern recognition AI. For ADHD/autism brains. Not wellness. Not mood tracking. Just structure."
+    },
+    "threads": {
+      "problem_agitation": {
+        "hook": "Dlaczego aplikacje wellness są toxic dla mózgów ADHD:",
+        "points": [
+          "Forsują 'positive thinking' gdy twój mózg NATURALNIE widzi problemy",
+          "Gamifikują zdrowie = dodatkowy stres o 'streaks'",
+          "Jednoznaczne rady = sprzeczne z wieloznacznym myśleniem",
+          "'Motivational quotes' = infantylizacja"
+        ],
+        "cta": "PatternLens robi odwrotnie →"
+      },
+      "feature_explanation": {
+        "hook": "Dlaczego Dual-Pattern Analysis działa dla ADHD:",
+        "body": "Twój mózg już widzi wieloznaczne wzorce. Inne apki: 'Przestań overthinking!' PatternLens: 'Ok, nazywajmy te wzorce.'",
+        "example": "Konflikt w pracy → Pattern A: Boundary vs Pressure. Pattern B: Values vs System. Oba prawdziwe. Ty wybierasz fokus."
+      }
+    }
+  },
+
+  "anti_positioning": {
+    "comparison_table": {
+      "headers": ["PatternLens", "Inne Apps"],
+      "rows": [
+        ["2 wzorce - ty decydujesz", "1 'prawda' narzucona"],
+        ["Zimny, techniczny język", "Jesteś super! 💪✨🌈"],
+        ["Dla analitycznych mózgów", "Dla każdego (= dla nikogo)"],
+        ["Nazywanie wzorców", "Tracking nastroju"],
+        ["Zero porad", "Spróbuj medytacji!"],
+        ["Dark mode, zero animacji", "Kolorowe, migające"],
+        ["Respekt dla złożoności", "Po prostu pozytywnie myśl"]
+      ]
+    }
+  },
+
+  "content_crossref": {
+    "limit_reached": {
+      "ui_text": "Osiągnięto limit tygodniowy (7 wzorców).",
+      "error_message": "Osiągnięto limit tygodniowy (7 wzorców). Reset w poniedziałek lub przejdź na PRO.",
+      "faq_ref": "faq_price",
+      "upgrade_hook": "PRO = bez limitów"
+    },
+    "dual_lens": {
+      "ui_text": "Soczewka A / Soczewka B",
+      "help_text": "Dwie równorzędne interpretacje. Żadna nie jest 'prawdziwa'. Obie mogą być użyteczne.",
+      "faq_ref": "faq_dual_lens",
+      "marketing_hook": "2 interpretacje - ty decydujesz"
+    },
+    "crisis_detection": {
+      "ui_text": "Potrzebujesz wsparcia?",
+      "help_text": "PatternLens NIE jest do kryzysów.",
+      "faq_ref": "faq_crisis",
+      "action": "Redirect to crisis resources"
+    },
+    "data_export": {
+      "ui_text": "Eksportuj dane",
+      "help_text": "Pełny eksport w formacie JSON. Twoje dane = twoja własność.",
+      "faq_ref": "faq_data",
+      "pro_feature": false
+    },
+    "archive_limit": {
+      "ui_text": "30 dni archiwum (FREE)",
+      "error_message": "Archiwum FREE: 30 dni. Starsze wpisy są usuwane. PRO = pełne archiwum.",
+      "faq_ref": "faq_price",
+      "upgrade_hook": "PRO = pełne archiwum"
+    }
+  }
+}

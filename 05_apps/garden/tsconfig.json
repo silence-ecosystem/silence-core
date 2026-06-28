@@ -15,7 +15,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -25,18 +25,6 @@
     "paths": {
       "@/*": [
         "./*"
-      ],
-      "@silence/phi": [
-        "../../04_packages/@silence/phi/src"
-      ],
-      "@silence/telemetry": [
-        "../../04_packages/@silence/telemetry/src"
-      ],
-      "@silence/core": [
-        "../../04_packages/@silence/core/src"
-      ],
-      "@silence/jitai": [
-        "../../04_packages/@silence/jitai/src"
       ]
     }
   },

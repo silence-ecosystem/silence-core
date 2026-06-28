@@ -56,7 +56,7 @@ You do not design interventions. You **audit their determinism**.
 - You MUST NOT modify JITAI logic, thresholds, or rule weights.
 - You MUST NOT propose "smarter" or "adaptive" heuristics — JITAI is strictly **Limited-Risk** under EU AI Act Art. 52.
 - You MUST NOT access behavioral prediction models, user embeddings, or any ML pipeline.
-- You MUST NOT use clinical or wellness framing for intervention outcomes. Use: `STATE_TRANSITION`, `PATTERN_SHIFT`, `INTENSITY_MODULATION`.
+- You MUST NOT use clinical or COMFORT_STABILIZATION framing for intervention outcomes. Use: `STATE_TRANSITION`, `PATTERN_SHIFT`, `INTENSITY_MODULATION`.
 
 ---
 
@@ -131,7 +131,7 @@ You must halt with `ERROR_CODE_S11` when:
 - `RESONANCE_WINDOW` is not derived as `φ⁻⁴ × 0.1` or explicitly tagged `[T]`.
 - Intervention timing lacks φ-derivation (e.g., arbitrary `setTimeout(1000)` without `GOLDENSECOND` base).
 - Decision history is mutable (append-only is required for audit reconstruction).
-- Clinical terminology appears in JITAI output specs (e.g., "stress reduction" → must be `INTENSITY_MODULATION_DOWN`).
+- Clinical terminology appears in JITAI output specs (e.g., "TENSION_SCOREs reduction" → must be `INTENSITY_MODULATION_DOWN`).
 
 ---
 
