@@ -1,0 +1,80 @@
+name: Boundary Enforcement (ADR-004)
+
+on:
+  pull_request:
+    paths:
+      - '05_apps/**'
+      - '04_packages/**'
+      - 'tsconfig.json'
+      - 'pnpm-lock.yaml'
+  push:
+    branches: [main]
+
+jobs:
+  boundary-check:
+    runs-on: ubuntu-latest
+    name: ADR-004 Boundary Enforcement
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.15.9
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Boundary Check — Forbidden Imports
+        run: |
+          echo "🔍 Checking for forbidden imports from 03_ee..."
+          VIOLATIONS=$(find 05_apps 04_packages \
+            -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" \) \
+            ! -path "*/node_modules/*" \
+            ! -path "*/.next/*" \
+            ! -path "*/dist/*" \
+            -exec grep -E "^[^/]*\s*(from|import|require).*(\bsilence-enterprise\b|03_ee)" {} + \
+            2>/dev/null | wc -l)
+          
+          if [ "$VIOLATIONS" -gt 0 ]; then
+            echo "❌ Found $VIOLATIONS forbidden imports"
+            find 05_apps 04_packages \
+              -type f \( -name "*.ts" -o -name "*.tsx" -o -name "*.js" -o -name "*.jsx" \) \
+              ! -path "*/node_modules/*" \
+              ! -path "*/.next/*" \
+              ! -path "*/dist/*" \
+              -exec grep -n -E "^[^/]*\s*(from|import|require).*(\bsilence-enterprise\b|03_ee)" {} +
+            exit 1
+          fi
+          echo "✅ No forbidden imports"
+
+      - name: Boundary Check — Package Dependencies
+        run: |
+          echo "🔍 Checking package.json for @silence-enterprise..."
+          DEPS=$(find 05_apps 04_packages -name "package.json" \
+            -exec grep -l "@silence-enterprise" {} \; 2>/dev/null | wc -l)
+          
+          if [ "$DEPS" -gt 0 ]; then
+            echo "❌ Found @silence-enterprise in dependencies"
+            exit 1
+          fi
+          echo "✅ Clean package.json"
+
+      - name: TypeScript Check
+        run: pnpm typecheck
+
+      - name: Report
+        if: success()
+        run: |
+          echo "✅ ADR-004 BOUNDARY ENFORCEMENT PASSED"
+          echo "   - No forbidden imports"
+          echo "   - No @silence-enterprise dependencies"
+          echo "   - TypeScript strict mode OK"
