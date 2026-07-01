@@ -49,6 +49,8 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Build s11-lint with dependencies
+        run: pnpm --filter=@silence/s11-lint... run build
       - run: pnpm s11-check
 
   determinism:

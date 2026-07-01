@@ -28,6 +28,7 @@ fn make_test_input(index: u64) -> EngineInput {
 }
 
 /// Build input with specific depth for depth-variant testing.
+#[allow(dead_code)]
 fn make_test_input_with_depth(index: u64, depth: AttentionDepth) -> EngineInput {
     let mut input = make_test_input(index);
     input.attention_depth = depth;
@@ -142,7 +143,7 @@ fn seed_derived_from_input_hash() {
 
 #[test]
 fn output_hash_changes_with_different_entropy() {
-    let mut input1 = make_test_input(99);
+    let input1 = make_test_input(99);
     let mut input2 = input1.clone();
     input2.entropy = [0xFFu8; 8];
 
