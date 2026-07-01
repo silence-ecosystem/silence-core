@@ -41,9 +41,12 @@ function main() {
   }
 
   if (report.staleIgnores && report.staleIgnores.length > 0) {
-    console.error('WARNING: stale ignore patterns (paths do not exist):');
+    console.error('WORLDHALT: stale ignore patterns (paths do not exist):');
     for (const stale of report.staleIgnores) {
       console.error(`  - ${stale}`);
+    }
+    if (!config.reportOnly) {
+      process.exit(1);
     }
   }
 

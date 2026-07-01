@@ -122,6 +122,16 @@ function main(): void {
       }
     }
   };
+  const scanDirs = ['04_packages', '05_apps', '02_protocols', '06_infrastructure'];
+  const staleDirs = scanDirs.filter((dir) => !existsSync(dir));
+  if (staleDirs.length > 0) {
+    console.error('WORLDHALT: stale PCS scan directories (paths do not exist):');
+    for (const dir of staleDirs) {
+      console.error(`  - ${dir}`);
+    }
+    process.exit(1);
+  }
+
   scanForDeprecated('04_packages', deprecatedPackages.map((p) => `04_packages/@silence/${p.replace('@silence/', '')}`));
   scanForDeprecated('05_apps', []);
   scanForDeprecated('02_protocols', []);

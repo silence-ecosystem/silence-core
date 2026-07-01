@@ -1700,3 +1700,32 @@ STATUS:           PASS
 - `pnpm boundary-check`: PASS, 0 violations.
 - `pnpm s11-check`: PASS, 0 violations.
 - `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 048 — Enforce path existence validation in critical checkers
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-048
+TIMESTAMP:        2026-07-01T17:48:56Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        0672751fc21b8c4d34cb58facdb393433526627a0e08377ac52ec9be87dedfd5
+ENTRY_HASH:       cbdbd028174b0c993de10d44e0aa6b30fd83054eed0b42c016bbb653831aba1c
+STATUS:           PASS
+```
+
+**CHANGE:**
+- `s11-lint` CLI now exits non-zero when `staleIgnores` is non-empty; stale path-based ignore patterns are treated as hard failures, not warnings.
+- `scripts/check-domain-boundaries.ts` now validates every `SCAN_ROOT` and fails fast (`WORLDHALT`) if any configured root directory does not exist.
+- `scripts/pcs-gate.ts` now validates scan directories (`04_packages`, `05_apps`, `02_protocols`, `06_infrastructure`) and fails fast (`WORLDHALT`) if any are missing.
+- Updated the stale-ignore test in `04_packages/@silence/s11-lint/src/index.test.ts` to assert the non-blocking `lintProject` report still surfaces stale path patterns while continuing to scan real files.
+
+**RATIONALE:**
+- Hard-coded paths in checkers silently rot during refactors and allow CI to stay green while the policy drifts from reality.
+- Treating stale paths as hard failures forces explicit review and cleanup at refactor time, preventing false confidence.
+
+**VERIFIED:**
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm boundary-check`: PASS, 0 dependency violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+- `pnpm --filter=@silence/s11-lint test`: PASS, 4/4 tests.

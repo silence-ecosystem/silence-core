@@ -151,6 +151,15 @@ const SCAN_ROOTS: readonly string[] = [
   "07_archive",
 ] as const;
 
+const staleRoots = SCAN_ROOTS.filter((root) => !fs.existsSync(root));
+if (staleRoots.length > 0) {
+  console.error("WORLDHALT: stale scan roots (paths do not exist):");
+  for (const root of staleRoots) {
+    console.error(`  - ${root}`);
+  }
+  process.exit(1);
+}
+
 const sourceFiles = discoverSourceFiles(SCAN_ROOTS);
 
 for (const file of sourceFiles) {
