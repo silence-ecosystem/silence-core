@@ -254,11 +254,37 @@ jobs:
             ✅ Vercel preview ready:
             `${{ steps.deploy.outputs.preview_url }}`
 
+  quality-sentinel:
+    name: Quality Sentinel
+    runs-on: ubuntu-latest
+    needs:
+      - verify
+      - pcs-gate
+    if: always()
+
+    steps:
+      - name: Evaluate required gates
+        env:
+          VERIFY_RESULT: ${{ needs.verify.result }}
+          PCS_GATE_RESULT: ${{ needs.pcs-gate.result }}
+        run: |
+          set -euo pipefail
+          if [ "$VERIFY_RESULT" != "success" ]; then
+            echo "WORLDHALT: verify job failed"
+            exit 1
+          fi
+          if [ "$PCS_GATE_RESULT" != "success" ]; then
+            echo "WORLDHALT: pcs-gate failed"
+            exit 1
+          fi
+          echo "Quality Sentinel: PASS"
+
   deploy-vercel:
     name: deploy-vercel
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs:
       - pcs-gate
+      - quality-sentinel
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:

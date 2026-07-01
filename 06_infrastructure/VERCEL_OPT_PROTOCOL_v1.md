@@ -90,15 +90,15 @@ Jedynym aktywnym blokerem systemowym pozostaje `s11-check`, który raportuje 31 
 
 ## PCS
 
-Aktualna ocena PCS dla systemu wynosi `0.970` przy bramce `0.999`. Wynik ten odzwierciedla sytuację, w której warstwa konfiguracyjna Vercel, boundary, typecheck, build i test są zielone, ale S11 pozostaje czerwone.
+Aktualna ocena PCS dla systemu wynosi `0.970` przy bramce `0.999`. Szczegółowe definicje bram PCS, tabela kar oraz pełny model obliczeniowy znajdują się w kanonicznym dokumencie `02_protocols/PCS_GATE_2.0.md` (SSoT). Niniejszy protokół przyjmuje te progi jako część kontraktu deployowego.
 
-W praktyce oznacza to rozdzielenie dwóch stanów. `PASS (ROOT CONFIG)` oznacza poprawność techniczną i zgodność root `vercel.json` z protokołem. `PARTIAL (SYSTEM)` oznacza, że cały system nie może wejść do pełnego stanu produkcyjnego, dopóki `pnpm s11-check` nie zwróci wyniku PASS.
+W praktyce oznacza to rozdzielenie dwóch stanów. `PASS (ROOT CONFIG)` oznacza poprawność techniczną i zgodność `06_infrastructure/vercel.json` z protokołem. `PARTIAL (SYSTEM)` oznacza, że cały system nie może wejść do pełnego stanu produkcyjnego, dopóki `pnpm s11-check` nie zwróci wyniku PASS oraz dopóki PCS nie osiągnie progu `0.997`.
 
 ## Migracja v1.1 → v1.2
 
 Wersja 1.2 przenosi kanoniczną konfigurację Vercel z root `vercel.json` do `06_infrastructure/vercel.json`, co jest zgodne z zakresem odpowiedzialności domeny infrastrukturalnej i zasadą Single Source of Truth. Rootowy plik został zarchiwizowany w `07_archive/legacy_monorepo/` bez usuwania go na stałe. Aktualizacja obejmuje również doprecyzowanie trzech mechanizmów kosztowych (`turbo-ignore`, affected-only builds, `fetch-depth: 2`), wpisanie rzeczywistej sekwencji gate'ów oraz jawne odnotowanie systemowego statusu `PARTIAL`.
 
-Wersja 1.1 nie rozszerza jeszcze zakresu na per-app deployment contracts. Ten obszar pozostaje do zdefiniowania osobno dla aplikacji, które rzeczywiście posiadają kompletne kontrakty wdrożeniowe i własną odpowiedzialność za runtime.
+Wersja 1.2 nie rozszerza jeszcze zakresu na per-app deployment contracts. Ten obszar pozostaje do zdefiniowania osobno dla aplikacji, które rzeczywiście posiadają kompletne kontrakty wdrożeniowe i własną odpowiedzialność za runtime.
 
 ## Kryterium aktualizacji
 

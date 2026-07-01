@@ -25,6 +25,10 @@
     "required_status_checks": {
       "required_status_checks": [
         {
+          "context": "verify",
+          "integration_id": 15368
+        },
+        {
           "context": "S11 Linguistic Sterility Check",
           "integration_id": 15368
         },
@@ -33,7 +37,7 @@
           "integration_id": 15368
         },
         {
-          "context": "EffectLog hash-chain validation",
+          "context": "Quality Sentinel",
           "integration_id": 15368
         }
       ],
