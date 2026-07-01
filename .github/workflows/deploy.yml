@@ -182,7 +182,7 @@ jobs:
       - name: calculate PCS
         id: calc
         run: |
-          PCS=$(pnpm pcs-gate 2>/dev/null | jq -r '.pcs')
+          PCS=$(pnpm --silent pcs-gate 2>/dev/null | jq -r '.pcs')
           echo "PCS=$PCS"
           echo "pcs_score=$PCS" >> "$GITHUB_OUTPUT"
 
