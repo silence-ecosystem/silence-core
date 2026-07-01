@@ -20,6 +20,7 @@ out/
 
 # Logs
 *.log
+!02_protocols/effectlog/DEPLOYS.log
 npm-debug.log*
 pnpm-debug.log*
 
@@ -33,7 +34,7 @@ Thumbs.db
 *.swp
 *.swo
 
-# Archives (large, historical)
+# Archives
 07_archive/
 
 # Legacy / unused packages
@@ -43,6 +44,6 @@ packages/
 
 # Misc
 CLAUDE.md
-# EffectLog — intentionally tracked (immutable deployment/effect registry)
-!02_protocols/effectlog/DEPLOYS.log
-ghost _patterns/
+
+# EffectLog - intentionally tracked (immutable deployment/effect registry)
+02_protocols/effectlog/DEPLOYS.log
