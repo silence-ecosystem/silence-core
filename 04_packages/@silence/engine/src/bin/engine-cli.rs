@@ -6,8 +6,10 @@
 //!   engine-cli verify   < input.json
 //!   engine-cli equivalence --count 10000
 
+use silence_engine::{
+    compute_schedule, validate_output, verify_determinism, AttentionDepth, EngineInput,
+};
 use std::io::{self, Read, Write};
-use silence_engine::{EngineInput, AttentionDepth, compute_schedule, validate_output, verify_determinism};
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -29,25 +31,29 @@ fn main() {
 
 fn cmd_compute() {
     let mut input_str = String::new();
-    io::stdin().read_to_string(&mut input_str).expect("read stdin");
+    io::stdin()
+        .read_to_string(&mut input_str)
+        .expect("read stdin");
 
-    let input: EngineInput = serde_json::from_str(&input_str)
-        .expect("deserialize input");
+    let input: EngineInput = serde_json::from_str(&input_str).expect("deserialize input");
 
     let output = compute_schedule(&input);
     validate_output(&input, &output).expect("validation");
 
     let out_str = serde_json::to_string_pretty(&output).expect("serialize output");
-    io::stdout().write_all(out_str.as_bytes()).expect("write stdout");
+    io::stdout()
+        .write_all(out_str.as_bytes())
+        .expect("write stdout");
     println!();
 }
 
 fn cmd_verify() {
     let mut input_str = String::new();
-    io::stdin().read_to_string(&mut input_str).expect("read stdin");
+    io::stdin()
+        .read_to_string(&mut input_str)
+        .expect("read stdin");
 
-    let input: EngineInput = serde_json::from_str(&input_str)
-        .expect("deserialize input");
+    let input: EngineInput = serde_json::from_str(&input_str).expect("deserialize input");
 
     let ok = verify_determinism(&[input]);
     if ok {
@@ -60,7 +66,9 @@ fn cmd_verify() {
 }
 
 fn cmd_equivalence(args: &[String]) {
-    let count = args.iter().position(|a| a == "--count")
+    let count = args
+        .iter()
+        .position(|a| a == "--count")
         .and_then(|i| args.get(i + 1))
         .and_then(|s| s.parse::<usize>().ok())
         .unwrap_or(1000);
