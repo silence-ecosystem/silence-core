@@ -31,7 +31,7 @@ jobs:
           disable-sudo: true
 
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
           fetch-depth: 2
           persist-credentials: false
@@ -49,7 +49,6 @@ jobs:
             "actions/download-artifact"
             "actions/cache"
             "github/codeql-action"
-            "pnpm/action-setup"
             "slsa-framework/slsa-github-generator"
             "step-security/harden-runner"
             "trufflesecurity/trufflehog"
@@ -71,6 +70,10 @@ jobs:
               action="${line#*uses: }"
               action="${action%% #*}"
               action="${action%% *}"
+              # Local composite actions are part of this repository.
+              if echo "$action" | grep -qE '^\./'; then
+                continue
+              fi
               if ! echo "$action" | grep -qE '@[a-f0-9]{40}$'; then
                 echo "::error file=$wf::Action not pinned to full SHA: $action"
                 VIOLATIONS=$((VIOLATIONS + 1))

@@ -1820,3 +1820,39 @@ STATUS:           PASS
 - `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
 - `pnpm boundary-check`: PASS, 0 violations.
 - `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 052 — Extract reusable setup-pnpm-node composite action and harden action policy
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-052
+TIMESTAMP:        2026-07-01T19:30:00Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        4d48be528a21d71ed1b3f7ac507a7960d7cfc1534860e64c24c0d58953c0e41e
+ENTRY_HASH:       a3a0a533cef6db0f7167109c8d15c7a3cf7d3d00302719a98124f716dc647a23
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Centralized Node 24 + pnpm bootstrap into a reusable composite action at `.github/actions/setup-pnpm-node/action.yml`:
+  - Inputs: `node-version` (default 24), `pnpm-version` (default 9.15.9), `cache-enabled` (default true), `cache-key-prefix` (default pnpm).
+  - Outputs: `pnpm-store-path`.
+  - Steps: `actions/setup-node@v6.4.0`, `corepack enable`, `corepack prepare pnpm@9.15.9 --activate`, expose pnpm store path, best-effort `actions/cache@v4.3.0` with `continue-on-error: true`.
+- Refactored `.github/workflows/deploy.yml` to use the composite action in all Node/pnpm jobs, removing duplicated corepack/cache setup.
+- Updated `.github/workflows/actions-policy-validate.yml`:
+  - Removed `pnpm/action-setup` from the approved-actions allowlist.
+  - Added explicit allow-rule for local composite actions (`./.github/actions/*`) so the policy gate recognizes the new shared action.
+- Pinned `actions/checkout` in `.github/workflows/boundary-enforce.yml` to the same SHA used across all other workflows (v6.0.3).
+
+**RATIONALE:**
+- A single composite action eliminates duplicated setup logic across 13+ workflow files and ensures every Node/pnpm job uses identical versions and cache behavior.
+- `pnpm/action-setup` is no longer referenced anywhere in the repository, so it no longer belongs on the approved-actions allowlist.
+- The action-policy gate must permit local composite actions because they are part of the repository and already governed by repository rulesets and PR review.
+
+**VERIFIED:**
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+- `pnpm exec turbo run build --filter=...[origin/main...HEAD]`: PASS, 27/27 tasks successful.
+- `pnpm exec turbo run test --filter=...[origin/main...HEAD]`: PASS, 25/25 tasks successful.
