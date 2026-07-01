@@ -1729,3 +1729,31 @@ STATUS:           PASS
 - `pnpm boundary-check`: PASS, 0 dependency violations.
 - `pnpm typecheck`: PASS, 25/25 tasks successful.
 - `pnpm --filter=@silence/s11-lint test`: PASS, 4/4 tests.
+
+
+### ENTRY 049 — Remove untracked patternlens ghost directories from S11 ignore list
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-049
+TIMESTAMP:        2026-07-01T17:56:14Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        cbdbd028174b0c993de10d44e0aa6b30fd83054eed0b42c016bbb653831aba1c
+ENTRY_HASH:       9c8ea8ea30433d5a6ebafe16b3dc48727b87a16c5818d120f4c178ce224c01ac
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Removed `patternlens/ghost _patterns` and `patternlens/packages` from `s11-lint` default ignore list.
+- Deleted the local untracked `05_apps/patternlens/ghost _patterns/` directory.
+- Deleted the local gitignored `05_apps/patternlens/packages/` directory.
+- These directories were not part of the tracked repository and were causing non-deterministic S11 behavior between local runs and CI.
+
+**RATIONALE:**
+- Untracked files must not influence policy-check behavior; ignoring them hides the fact that they are not in source control.
+- Path-based ignores must point only at tracked, reproducible locations.
+
+**VERIFIED:**
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
