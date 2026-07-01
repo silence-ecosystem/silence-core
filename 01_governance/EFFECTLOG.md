@@ -1789,3 +1789,34 @@ STATUS:           PASS
 - `pnpm boundary-check`: PASS, 0 violations.
 - `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
 - `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 051 — Fix verify job cache ordering and make cache best-effort
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-051
+TIMESTAMP:        2026-07-01T18:37:44Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        c3c25af78bafe5418c06b793b35c53e2f5cdd580905c962a08468b72a0e7e602
+ENTRY_HASH:       4d48be528a21d71ed1b3f7ac507a7960d7cfc1534860e64c24c0d58953c0e41e
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Corrected `verify` job in `.github/workflows/deploy.yml`:
+  - `actions/setup-node` no longer attempts `cache: pnpm` before pnpm exists on PATH.
+  - pnpm is now bootstrapped via `corepack` before the cache restore step.
+  - Replaced `setup-node` cache with explicit `actions/cache` step for the pnpm store.
+  - Cache restore is marked `continue-on-error: true`; a cache failure produces a warning and the job continues.
+  - Added `warn-on-cache-failure` step to surface cache problems without failing the pipeline.
+
+**RATIONALE:**
+- `actions/setup-node` with `cache: pnpm` requires pnpm to be pre-installed; corepack must run first.
+- Cache must be treated as best-effort optimization, not a hard dependency of the gate.
+
+**VERIFIED:**
+- YAML syntax validation: PASS.
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
