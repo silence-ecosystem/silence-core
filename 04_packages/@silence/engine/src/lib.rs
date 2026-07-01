@@ -59,7 +59,9 @@ pub type ObserverPseudonym = [u8; 16];
 
 /// Depth of attention profile — self-reported categorical 1-5.
 #[repr(u8)]
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, serde::Serialize, serde::Deserialize)]
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, serde::Serialize, serde::Deserialize,
+)]
 #[serde(try_from = "u8", into = "u8")]
 pub enum AttentionDepth {
     Surface = 1,
@@ -117,7 +119,7 @@ pub struct EngineInput {
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, serde::Serialize, serde::Deserialize)]
 pub struct SignalSlot {
     pub scheduled_ms: u64,
-    pub priority: u8, // 1-3
+    pub priority: u8,        // 1-3
     pub signal_id: [u8; 16], // UUIDv4 or deterministic equivalent
 }
 

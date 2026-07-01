@@ -3,10 +3,10 @@
 //! WASM bindings for silence-engine.
 //! Exports deterministic scheduler to TypeScript/JavaScript runtime.
 
-use alloc::string::String;
+use crate::{compute_schedule, validate_output, EngineInput};
 use alloc::format;
+use alloc::string::String;
 use wasm_bindgen::prelude::*;
-use crate::{EngineInput, compute_schedule, validate_output};
 
 /// Compute a deterministic schedule from JSON input.
 /// Input JSON: { "observer": [16 u8 array], "timestamp_ms": u64, "attention_depth": 1-5, "last_signal_ms": null | u64, "entropy": [8 u8 array] }

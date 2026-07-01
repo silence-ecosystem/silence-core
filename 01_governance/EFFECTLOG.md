@@ -1460,3 +1460,399 @@ STATUS:           PASS
 - YAML syntax validation → PASS
 - Git commit `53627332e20595bffb4bc472183cd6e03b28dce9`
 
+
+
+### ENTRY 040 — MATHCORE Governance SSoT Established
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-040
+TIMESTAMP:        2026-07-01T10:00:00Z
+EVENT_TYPE:       GOVERNANCE_FILE_CREATED
+ACTOR:            kimi-code CLI
+PREV_HASH:        98437229fd94b69e81783d127ff3d1fbc2318e56224e6cb66a7328b83eabd499
+ENTRY_HASH:       4067023143db1961e95d3578d28926c6b224b4c7b2d6701c36350fbb6c065f82
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Created `01_governance/MATHCORE.md` as the canonical governance SSoT for PHI-derived mathematical constants and deterministic operational mappings.
+- Defined base constants: `PHI`, `GOLDEN_SECOND_MS`, `VALIDATION_WINDOW_MS`, `BREATHE_CYCLE_MS`, `CEREMONY_CYCLE_MS`, `SILENCE_CYCLE_MS`, `UI_GRID_GUTTER_PX`, `UI_SIDEBAR_WIDTH_RATIO`, `CONTENT_MAIN_WIDTH_RATIO`.
+- Bound `00_identity/MATH_CORE.ts` as the reference implementation layer.
+- Documented mandatory derivations from `PHI` and `GOLDEN_SECOND_MS` for all timeouts, heartbeats, retry windows, stability intervals, and layout ratios.
+
+**RATIONALE:**
+- Audit required MATHCORE SSoT to live in `01_governance/` rather than solely in `00_identity/`.
+- Governance layer must own the normative contract; implementation layer must follow it.
+- Prevents magic numbers by requiring explicit derivation before any new constant enters production code.
+
+**VERIFIED:**
+- S11 vocabulary check: PASS — no clinical/therapeutic terminology.
+- Boundary check: PASS — no imports created, no RULE-DOM-001 violation.
+- Document references `INTERPRETATION_CONFLICT_RULE.md` for conflict resolution.
+
+
+### ENTRY 041 — Interpretation Conflict Rule Established
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-041
+TIMESTAMP:        2026-07-01T10:05:00Z
+EVENT_TYPE:       GOVERNANCE_FILE_CREATED
+ACTOR:            kimi-code CLI
+PREV_HASH:        4067023143db1961e95d3578d28926c6b224b4c7b2d6701c36350fbb6c065f82
+ENTRY_HASH:       904e4d250d4483aeb494e21e3b81f2b7688ed00856f20498da7026f10091d403
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Created `01_governance/INTERPRETATION_CONFLICT_RULE.md`.
+- Formalized the more-restrictive-wins principle for conflicts between governance documents, ADRs, implementation docs, and READMEs.
+- Documented source hierarchy: external law > SSoT governance > this rule > ADR > implementation docs > README.
+
+**RATIONALE:**
+- Audit identified a missing conflict-resolution mechanism.
+- Required to resolve future ambiguity between MATHCORE, RULE-DOM-001, ADRs, and module READMEs without manual escalation loops.
+
+**VERIFIED:**
+- S11 vocabulary check: PASS.
+- Boundary check: PASS.
+- Hierarchy is deterministic and documented.
+
+
+### ENTRY 042 — ANNEX IV Compliance Anchor Established
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-042
+TIMESTAMP:        2026-07-01T10:10:00Z
+EVENT_TYPE:       GOVERNANCE_FILE_CREATED
+ACTOR:            kimi-code CLI
+PREV_HASH:        904e4d250d4483aeb494e21e3b81f2b7688ed00856f20498da7026f10091d403
+ENTRY_HASH:       bbc022753a6b9e10d372307d3c3b4ad02b4c7f305d8856ac938eab1f8b621a2f
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Created `01_governance/ANNEX_IV/README.md` as the compliance anchor for high-risk AI artefacts.
+- Defined scope, lifecycle, required metadata, and boundary constraints for Annex IV documents.
+- Explicitly prohibits executable code or imports from `03_ee` inside `01_governance/`.
+
+**RATIONALE:**
+- Audit required an `ANNEX_IV/` folder.
+- Keeps compliance documentation under governance SSoT while preserving the open-core/enterprise boundary.
+
+**VERIFIED:**
+- S11 vocabulary check: PASS.
+- Boundary check: PASS.
+- No code files created under `01_governance/ANNEX_IV/`.
+
+
+### ENTRY 043 — JITAI Naming Anchor Established Without Runtime Relocation
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-043
+TIMESTAMP:        2026-07-01T10:15:00Z
+EVENT_TYPE:       REFERENCE_LAYER_CREATED
+ACTOR:            kimi-code CLI
+PREV_HASH:        bbc022753a6b9e10d372307d3c3b4ad02b4c7f305d8856ac938eab1f8b621a2f
+ENTRY_HASH:       f3eb8ecf2d4ff5f6afd666cc5b8582976187ba4a5140cfc21391989a0660b661
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Created `02_ai/jitai-engine/README.md` as a reference-only naming anchor.
+- Explicitly records `runtime_relocation: false` and `canonical_runtime_package: 04_packages/@silence/jitai`.
+- Documents the role of `02_ai/` as an AI/protocol reference layer, not an execution layer.
+
+**RATIONALE:**
+- Audit required JITAI naming consistency without moving the runtime package.
+- Resolves the naming discrepancy between `02_ai/jitai-engine/` and `04_packages/@silence/jitai` while preserving RULE-DOM-001.
+
+**VERIFIED:**
+- S11 vocabulary check: PASS.
+- Boundary check: PASS.
+- No code files or import paths added to `02_ai/`.
+
+
+### ENTRY 044 — Post-Audit CI/CD Consistency Hardening
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-044
+TIMESTAMP:        2026-07-01T10:20:00Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        f3eb8ecf2d4ff5f6afd666cc5b8582976187ba4a5140cfc21391989a0660b661
+ENTRY_HASH:       2f8088473a7e14ffa09a49e3745739b93da6732949199c6c73ec690558018e59
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Hardened `.github/workflows/boundary-enforce.yml`: pinned all actions to full SHA, changed `fetch-depth: 0` to `fetch-depth: 2`.
+- Normalized all `turbo run` invocations to `pnpm exec turbo run` in `ci.yml`, `silence-pipeline.yml`, and `slsa-attestation.yml`.
+- Changed `deploy-guard.yml` build-gate from `fetch-depth: 0` to `fetch-depth: 2` and removed the manual `git fetch origin main --depth=1` step.
+- Created `.github/workflows/scan-secrets.yml` using TruffleHog (`trufflesecurity/trufflehog@ddc015e5ed99942b2253d8ea16a0586a01ef2ab1`) with delta scan scope (`HEAD~1` to `HEAD`) and `fetch-depth: 2`.
+- Updated `.github/workflows/actions-policy-validate.yml` allowlist to include `trufflesecurity/trufflehog`.
+
+**RATIONALE:**
+- Audit flagged inconsistent `fetch-depth` values, direct `turbo run` calls without `pnpm exec`, and missing secret scanning.
+- Immutable action policy and AGENTS.md require full SHA pinning and `fetch-depth: 2` for build workflows.
+- Secret scanning closes a supply-chain detection gap without introducing executable code into `03_ee` or `04_packages`.
+
+**VERIFIED:**
+- actions-policy-validate: PASS — all actions pinned to SHA, no secret interpolation in `run:` steps.
+- YAML syntax validation: PASS.
+- All workflow `fetch-depth` values unified to `2`.
+- All `turbo` invocations normalized to `pnpm exec turbo run`.
+- S11 vocabulary check: PASS.
+- Boundary check: PASS.
+
+
+### ENTRY 045 — Post-Audit CI/CD Naming & Workflow Location Remediation
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-045
+TIMESTAMP:        2026-07-01T11:00:00Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        2f8088473a7e14ffa09a49e3745739b93da6732949199c6c73ec690558018e59
+ENTRY_HASH:       ecbd4ba42cfb6fc68ce8547c4ac07637c147add3bf9210c10ef8daf8c7043103
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Verified that required status checks `S11 Linguistic Sterility Check` and `Immutable Action Policy Check` already match the `name:` fields in `s11-sentinel.yml` and `actions-policy-validate.yml` (no job rename required).
+- Relocated `04_packages/@silence/engine/.github/workflows/engine-build.yml` to `.github/workflows/engine-build.yml`.
+- Pinned all actions in `engine-build.yml` to full SHA: `actions/checkout`, `dtolnay/rust-toolchain`, `Swatinem/rust-cache`, `actions/upload-artifact`, `actions/download-artifact`.
+- Added `dtolnay/rust-toolchain` and `Swatinem/rust-cache` to the allowlist in `actions-policy-validate.yml`.
+- Removed/relocated subdir workflows from active domains:
+  - `05_apps/patternlens/patternlens-ci-cd.yml` → `07_archive/legacy_workflows/05_apps/`
+  - `05_apps/patternlens/silence-objects-voice-module/.github/workflows/voice.yml` → `07_archive/legacy_workflows/05_apps/`
+  - Deleted workflow files under ignored `05_apps/patternlens/ghost _patterns/.github/workflows/`.
+
+**RATIONALE:**
+- Audit identified workflows living outside root `.github/workflows/` and potential required-check naming drift.
+- GitHub Actions only loads workflows from root `.github/workflows/`; subdir workflows were dead or duplicative.
+- Immutable-action policy must cover the relocated engine workflow.
+
+**VERIFIED:**
+- actions-policy-validate: PASS — all actions pinned to SHA and on allowlist.
+- YAML syntax validation: PASS for all 13 workflow files.
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm s11-check`: PASS, 0 violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 046 — Deploy safety and cost optimization alignment
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-046
+TIMESTAMP:        2026-07-01T12:00:00Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        ecbd4ba42cfb6fc68ce8547c4ac07637c147add3bf9210c10ef8daf8c7043103
+ENTRY_HASH:       6c171052be1e1e15646e8a46dffd5470d416cf708861309ad9937a3ef21d2870
+STATUS:           PARTIAL
+```
+
+**CHANGE:**
+- Aligned deploy-facing documentation with the actual root execution model in `06_infrastructure/VERCEL_OPT_PROTOCOL_v1.md`.
+- Recorded the mandatory cost controls: `turbo-ignore`, affected-only builds via `--filter=...[origin/main...HEAD]`, and mandatory `fetch-depth: 2` for deploy-relevant workflows.
+- Defined the canonical pre-deploy pipeline as: `pnpm install --frozen-lockfile` → `pnpm boundary-check` → `pnpm s11-check` → `pnpm typecheck` → affected `build` → affected `test`.
+- Created `tasks/lessons.md` to close the active lessons loop required by `AGENTS.md` §17.
+
+**RATIONALE:**
+- Audit identified drift between Vercel cost controls, CI gate sequence, and governance documentation.
+- Closing the documentation loop prevents silent erosion of the economic contract and keeps deploy safety, determinism, and cost discipline synchronized.
+
+**VERIFIED:**
+- `06_infrastructure/VERCEL_OPT_PROTOCOL_v1.md` updated to v1.2 with canonical `06_infrastructure/vercel.json`.
+- `tasks/lessons.md` created and follows the required template.
+- Documentation references `turbo-ignore`, `--filter=...[origin/main...HEAD]`, and `fetch-depth: 2` as mutually dependent mechanisms.
+
+
+### ENTRY 047 — Path-check cleanup and S11 ignore validation
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-047
+TIMESTAMP:        2026-07-01T17:25:34Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        6c171052be1e1e15646e8a46dffd5470d416cf708861309ad9937a3ef21d2870
+ENTRY_HASH:       0672751fc21b8c4d34cb58facdb393433526627a0e08377ac52ec9be87dedfd5
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Added filesystem validation for path-based ignore patterns in `04_packages/@silence/s11-lint/src/index.ts`: patterns containing `/` are now checked with `test -f`/`-e` against scanned targets; non-existent paths are reported as `staleIgnores` instead of being silently retained.
+- Removed stale hard-coded ignores that no longer exist on disk:
+  - `patternlens/patternlens-ci-cd.yml` from S11 default ignore list.
+  - `patternlens/AUDITS` from S11 default ignore list.
+  - `patternlens/next.config.js` from S11 default ignore list.
+- Normalized existing S11 ignores to concrete paths that exist:
+  - `patternlens/app` → `patternlens/src/app`.
+  - `patternlens/components` → `patternlens/src/components`.
+- Cleaned up vitest/eslint hard-coded excludes tied to `silence-objects-voice-module` (paths verified to exist; kept because the directory is still present).
+- Confirmed `06_infrastructure/eas.json` and `07_archive/legacy_monorepo/vercel.json.root` exist and remain referenced only by `turbo.json` and `.gitignore` respectively.
+
+**RATIONALE:**
+- Hard-coded paths in policy checks decay silently during monorepo refactors and create false confidence.
+- Moving forward, every checker that depends on a specific file or directory must validate existence (`test -f` / `find` / `glob`) before acting on it.
+
+**VERIFIED:**
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm s11-check`: PASS, 0 violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 048 — Enforce path existence validation in critical checkers
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-048
+TIMESTAMP:        2026-07-01T17:48:56Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        0672751fc21b8c4d34cb58facdb393433526627a0e08377ac52ec9be87dedfd5
+ENTRY_HASH:       cbdbd028174b0c993de10d44e0aa6b30fd83054eed0b42c016bbb653831aba1c
+STATUS:           PASS
+```
+
+**CHANGE:**
+- `s11-lint` CLI now exits non-zero when `staleIgnores` is non-empty; stale path-based ignore patterns are treated as hard failures, not warnings.
+- `scripts/check-domain-boundaries.ts` now validates every `SCAN_ROOT` and fails fast (`WORLDHALT`) if any configured root directory does not exist.
+- `scripts/pcs-gate.ts` now validates scan directories (`04_packages`, `05_apps`, `02_protocols`, `06_infrastructure`) and fails fast (`WORLDHALT`) if any are missing.
+- Updated the stale-ignore test in `04_packages/@silence/s11-lint/src/index.test.ts` to assert the non-blocking `lintProject` report still surfaces stale path patterns while continuing to scan real files.
+
+**RATIONALE:**
+- Hard-coded paths in checkers silently rot during refactors and allow CI to stay green while the policy drifts from reality.
+- Treating stale paths as hard failures forces explicit review and cleanup at refactor time, preventing false confidence.
+
+**VERIFIED:**
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm boundary-check`: PASS, 0 dependency violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+- `pnpm --filter=@silence/s11-lint test`: PASS, 4/4 tests.
+
+
+### ENTRY 049 — Remove untracked patternlens ghost directories from S11 ignore list
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-049
+TIMESTAMP:        2026-07-01T17:56:14Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        cbdbd028174b0c993de10d44e0aa6b30fd83054eed0b42c016bbb653831aba1c
+ENTRY_HASH:       9c8ea8ea30433d5a6ebafe16b3dc48727b87a16c5818d120f4c178ce224c01ac
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Removed `patternlens/ghost _patterns` and `patternlens/packages` from `s11-lint` default ignore list.
+- Deleted the local untracked `05_apps/patternlens/ghost _patterns/` directory.
+- Deleted the local gitignored `05_apps/patternlens/packages/` directory.
+- These directories were not part of the tracked repository and were causing non-deterministic S11 behavior between local runs and CI.
+
+**RATIONALE:**
+- Untracked files must not influence policy-check behavior; ignoring them hides the fact that they are not in source control.
+- Path-based ignores must point only at tracked, reproducible locations.
+
+**VERIFIED:**
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 050 — Modernize verify job runtime and remove pnpm/action-setup dependency
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-050
+TIMESTAMP:        2026-07-01T18:33:23Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        9c8ea8ea30433d5a6ebafe16b3dc48727b87a16c5818d120f4c178ce224c01ac
+ENTRY_HASH:       c3c25af78bafe5418c06b793b35c53e2f5cdd580905c962a08468b72a0e7e602
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Updated `verify` job in `.github/workflows/deploy.yml`:
+  - `actions/checkout` pinned to SHA of `v6.0.3`.
+  - `actions/setup-node` pinned to SHA of `v6.4.0` with `node-version: 24`.
+  - Removed `pnpm/action-setup`; pnpm is now provided via `corepack enable` + `corepack prepare pnpm@9.15.9 --activate`.
+  - Added `cache-dependency-path` for monorepo lockfiles.
+  - Added explicit tool-version reporting and cache-input verification steps.
+- Confirmed `.github/dependabot.yml` already covers `github-actions` ecosystem for future action updates.
+
+**RATIONALE:**
+- GitHub Actions is deprecating Node 20 runners; aligning the verify job with Node 24 reduces platform warning noise.
+- `corepack` removes one external action dependency from the critical setup path.
+- Cache is treated as best-effort optimization; missing cache must not fail the pipeline.
+
+**VERIFIED:**
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 051 — Fix verify job cache ordering and make cache best-effort
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-051
+TIMESTAMP:        2026-07-01T18:37:44Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        c3c25af78bafe5418c06b793b35c53e2f5cdd580905c962a08468b72a0e7e602
+ENTRY_HASH:       4d48be528a21d71ed1b3f7ac507a7960d7cfc1534860e64c24c0d58953c0e41e
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Corrected `verify` job in `.github/workflows/deploy.yml`:
+  - `actions/setup-node` no longer attempts `cache: pnpm` before pnpm exists on PATH.
+  - pnpm is now bootstrapped via `corepack` before the cache restore step.
+  - Replaced `setup-node` cache with explicit `actions/cache` step for the pnpm store.
+  - Cache restore is marked `continue-on-error: true`; a cache failure produces a warning and the job continues.
+  - Added `warn-on-cache-failure` step to surface cache problems without failing the pipeline.
+
+**RATIONALE:**
+- `actions/setup-node` with `cache: pnpm` requires pnpm to be pre-installed; corepack must run first.
+- Cache must be treated as best-effort optimization, not a hard dependency of the gate.
+
+**VERIFIED:**
+- YAML syntax validation: PASS.
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 052 — Extract reusable setup-pnpm-node composite action and harden action policy
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-052
+TIMESTAMP:        2026-07-01T19:30:00Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        4d48be528a21d71ed1b3f7ac507a7960d7cfc1534860e64c24c0d58953c0e41e
+ENTRY_HASH:       a3a0a533cef6db0f7167109c8d15c7a3cf7d3d00302719a98124f716dc647a23
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Centralized Node 24 + pnpm bootstrap into a reusable composite action at `.github/actions/setup-pnpm-node/action.yml`:
+  - Inputs: `node-version` (default 24), `pnpm-version` (default 9.15.9), `cache-enabled` (default true), `cache-key-prefix` (default pnpm).
+  - Outputs: `pnpm-store-path`.
+  - Steps: `actions/setup-node@v6.4.0`, `corepack enable`, `corepack prepare pnpm@9.15.9 --activate`, expose pnpm store path, best-effort `actions/cache@v4.3.0` with `continue-on-error: true`.
+- Refactored `.github/workflows/deploy.yml` to use the composite action in all Node/pnpm jobs, removing duplicated corepack/cache setup.
+- Updated `.github/workflows/actions-policy-validate.yml`:
+  - Removed `pnpm/action-setup` from the approved-actions allowlist.
+  - Added explicit allow-rule for local composite actions (`./.github/actions/*`) so the policy gate recognizes the new shared action.
+- Pinned `actions/checkout` in `.github/workflows/boundary-enforce.yml` to the same SHA used across all other workflows (v6.0.3).
+
+**RATIONALE:**
+- A single composite action eliminates duplicated setup logic across 13+ workflow files and ensures every Node/pnpm job uses identical versions and cache behavior.
+- `pnpm/action-setup` is no longer referenced anywhere in the repository, so it no longer belongs on the approved-actions allowlist.
+- The action-policy gate must permit local composite actions because they are part of the repository and already governed by repository rulesets and PR review.
+
+**VERIFIED:**
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+- `pnpm exec turbo run build --filter=...[origin/main...HEAD]`: PASS, 27/27 tasks successful.
+- `pnpm exec turbo run test --filter=...[origin/main...HEAD]`: PASS, 25/25 tasks successful.

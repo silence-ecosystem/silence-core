@@ -4,8 +4,8 @@
     "pnpm-lock.yaml",
     "pnpm-workspace.yaml",
     "turbo.json",
-    "vercel.json",
-    "eas.json",
+    "06_infrastructure/vercel.json",
+    "06_infrastructure/eas.json",
     ".dependency-cruiser.js",
     ".github/workflows/s11-check.yml",
     "01_governance/**"

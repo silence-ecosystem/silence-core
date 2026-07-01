@@ -2,7 +2,7 @@
  * [PATH]: 04_packages/@silence/s11-lint/src/index.ts
  */
 
-import fs from 'node:fs';
+import fs, { existsSync } from 'node:fs';
 import path from 'node:path';
 import type { S11LintConfig, S11Report, S11Violation } from './types/config.js';
 import { scanLine } from './rules/s11-core.js';
@@ -20,21 +20,19 @@ const DEFAULT_IGNORE = [
   'ROLES',
   // PatternLens dead structures retained per repo policy; not scanned.
   'patternlens/api',
-  'patternlens/app',
+  'patternlens/src/app',
   'patternlens/_app',
-  'patternlens/components',
+  'patternlens/src/components',
   'patternlens/_components',
   'patternlens/config',
   'patternlens/database',
   'patternlens/demo',
   'patternlens/docs',
-  'patternlens/ghost _patterns',
   'patternlens/health',
   'patternlens/hooks',
   'patternlens/lib',
   'patternlens/mobile-lens',
   'patternlens/objects',
-  'patternlens/packages',
   'patternlens/patternlens-agent',
   'patternlens/schema',
   'patternlens/scripts',
@@ -45,9 +43,7 @@ const DEFAULT_IGNORE = [
   'patternlens/__tests__',
   'patternlens/{src',
   'patternlens/admin-panel',
-  'patternlens/AUDITS',
   'patternlens/patternlens-content-bible.json',
-  'patternlens/patternlens-ci-cd.yml',
   'patternlens/patternlens-superdashboard.jsx',
   'patternlens/tailwind.config.ts',
   'patternlens/tailwind.config.js',
@@ -60,7 +56,6 @@ const DEFAULT_IGNORE = [
   'patternlens/support-page_Compliance-Legal.tsx',
   'patternlens/middleware.js',
   'patternlens/middleware.ts',
-  'patternlens/next.config.js',
   'patternlens/next.config.ts',
   'patternlens/validate-strings.js',
 ];
@@ -92,6 +87,35 @@ function shouldIgnore(relativePath: string, ignorePatterns: readonly string[]): 
 
 function shouldScan(filePath: string, extensions: readonly string[]): boolean {
   return extensions.includes(path.extname(filePath));
+}
+
+/**
+ * Validate path-based ignore patterns against the actual filesystem.
+ * Patterns without a slash are treated as simple segment names and kept as-is.
+ * Patterns containing a slash are checked relative to each scanned target path;
+ * any that point to nothing are reported as stale instead of silently retained.
+ */
+function validateIgnorePatterns(
+  targetPaths: readonly string[],
+  ignorePatterns: readonly string[],
+): { valid: string[]; stale: string[] } {
+  const valid: string[] = [];
+  const stale: string[] = [];
+
+  for (const pattern of ignorePatterns) {
+    if (!pattern.includes('/')) {
+      valid.push(pattern);
+      continue;
+    }
+    const found = targetPaths.some((target) => existsSync(path.resolve(target, pattern)));
+    if (found) {
+      valid.push(pattern);
+    } else {
+      stale.push(pattern);
+    }
+  }
+
+  return { valid, stale };
 }
 
 function scanFile(filePath: string, relativePath: string): readonly S11Violation[] {
@@ -155,6 +179,9 @@ export function lintProject(config: S11LintConfig): S11Report {
     ...config,
   };
 
+  const { valid: validIgnores, stale } = validateIgnorePatterns(config.paths, merged.ignorePatterns);
+  const activeConfig: Required<S11LintConfig> = { ...merged, ignorePatterns: validIgnores };
+
   const allViolations: S11Violation[] = [];
 
   for (const targetPath of config.paths) {
@@ -162,8 +189,8 @@ export function lintProject(config: S11LintConfig): S11Report {
     const stat = fs.statSync(resolved);
 
     if (stat.isDirectory()) {
-      allViolations.push(...scanDirectory(resolved, resolved, merged));
-    } else if (stat.isFile() && shouldScan(resolved, merged.extensions)) {
+      allViolations.push(...scanDirectory(resolved, resolved, activeConfig));
+    } else if (stat.isFile() && shouldScan(resolved, activeConfig.extensions)) {
       allViolations.push(...scanFile(resolved, path.relative(process.cwd(), resolved)));
     }
   }
@@ -184,6 +211,7 @@ export function lintProject(config: S11LintConfig): S11Report {
     totalViolations: deduped.length,
     filesAffected,
     violations: deduped,
+    staleIgnores: stale.length > 0 ? stale : undefined,
   };
 }
 

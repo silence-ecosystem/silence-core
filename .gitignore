@@ -7,11 +7,17 @@ dist/
 out/
 .next/
 .turbo/
+.vercel/output/
 *.tsbuildinfo
+
+# Coverage / reports
+coverage/
+coverage-final.json
+coverage-summary.json
 
 # Rust
 04_packages/@silence/engine/target/
-04_packages/@silence/engine/Cargo.lock
+# Cargo.lock intentionally tracked for reproducible engine builds
 
 # Environment
 .env
@@ -33,16 +39,27 @@ Thumbs.db
 *.swp
 *.swo
 
+# Vercel CLI local linking
+.vercel/
+
 # Archives (large, historical)
-07_archive/
+07_archive/*
+!07_archive/legacy_monorepo/
+!07_archive/legacy_monorepo/vercel.json.root
+!07_archive/legacy_monorepo/eas.json.root
 
 # Legacy / unused packages
 04_packages/packages/
 packages/
 00_identity/
 
-# Misc
+# Generated SBOM
+SBOM*.json
+SBOM*.xml
+SBOM*.spdx
+
+# Misc local-only
 CLAUDE.md
-# EffectLog — intentionally tracked (immutable deployment/effect registry)
+
+# EffectLog — intentionally tracked
 !02_protocols/effectlog/DEPLOYS.log
-ghost _patterns/

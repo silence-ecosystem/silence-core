@@ -27,6 +27,9 @@ env:
   SILENCE_RETRY_MAX: '3'
   PNPM_VERSION: '9.15.9'
   NODE_VERSION: '22'
+  VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
 jobs:
   boundary-check:
@@ -34,20 +37,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L1_MIN) }}
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
           disable-sudo: true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
           fetch-depth: 2
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+          persist-credentials: false
+      - uses: ./.github/actions/setup-pnpm-node
         with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          pnpm-version: ${{ env.PNPM_VERSION }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm boundary-check
       - run: pnpm exec tsx scripts/check-domain-boundaries.ts
@@ -58,18 +58,17 @@ jobs:
     needs: boundary-check
     timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L1_MIN) }}
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
           disable-sudo: true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: ./.github/actions/setup-pnpm-node
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          pnpm-version: ${{ env.PNPM_VERSION }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm audit --audit-level=high
 
@@ -79,18 +78,17 @@ jobs:
     needs: pnpm-audit
     timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L2_MIN) }}
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
           disable-sudo: true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: ./.github/actions/setup-pnpm-node
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          pnpm-version: ${{ env.PNPM_VERSION }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @silence/s11-lint... build
       - run: pnpm s11-check
@@ -101,18 +99,17 @@ jobs:
     needs: lint-s11
     timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L2_MIN) }}
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
           disable-sudo: true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: ./.github/actions/setup-pnpm-node
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          pnpm-version: ${{ env.PNPM_VERSION }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter=@silence/core test:determinism
       - run: pnpm test:vitest
@@ -123,18 +120,17 @@ jobs:
     needs: test
     timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L2_MIN) }}
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
           disable-sudo: true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: ./.github/actions/setup-pnpm-node
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          pnpm-version: ${{ env.PNPM_VERSION }}
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
 
@@ -146,20 +142,19 @@ jobs:
     outputs:
       deployment-ref: ${{ steps.record-ref.outputs.deployment_ref }}
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
           disable-sudo: true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
         with:
-          version: ${{ env.PNPM_VERSION }}
-      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: ./.github/actions/setup-pnpm-node
         with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          pnpm-version: ${{ env.PNPM_VERSION }}
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo run build --filter=...affected
+      - run: pnpm exec turbo run build --filter=...[origin/main...HEAD]
       - id: record-ref
         run: 'echo "deployment_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"'
 
@@ -169,21 +164,24 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L3_MIN) }}
-    env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
           disable-sudo: true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - run: sleep $(( SILENCE_WAIT_FIB13_MS / 1000 ))
       - run: |
           npx vercel deploy \
             --token "$VERCEL_TOKEN" \
+            --scope "$VERCEL_ORG_ID" \
+            --local-config=06_infrastructure/vercel.json \
             --target preview \
             --meta s11_commit_id=S11-2026-0623-CICD-PHI-001 \
             --meta deployment_ref=${{ needs.build.outputs.deployment-ref }}
-      - run: sleep $(( SILENCE_WAIT_FIB13_MS / 1000 ))
 
   deploy-production:
     name: 'deploy-production [CANARY_ROLLOUT_GATE]'
@@ -191,18 +189,21 @@ jobs:
     needs: deploy-canary
     if: github.ref == 'refs/heads/main'
     timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L3_MIN) }}
-    env:
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
     steps:
-      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
         with:
           egress-policy: audit
           disable-sudo: true
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+        with:
+          fetch-depth: 2
+          persist-credentials: false
       - run: sleep $(( SILENCE_WAIT_FIB21_MS / 1000 ))
       - run: |
           npx vercel deploy \
             --token "$VERCEL_TOKEN" \
+            --scope "$VERCEL_ORG_ID" \
+            --local-config=06_infrastructure/vercel.json \
             --target production \
             --meta s11_commit_id=S11-2026-0623-CICD-PHI-001 \
             --meta deployment_ref=${{ needs.build.outputs.deployment-ref }}
