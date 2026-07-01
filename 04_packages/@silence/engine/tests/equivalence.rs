@@ -70,7 +70,7 @@ fn validation_passes_for_all_outputs() {
     let inputs: Vec<_> = (0..1000).map(make_test_input).collect();
     let outputs = compute_batch(&inputs);
     for (i, (inp, out)) in inputs.iter().zip(outputs.iter()).enumerate() {
-        validate_output(inp, out).expect(&format!("validation failed at index {}", i));
+        validate_output(inp, out).unwrap_or_else(|_| panic!("validation failed at index {}", i));
     }
 }
 
