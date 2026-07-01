@@ -3,6 +3,7 @@
   "version": 2,
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm exec turbo run build --filter=...[origin/main...HEAD]",
+  "outputDirectory": "05_apps/garden/dist",
   "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1",
   "github": {
     "silent": true,
