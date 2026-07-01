@@ -20,6 +20,9 @@ jobs:
   lint:
     name: Clippy + Format
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 04_packages/@silence/engine
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -29,12 +32,17 @@ jobs:
         with:
           components: clippy, rustfmt
       - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
+        with:
+          workspaces: 04_packages/@silence/engine
       - run: cargo fmt -- --check
       - run: cargo clippy --all-targets --all-features
 
   test-native:
     name: Native Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 04_packages/@silence/engine
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -42,11 +50,16 @@ jobs:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@4be7066ada62dd38de10e7b70166bc74ed198c30 # stable
       - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
+        with:
+          workspaces: 04_packages/@silence/engine
       - run: cargo test --release
 
   build-wasm:
     name: WASM Build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 04_packages/@silence/engine
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -56,6 +69,8 @@ jobs:
         with:
           targets: wasm32-unknown-unknown
       - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
+        with:
+          workspaces: 04_packages/@silence/engine
       - run: cargo build --release --target wasm32-unknown-unknown --features wasm
       - run: sha256sum target/wasm32-unknown-unknown/release/silence_engine.wasm > wasm.hash
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -71,6 +86,9 @@ jobs:
     strategy:
       matrix:
         run: [1, 2, 3]
+    defaults:
+      run:
+        working-directory: 04_packages/@silence/engine
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -78,6 +96,8 @@ jobs:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@4be7066ada62dd38de10e7b70166bc74ed198c30 # stable
       - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
+        with:
+          workspaces: 04_packages/@silence/engine
       - run: cargo clean
       - run: cargo build --release
       - run: sha256sum target/release/libsilence_engine.rlib > build-${{ matrix.run }}.hash
@@ -114,6 +134,9 @@ jobs:
     name: Sign Engine Artifacts
     needs: [build-wasm, test-native]
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 04_packages/@silence/engine
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -121,9 +144,11 @@ jobs:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@4be7066ada62dd38de10e7b70166bc74ed198c30 # stable
       - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
+        with:
+          workspaces: 04_packages/@silence/engine
       - run: cargo build --release --bin engine-cli
       - name: Sign engine-cli
-        run: ./04_packages/@silence/engine/scripts/sign-engine.sh target/release/engine-cli
+        run: ./scripts/sign-engine.sh target/release/engine-cli
         env:
           KEY_DIR: ${{ github.workspace }}/04_packages/@silence/engine/01_governance/RELEASE_KEYS
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4

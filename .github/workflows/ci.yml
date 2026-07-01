@@ -29,7 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
-          fetch-depth: 2
+          fetch-depth: 0
           persist-credentials: false
 
       - name: Setup pnpm
@@ -57,7 +57,7 @@ jobs:
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
         with:
-          fetch-depth: 2
+          fetch-depth: 0
           persist-credentials: false
       - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
       - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
@@ -65,6 +65,8 @@ jobs:
           node-version: 20
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Build s11-lint with dependencies
+        run: pnpm --filter=@silence/s11-lint... run build
       - run: pnpm exec turbo run lint --filter=...[origin/main...HEAD]
 
   typecheck:
