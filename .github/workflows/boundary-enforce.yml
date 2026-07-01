@@ -43,7 +43,7 @@ jobs:
             ! -path "*/.next/*" \
             ! -path "*/dist/*" \
             -exec grep -E "^[^/]*\s*(from|import|require).*(\bsilence-enterprise\b|03_ee)" {} + \
-            2>/dev/null | wc -l)
+            2>/dev/null | grep -vE "^\s*(\*|//|/\*)" | wc -l)
           
           if [ "$VIOLATIONS" -gt 0 ]; then
             echo "❌ Found $VIOLATIONS forbidden imports"
@@ -52,7 +52,8 @@ jobs:
               ! -path "*/node_modules/*" \
               ! -path "*/.next/*" \
               ! -path "*/dist/*" \
-              -exec grep -n -E "^[^/]*\s*(from|import|require).*(\bsilence-enterprise\b|03_ee)" {} +
+              -exec grep -n -E "^[^/]*\s*(from|import|require).*(\bsilence-enterprise\b|03_ee)" {} + \
+              | grep -vE ":\s*(\*|//|/\*)"
             exit 1
           fi
           echo "✅ No forbidden imports"
