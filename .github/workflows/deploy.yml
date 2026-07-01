@@ -111,6 +111,9 @@ jobs:
       - name: install
         run: pnpm install --frozen-lockfile
 
+      - name: build workspace packages
+        run: pnpm exec turbo run build
+
       - name: run tests with coverage
         run: pnpm test:coverage
 
