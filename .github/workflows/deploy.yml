@@ -91,6 +91,9 @@ jobs:
     needs:
       - verify
     continue-on-error: true
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       - name: checkout
