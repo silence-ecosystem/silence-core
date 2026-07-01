@@ -32,6 +32,9 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 2
+          persist-credentials: false
 
       - name: Validate workflow policy
         run: |
@@ -49,6 +52,11 @@ jobs:
             "pnpm/action-setup"
             "slsa-framework/slsa-github-generator"
             "step-security/harden-runner"
+            "trufflesecurity/trufflehog"
+            "dtolnay/rust-toolchain"
+            "Swatinem/rust-cache"
+            "dorny/paths-filter"
+            "marocchino/sticky-pull-request-comment"
           )
 
           VIOLATIONS=0

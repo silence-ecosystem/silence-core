@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "test:determinism": "vitest run packages/@silence/core/src/__tests__/determinism.test.ts",
     "test:coverage": "vitest run --coverage",
-    "typecheck": "turbo run typecheck --continue"
+    "typecheck": "turbo run typecheck --continue",
+    "pcs-gate": "tsx scripts/pcs-gate.ts"
   },
   "devDependencies": {
     "@silence/s11-lint": "workspace:*",

@@ -10,7 +10,7 @@ export default defineConfig({
     isolate: true,
     coverage: {
       provider: "v8",
-      reporter: ["text", "json"],
+      reporter: ["text", "json", "json-summary"],
       include: ["04_packages/**/src/**/*.ts", "03_ee/**/src/**/*.ts", "05_apps/**/*.ts"],
       exclude: ["**/__tests__", "**/*.test.ts", "**/dist"],
     },

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "pnpm exec turbo run build --filter=...[origin/main...HEAD]",
+  "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1",
+  "github": {
+    "silent": true,
+    "enabled": false
+  }
+}

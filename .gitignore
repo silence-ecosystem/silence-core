@@ -33,6 +33,9 @@ Thumbs.db
 *.swp
 *.swo
 
+# Vercel CLI local linking
+.vercel/
+
 # Archives (large, historical)
 07_archive/
 
@@ -46,3 +49,11 @@ CLAUDE.md
 # EffectLog — intentionally tracked (immutable deployment/effect registry)
 !02_protocols/effectlog/DEPLOYS.log
 ghost _patterns/
+# SBOM files (generated, not tracked)
+SBOM*.json
+SBOM*.xml
+SBOM*.spdx
+
+# Archived deployment configs retained for audit trail
+!07_archive/legacy_monorepo/vercel.json.root
+!07_archive/legacy_monorepo/eas.json.root

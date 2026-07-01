@@ -1460,3 +1460,209 @@ STATUS:           PASS
 - YAML syntax validation → PASS
 - Git commit `53627332e20595bffb4bc472183cd6e03b28dce9`
 
+
+
+### ENTRY 040 — MATHCORE Governance SSoT Established
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-040
+TIMESTAMP:        2026-07-01T10:00:00Z
+EVENT_TYPE:       GOVERNANCE_FILE_CREATED
+ACTOR:            kimi-code CLI
+PREV_HASH:        98437229fd94b69e81783d127ff3d1fbc2318e56224e6cb66a7328b83eabd499
+ENTRY_HASH:       4067023143db1961e95d3578d28926c6b224b4c7b2d6701c36350fbb6c065f82
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Created `01_governance/MATHCORE.md` as the canonical governance SSoT for PHI-derived mathematical constants and deterministic operational mappings.
+- Defined base constants: `PHI`, `GOLDEN_SECOND_MS`, `VALIDATION_WINDOW_MS`, `BREATHE_CYCLE_MS`, `CEREMONY_CYCLE_MS`, `SILENCE_CYCLE_MS`, `UI_GRID_GUTTER_PX`, `UI_SIDEBAR_WIDTH_RATIO`, `CONTENT_MAIN_WIDTH_RATIO`.
+- Bound `00_identity/MATH_CORE.ts` as the reference implementation layer.
+- Documented mandatory derivations from `PHI` and `GOLDEN_SECOND_MS` for all timeouts, heartbeats, retry windows, stability intervals, and layout ratios.
+
+**RATIONALE:**
+- Audit required MATHCORE SSoT to live in `01_governance/` rather than solely in `00_identity/`.
+- Governance layer must own the normative contract; implementation layer must follow it.
+- Prevents magic numbers by requiring explicit derivation before any new constant enters production code.
+
+**VERIFIED:**
+- S11 vocabulary check: PASS — no clinical/therapeutic terminology.
+- Boundary check: PASS — no imports created, no RULE-DOM-001 violation.
+- Document references `INTERPRETATION_CONFLICT_RULE.md` for conflict resolution.
+
+
+### ENTRY 041 — Interpretation Conflict Rule Established
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-041
+TIMESTAMP:        2026-07-01T10:05:00Z
+EVENT_TYPE:       GOVERNANCE_FILE_CREATED
+ACTOR:            kimi-code CLI
+PREV_HASH:        4067023143db1961e95d3578d28926c6b224b4c7b2d6701c36350fbb6c065f82
+ENTRY_HASH:       904e4d250d4483aeb494e21e3b81f2b7688ed00856f20498da7026f10091d403
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Created `01_governance/INTERPRETATION_CONFLICT_RULE.md`.
+- Formalized the more-restrictive-wins principle for conflicts between governance documents, ADRs, implementation docs, and READMEs.
+- Documented source hierarchy: external law > SSoT governance > this rule > ADR > implementation docs > README.
+
+**RATIONALE:**
+- Audit identified a missing conflict-resolution mechanism.
+- Required to resolve future ambiguity between MATHCORE, RULE-DOM-001, ADRs, and module READMEs without manual escalation loops.
+
+**VERIFIED:**
+- S11 vocabulary check: PASS.
+- Boundary check: PASS.
+- Hierarchy is deterministic and documented.
+
+
+### ENTRY 042 — ANNEX IV Compliance Anchor Established
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-042
+TIMESTAMP:        2026-07-01T10:10:00Z
+EVENT_TYPE:       GOVERNANCE_FILE_CREATED
+ACTOR:            kimi-code CLI
+PREV_HASH:        904e4d250d4483aeb494e21e3b81f2b7688ed00856f20498da7026f10091d403
+ENTRY_HASH:       bbc022753a6b9e10d372307d3c3b4ad02b4c7f305d8856ac938eab1f8b621a2f
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Created `01_governance/ANNEX_IV/README.md` as the compliance anchor for high-risk AI artefacts.
+- Defined scope, lifecycle, required metadata, and boundary constraints for Annex IV documents.
+- Explicitly prohibits executable code or imports from `03_ee` inside `01_governance/`.
+
+**RATIONALE:**
+- Audit required an `ANNEX_IV/` folder.
+- Keeps compliance documentation under governance SSoT while preserving the open-core/enterprise boundary.
+
+**VERIFIED:**
+- S11 vocabulary check: PASS.
+- Boundary check: PASS.
+- No code files created under `01_governance/ANNEX_IV/`.
+
+
+### ENTRY 043 — JITAI Naming Anchor Established Without Runtime Relocation
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-043
+TIMESTAMP:        2026-07-01T10:15:00Z
+EVENT_TYPE:       REFERENCE_LAYER_CREATED
+ACTOR:            kimi-code CLI
+PREV_HASH:        bbc022753a6b9e10d372307d3c3b4ad02b4c7f305d8856ac938eab1f8b621a2f
+ENTRY_HASH:       f3eb8ecf2d4ff5f6afd666cc5b8582976187ba4a5140cfc21391989a0660b661
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Created `02_ai/jitai-engine/README.md` as a reference-only naming anchor.
+- Explicitly records `runtime_relocation: false` and `canonical_runtime_package: 04_packages/@silence/jitai`.
+- Documents the role of `02_ai/` as an AI/protocol reference layer, not an execution layer.
+
+**RATIONALE:**
+- Audit required JITAI naming consistency without moving the runtime package.
+- Resolves the naming discrepancy between `02_ai/jitai-engine/` and `04_packages/@silence/jitai` while preserving RULE-DOM-001.
+
+**VERIFIED:**
+- S11 vocabulary check: PASS.
+- Boundary check: PASS.
+- No code files or import paths added to `02_ai/`.
+
+
+### ENTRY 044 — Post-Audit CI/CD Consistency Hardening
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-044
+TIMESTAMP:        2026-07-01T10:20:00Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        f3eb8ecf2d4ff5f6afd666cc5b8582976187ba4a5140cfc21391989a0660b661
+ENTRY_HASH:       2f8088473a7e14ffa09a49e3745739b93da6732949199c6c73ec690558018e59
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Hardened `.github/workflows/boundary-enforce.yml`: pinned all actions to full SHA, changed `fetch-depth: 0` to `fetch-depth: 2`.
+- Normalized all `turbo run` invocations to `pnpm exec turbo run` in `ci.yml`, `silence-pipeline.yml`, and `slsa-attestation.yml`.
+- Changed `deploy-guard.yml` build-gate from `fetch-depth: 0` to `fetch-depth: 2` and removed the manual `git fetch origin main --depth=1` step.
+- Created `.github/workflows/scan-secrets.yml` using TruffleHog (`trufflesecurity/trufflehog@ddc015e5ed99942b2253d8ea16a0586a01ef2ab1`) with delta scan scope (`HEAD~1` to `HEAD`) and `fetch-depth: 2`.
+- Updated `.github/workflows/actions-policy-validate.yml` allowlist to include `trufflesecurity/trufflehog`.
+
+**RATIONALE:**
+- Audit flagged inconsistent `fetch-depth` values, direct `turbo run` calls without `pnpm exec`, and missing secret scanning.
+- Immutable action policy and AGENTS.md require full SHA pinning and `fetch-depth: 2` for build workflows.
+- Secret scanning closes a supply-chain detection gap without introducing executable code into `03_ee` or `04_packages`.
+
+**VERIFIED:**
+- actions-policy-validate: PASS — all actions pinned to SHA, no secret interpolation in `run:` steps.
+- YAML syntax validation: PASS.
+- All workflow `fetch-depth` values unified to `2`.
+- All `turbo` invocations normalized to `pnpm exec turbo run`.
+- S11 vocabulary check: PASS.
+- Boundary check: PASS.
+
+
+### ENTRY 045 — Post-Audit CI/CD Naming & Workflow Location Remediation
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-045
+TIMESTAMP:        2026-07-01T11:00:00Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        2f8088473a7e14ffa09a49e3745739b93da6732949199c6c73ec690558018e59
+ENTRY_HASH:       ecbd4ba42cfb6fc68ce8547c4ac07637c147add3bf9210c10ef8daf8c7043103
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Verified that required status checks `S11 Linguistic Sterility Check` and `Immutable Action Policy Check` already match the `name:` fields in `s11-sentinel.yml` and `actions-policy-validate.yml` (no job rename required).
+- Relocated `04_packages/@silence/engine/.github/workflows/engine-build.yml` to `.github/workflows/engine-build.yml`.
+- Pinned all actions in `engine-build.yml` to full SHA: `actions/checkout`, `dtolnay/rust-toolchain`, `Swatinem/rust-cache`, `actions/upload-artifact`, `actions/download-artifact`.
+- Added `dtolnay/rust-toolchain` and `Swatinem/rust-cache` to the allowlist in `actions-policy-validate.yml`.
+- Removed/relocated subdir workflows from active domains:
+  - `05_apps/patternlens/patternlens-ci-cd.yml` → `07_archive/legacy_workflows/05_apps/`
+  - `05_apps/patternlens/silence-objects-voice-module/.github/workflows/voice.yml` → `07_archive/legacy_workflows/05_apps/`
+  - Deleted workflow files under ignored `05_apps/patternlens/ghost _patterns/.github/workflows/`.
+
+**RATIONALE:**
+- Audit identified workflows living outside root `.github/workflows/` and potential required-check naming drift.
+- GitHub Actions only loads workflows from root `.github/workflows/`; subdir workflows were dead or duplicative.
+- Immutable-action policy must cover the relocated engine workflow.
+
+**VERIFIED:**
+- actions-policy-validate: PASS — all actions pinned to SHA and on allowlist.
+- YAML syntax validation: PASS for all 13 workflow files.
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm s11-check`: PASS, 0 violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 046 — Deploy safety and cost optimization alignment
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-046
+TIMESTAMP:        2026-07-01T12:00:00Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        ecbd4ba42cfb6fc68ce8547c4ac07637c147add3bf9210c10ef8daf8c7043103
+ENTRY_HASH:       6c171052be1e1e15646e8a46dffd5470d416cf708861309ad9937a3ef21d2870
+STATUS:           PARTIAL
+```
+
+**CHANGE:**
+- Aligned deploy-facing documentation with the actual root execution model in `06_infrastructure/VERCEL_OPT_PROTOCOL_v1.md`.
+- Recorded the mandatory cost controls: `turbo-ignore`, affected-only builds via `--filter=...[origin/main...HEAD]`, and mandatory `fetch-depth: 2` for deploy-relevant workflows.
+- Defined the canonical pre-deploy pipeline as: `pnpm install --frozen-lockfile` → `pnpm boundary-check` → `pnpm s11-check` → `pnpm typecheck` → affected `build` → affected `test`.
+- Created `tasks/lessons.md` to close the active lessons loop required by `AGENTS.md` §17.
+
+**RATIONALE:**
+- Audit identified drift between Vercel cost controls, CI gate sequence, and governance documentation.
+- Closing the documentation loop prevents silent erosion of the economic contract and keeps deploy safety, determinism, and cost discipline synchronized.
+
+**VERIFIED:**
+- `06_infrastructure/VERCEL_OPT_PROTOCOL_v1.md` updated to v1.2 with canonical `06_infrastructure/vercel.json`.
+- `tasks/lessons.md` created and follows the required template.
+- Documentation references `turbo-ignore`, `--filter=...[origin/main...HEAD]`, and `fetch-depth: 2` as mutually dependent mechanisms.
