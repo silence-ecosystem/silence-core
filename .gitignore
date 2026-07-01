@@ -57,3 +57,4 @@ SBOM*.spdx
 # Archived deployment configs retained for audit trail
 !07_archive/legacy_monorepo/vercel.json.root
 !07_archive/legacy_monorepo/eas.json.root
+.vercel
