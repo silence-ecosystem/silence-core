@@ -40,6 +40,13 @@ function main() {
     console.log(formatTextReport(report));
   }
 
+  if (report.staleIgnores && report.staleIgnores.length > 0) {
+    console.error('WARNING: stale ignore patterns (paths do not exist):');
+    for (const stale of report.staleIgnores) {
+      console.error(`  - ${stale}`);
+    }
+  }
+
   if (!config.reportOnly && report.totalViolations > 0) {
     process.exit(1);
   }

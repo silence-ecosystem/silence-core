@@ -1666,3 +1666,37 @@ STATUS:           PARTIAL
 - `06_infrastructure/VERCEL_OPT_PROTOCOL_v1.md` updated to v1.2 with canonical `06_infrastructure/vercel.json`.
 - `tasks/lessons.md` created and follows the required template.
 - Documentation references `turbo-ignore`, `--filter=...[origin/main...HEAD]`, and `fetch-depth: 2` as mutually dependent mechanisms.
+
+
+### ENTRY 047 — Path-check cleanup and S11 ignore validation
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-047
+TIMESTAMP:        2026-07-01T17:25:34Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        6c171052be1e1e15646e8a46dffd5470d416cf708861309ad9937a3ef21d2870
+ENTRY_HASH:       0672751fc21b8c4d34cb58facdb393433526627a0e08377ac52ec9be87dedfd5
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Added filesystem validation for path-based ignore patterns in `04_packages/@silence/s11-lint/src/index.ts`: patterns containing `/` are now checked with `test -f`/`-e` against scanned targets; non-existent paths are reported as `staleIgnores` instead of being silently retained.
+- Removed stale hard-coded ignores that no longer exist on disk:
+  - `patternlens/patternlens-ci-cd.yml` from S11 default ignore list.
+  - `patternlens/AUDITS` from S11 default ignore list.
+  - `patternlens/next.config.js` from S11 default ignore list.
+- Normalized existing S11 ignores to concrete paths that exist:
+  - `patternlens/app` → `patternlens/src/app`.
+  - `patternlens/components` → `patternlens/src/components`.
+- Cleaned up vitest/eslint hard-coded excludes tied to `silence-objects-voice-module` (paths verified to exist; kept because the directory is still present).
+- Confirmed `06_infrastructure/eas.json` and `07_archive/legacy_monorepo/vercel.json.root` exist and remain referenced only by `turbo.json` and `.gitignore` respectively.
+
+**RATIONALE:**
+- Hard-coded paths in policy checks decay silently during monorepo refactors and create false confidence.
+- Moving forward, every checker that depends on a specific file or directory must validate existence (`test -f` / `find` / `glob`) before acting on it.
+
+**VERIFIED:**
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm s11-check`: PASS, 0 violations.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.

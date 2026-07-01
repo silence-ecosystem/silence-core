@@ -25,4 +25,6 @@ export interface S11Report {
   readonly totalViolations: number;
   readonly filesAffected: number;
   readonly violations: readonly S11Violation[];
+  /** Ignore patterns that pointed at non-existent paths during the scan. */
+  readonly staleIgnores?: readonly string[];
 }
