@@ -1,25 +1,99 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "turbo.json",
+    "vercel.json",
+    "eas.json",
+    ".dependency-cruiser.js",
+    ".github/workflows/s11-check.yml",
+    "01_governance/**"
+  ],
+  "globalEnv": [
+    "NODE_ENV",
+    "CI",
+    "TURBO_TEAM",
+    "TURBO_TOKEN",
+    "NEXT_TELEMETRY_DISABLED",
+    "EXPO_TOKEN",
+    "EAS_PROJECT_ID",
+    "SILENCE_CANON_VERSION",
+    "SILENCE_COMMIT_ID"
+  ],
   "tasks": {
-    "boundary-check": {
-      "cache": false
-    },
-    "s11-check": {
-      "cache": false
-    },
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
-    },
-    "lint": {
-      "outputs": []
+      "dependsOn": [
+        "^build",
+        "^typecheck",
+        "^lint"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        ".env*",
+        "01_governance/**"
+      ],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "build/**",
+        "coverage/**",
+        "android/**",
+        "ios/**",
+        "!**/.next/cache/**"
+      ]
     },
     "test": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "01_governance/**"
+      ],
+      "outputs": [
+        "coverage/**"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "^lint"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "01_governance/**"
+      ],
       "outputs": []
     },
     "typecheck": {
-      "dependsOn": ["^build"],
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "01_governance/**"
+      ],
+      "outputs": [],
+      "cache": false
+    },
+    "boundary-check": {
+      "cache": false,
+      "inputs": [
+        "03_ee/**",
+        "04_packages/**",
+        "05_apps/**",
+        ".dependency-cruiser.js"
+      ],
+      "outputs": []
+    },
+    "s11-check": {
+      "cache": false,
+      "inputs": [
+        "01_governance/**",
+        "04_packages/**",
+        "05_apps/**",
+        ".github/workflows/s11-check.yml"
+      ],
       "outputs": []
     }
   }

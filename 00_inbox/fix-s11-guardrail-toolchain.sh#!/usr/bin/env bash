@@ -1,0 +1,19 @@
+# File: /home/ewa/silence/00_inbox/fix-s11-guardrail-toolchain.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd /home/ewa/silence/04_packages/@silence/s11-guardrail-lint
+
+echo "== LOCALTASK: pnpm install (no --frozen-lockfile) w s11-guardrail-lint =="
+
+# Tu celowo BEZ --frozen-lockfile, bo lockfile i tak jest już out-of-sync
+pnpm install
+
+echo
+echo "== CHECK: czy tsc jest dostępne z local node_modules =="
+./node_modules/.bin/tsc --version || {
+  echo "[ERROR] local tsc nadal niedostępne"
+  exit 1
+}
+
+echo "[OK] lokalny toolchain dla @silence/s11-guardrail-lint gotowy"

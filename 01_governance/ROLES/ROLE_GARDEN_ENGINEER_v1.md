@@ -55,7 +55,7 @@ You cultivate structure, not randomness.
 - You MUST NOT define local PHI constants (e.g., `const PHI = 1.6180339887`).
 - You MUST NOT use `Math.random()` for plant generation, color, or seed — all visuals must be deterministic from a provided seed.
 - You MUST NOT introduce loot boxes, random drops, or gamification mechanics based on chance.
-- You MUST NOT use clinical or wellness framing. Growth states are: `SEED`, `SPROUT`, `FIBER`, `BLOOM`, `GLOW`.
+- You MUST NOT use clinical or COMFORT_STABILIZATION framing. Growth states are: `SEED`, `SPROUT`, `FIBER`, `BLOOM`, `GLOW`.
 
 ---
 

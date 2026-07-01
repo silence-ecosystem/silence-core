@@ -1,0 +1,208 @@
+# silence-pipeline.yml
+# S11.COMMIT.ID: S11-2026-0623-CICD-PHI-001
+# Silence Protocol CI/CD — GitHub Actions
+# φ-derived constants injected via env — see AGENTS.md §2 MATH_CORE
+
+name: silence-pipeline
+
+on:
+  push:
+    branches: [main, 'release/*']
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  SILENCE_GOLDENSECONDMS: '1618'
+  SILENCE_TIMEOUT_L1_MIN: '1'
+  SILENCE_TIMEOUT_L2_MIN: '2'
+  SILENCE_TIMEOUT_L3_MIN: '3'
+  SILENCE_WAIT_FIB8_MS: '2112'
+  SILENCE_WAIT_FIB13_MS: '3432'
+  SILENCE_WAIT_FIB21_MS: '5544'
+  SILENCE_CANARY_PCT: '61'
+  SILENCE_RETRY_MAX: '3'
+  PNPM_VERSION: '9.15.9'
+  NODE_VERSION: '22'
+
+jobs:
+  boundary-check:
+    name: 'boundary-check [RULE-DOM-001]'
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L1_MIN) }}
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+          disable-sudo: true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 2
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm boundary-check
+      - run: pnpm exec tsx scripts/check-domain-boundaries.ts
+
+  pnpm-audit:
+    name: 'pnpm-audit [DEPENDENCY_INTEGRITY]'
+    runs-on: ubuntu-latest
+    needs: boundary-check
+    timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L1_MIN) }}
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+          disable-sudo: true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level=high
+
+  lint-s11:
+    name: 'lint-s11 [VOCABULARY_COMPLIANCE]'
+    runs-on: ubuntu-latest
+    needs: pnpm-audit
+    timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L2_MIN) }}
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+          disable-sudo: true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @silence/s11-lint... build
+      - run: pnpm s11-check
+
+  test:
+    name: 'test [STRUCTURAL_INTEGRITY]'
+    runs-on: ubuntu-latest
+    needs: lint-s11
+    timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L2_MIN) }}
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+          disable-sudo: true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter=@silence/core test:determinism
+      - run: pnpm test:vitest
+
+  typecheck:
+    name: 'typecheck [CONTRACT_VALIDATION]'
+    runs-on: ubuntu-latest
+    needs: test
+    timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L2_MIN) }}
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+          disable-sudo: true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+
+  build:
+    name: 'build [DETERMINISTIC_CORE]'
+    runs-on: ubuntu-latest
+    needs: typecheck
+    timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L3_MIN) }}
+    outputs:
+      deployment-ref: ${{ steps.record-ref.outputs.deployment_ref }}
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+          disable-sudo: true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run build --filter=...affected
+      - id: record-ref
+        run: 'echo "deployment_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"'
+
+  deploy-canary:
+    name: 'deploy-canary [STRUCTURAL_INTEGRITY_PROBE]'
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L3_MIN) }}
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+          disable-sudo: true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - run: |
+          npx vercel deploy \
+            --token "$VERCEL_TOKEN" \
+            --target preview \
+            --meta s11_commit_id=S11-2026-0623-CICD-PHI-001 \
+            --meta deployment_ref=${{ needs.build.outputs.deployment-ref }}
+      - run: sleep $(( SILENCE_WAIT_FIB13_MS / 1000 ))
+
+  deploy-production:
+    name: 'deploy-production [CANARY_ROLLOUT_GATE]'
+    runs-on: ubuntu-latest
+    needs: deploy-canary
+    if: github.ref == 'refs/heads/main'
+    timeout-minutes: ${{ fromJSON(env.SILENCE_TIMEOUT_L3_MIN) }}
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411
+        with:
+          egress-policy: audit
+          disable-sudo: true
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - run: sleep $(( SILENCE_WAIT_FIB21_MS / 1000 ))
+      - run: |
+          npx vercel deploy \
+            --token "$VERCEL_TOKEN" \
+            --target production \
+            --meta s11_commit_id=S11-2026-0623-CICD-PHI-001 \
+            --meta deployment_ref=${{ needs.build.outputs.deployment-ref }}

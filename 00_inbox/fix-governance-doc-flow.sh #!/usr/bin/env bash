@@ -1,0 +1,13 @@
+# File: /home/ewa/silence/00_inbox/fix-governance-doc-flow.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd /home/ewa/silence
+
+# status po wykonanym commicie
+git status --short
+git log --oneline --decorate -n 5
+
+# potwierdzenie istnienia artefaktu w repo
+test -f docs/GOV_protokol_eliminacji_redundancji_senior_dev_edition_v1.0.0.md
+wc -l docs/GOV_protokol_eliminacji_redundancji_senior_dev_edition_v1.0.0.md

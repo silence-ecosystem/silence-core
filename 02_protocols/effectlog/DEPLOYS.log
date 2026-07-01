@@ -1,0 +1,26 @@
+# SILENCE EffectLog — Immutable Deployment & Effect Registry
+#
+# This file is intentionally tracked in git (exception in .gitignore).
+# It serves as an append-only, auditable log of significant system events,
+# deployments, architectural changes and governance actions.
+#
+# Format:
+# EVENT_NAME:ISO8601_TIMESTAMP:commit_hash[:optional_description]
+#
+# Rules:
+# - Never delete or modify existing entries.
+# - Always append new entries at the bottom.
+# - Keep descriptions concise but meaningful.
+# - This log is part of the project's deterministic and compliance history.
+
+# === Existing entries preserved ===
+
+DEPLOY_GUIDE_ADDED:2026-06-17T02:08:25+02:00:b9f19cdfd32e8f15bdafd5d5afde02deacbc52b6:Added immutable VERCEL_DEPLOYMENT_GUIDE v1.0.0 (S11_ENFORCED, φ³ timing)
+
+SESSION_START_PROTOCOL_ADDED:2026-06-17T02:13:00+02:00:REPLACE_WITH_ACTUAL_COMMIT:Added aggressive Session Start Protocol to AGENTS.md
+
+VERCEL_DEPLOY_SKILL_ADDED:2026-06-17T02:15:00+02:00:REPLACE_WITH_ACTUAL_COMMIT:Added .agents/skills/vercel-deploy/SKILL.md + Deployment Protocol section
+
+# === New structured entries ===
+
+AGENTS_MD_CREATED:2026-06-17T02:26:00+02:00:REPLACE_WITH_CURRENT_COMMIT:Created complete root AGENTS.md with full protocol suite (determinism, deployment, session start)

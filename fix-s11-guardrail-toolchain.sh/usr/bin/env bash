@@ -1,0 +1,18 @@
+# File: /home/ewa/silence/00_inbox/fix-s11-guardrail-toolchain.sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd /home/ewa/silence
+
+echo "== ROOT TOOLCHAIN CHECK =="
+# to NIE jest część commitu – to tylko sanity check lokalnego środowiska
+pnpm exec tsc --version || {
+  echo "[WARN] pnpm exec tsc nie działa – upewnij się, że root package.json ma devDependency \"typescript\""
+}
+
+echo
+echo "== LOCAL BUILD: @silence/s11-guardrail-lint =="
+cd 04_packages/@silence/s11-guardrail-lint
+pnpm run build
+
+echo "[OK] build @silence/s11-guardrail-lint zakończony"

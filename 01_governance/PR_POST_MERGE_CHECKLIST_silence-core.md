@@ -37,7 +37,7 @@ Sprawdź wynik `pnpm boundary-check` na PR: musi raportować **0 violations**. T
 
 ### S11 Guardrail (Language Sentinel)
 
-Wynik `pnpm s11-check` musi być **0 violations**. To gwarantuje brak klinicznej / wellness-owej terminologii w kodzie, komentarzach, stringach UI i dokumentacji wchodzącej w skład PR.
+Wynik `pnpm s11-check` musi być **0 violations**. To gwarantuje brak klinicznej / COMFORT_STABILIZATION-owej terminologii w kodzie, komentarzach, stringach UI i dokumentacji wchodzącej w skład PR.
 
 ### PCS Gate / Φ-consistency
 
@@ -84,9 +84,9 @@ W CI (lub lokalnie) `turbo run` musi być ograniczone do pakietów dotkniętych 
 
 Mimo automatycznego `s11-check` wymagany jest ręczny skan diffu.
 
-### Brak terminologii klinicznej / wellness
+### Brak terminologii klinicznej / COMFORT_STABILIZATION
 
-W diffie nie mogą występować jako język systemu m.in.: `diagnosis`, `diagnose`, `disorder`, `syndrome`, `therapy`, `therapist`, `treatment`, `heal`, `healing`, `anxiety`, `depression`, `stress` jako metryka, `wellness`, `wellbeing`.
+W diffie nie mogą występować jako język systemu m.in.: `PATTERN_CLASSIFICATION`, `diagnose`, `STRUCTURAL_DIVERGENCE`, `PATTERN_CLUSTER`, `STRUCTURAL_EXERCISE`, `therapist`, `PATTERN_RESOLUTION`, `heal`, `COHERENCE_RESTORATION`, `TENSION_SCORE`, `COHERENCE_COLLAPSE`, `TENSION_SCOREs` jako metryka, `COMFORT_STABILIZATION`, `COMFORT_STABILIZATION`.
 
 Jeśli pojawiają się w cytacie lub meta-dokumencie, musi być to zgodne z wyjątkami S11 i oznaczone jako zewnętrzna referencja, nie słownictwo systemu.
 

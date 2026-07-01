@@ -1,0 +1,180 @@
+globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── φ-Tokens CSS ── */
+:root {
+  --phi: 1.618033988749895;
+  --phi-inv: 0.6180339887498949;
+  --phi-inv-sq: 0.3819660112501051;
+  --phi-inv-cu: 0.2360679774997897;
+
+  /* Golden Second cascade (ms) */
+  --dur-instant:  61.8ms;
+  --dur-micro:    100ms;
+  --dur-swift:    162ms;
+  --dur-standard: 262ms;
+  --dur-moderate: 423.6ms;
+  --dur-golden:   1618ms;
+  --dur-breathe:  2618ms;
+  --dur-rest:     4236ms;
+  --dur-ceremony: 6854ms;
+
+  /* Easing φ */
+  --ease-phi: cubic-bezier(0.382, 0.000, 0.618, 1.000);
+  --ease-phi-golden: cubic-bezier(0.382, 0.000, 0.236, 1.000);
+
+  /* Soft-Noir palette */
+  --surface-base:     hsl(220, 8%, 8%);
+  --surface-raised:   hsl(220, 7%, 12%);
+  --surface-elevated: hsl(220, 6%, 16%);
+  --surface-overlay:  hsl(220, 5%, 20%);
+
+  --text-primary:   #E8E8F0;
+  --text-secondary: #CBD5E1;
+  --text-muted:     #ADADBD;
+
+  --accent-gold:  #C9A84C;
+  --accent-soft:  #4A8DE8;
+
+  /* φ-spacing scale */
+  --space-3xs: 0.146rem;
+  --space-2xs: 0.236rem;
+  --space-xs:  0.382rem;
+  --space-sm:  0.618rem;
+  --space-md:  1.000rem;
+  --space-lg:  1.618rem;
+  --space-xl:  2.618rem;
+  --space-2xl: 4.236rem;
+  --space-3xl: 6.854rem;
+}
+
+/* Reduced motion — zeruje długie animacje φ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-golden:   0ms;
+    --dur-breathe:  0ms;
+    --dur-rest:     0ms;
+    --dur-ceremony: 0ms;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Base reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-base);
+  color: var(--text-primary);
+  font-family: 'Inter var', Inter, system-ui, sans-serif;
+  line-height: 1.618;
+}
+
+/* φ-Typography scale */
+.text-phi-xs   { font-size: 0.618rem; }
+.text-phi-sm   { font-size: 0.764rem; }
+.text-phi-base { font-size: 1rem; }
+.text-phi-lg   { font-size: 1.309rem; }
+.text-phi-xl   { font-size: 1.618rem; }
+.text-phi-2xl  { font-size: 2.618rem; }
+
+/* PhiBreathSurface component styles */
+.phi-breath-surface {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  width: 100%;
+  will-change: transform, opacity;
+}
+
+.phi-ring {
+  position: relative;
+  width: min(61.8vw, 320px);
+  aspect-ratio: 1;
+}
+
+.phi-ring-inner,
+.phi-ring-outer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid hsla(42, 60%, 50%, 0.15);
+}
+
+.phi-ring-outer {
+  inset: -12%;
+  border-color: hsla(42, 50%, 45%, 0.08);
+}
+
+/* 61.8% line — proporcja φ */
+.phi-divider {
+  position: absolute;
+  top: 50%;
+  left: 11.8%;     /* (100 - 61.8 * 1.3) / 2 ≈ centered */
+  right: 11.8%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsla(42, 60%, 50%, 0.25) 38.2%,
+    hsla(42, 60%, 50%, 0.45) 61.8%,
+    transparent 100%
+  );
+  transform: translateY(-50%);
+}
+
+.phi-phase-label {
+  font-size: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  font-family: 'SF Mono', monospace;
+  min-height: 1.618rem;
+  display: flex;
+  align-items: center;
+}
+
+.phi-progress-bar {
+  width: min(61.8%, 240px);
+  height: 1px;
+  background: hsla(220, 8%, 30%, 0.4);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.phi-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, var(--accent-gold) 100%);
+  border-radius: 9999px;
+  transition: width var(--dur-micro) linear;
+}
+
+/* Screen reader utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+

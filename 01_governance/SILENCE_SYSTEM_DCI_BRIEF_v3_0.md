@@ -26,7 +26,7 @@ Tagline systemu brzmi: **The Signal in Every Silence**.[3] Brief ma charakter wy
 
 SILENCE SYSTEM jest deterministyczną infrastrukturą poznawczą, a nie aplikacją wsparcia, companionem ani narzędziem o framingu care-first.[1][3] System należy opisywać jako instrument strukturalny do pracy na sygnale, rytmie, kontraktach zdarzeń, wzroście i raportowaniu audit trail, bez narracji terapeutycznej i bez języka sugerującego opiekę.[1][5]
 
-Dozwolone pozycjonowanie: platforma systemowa, infrastruktura, engine, command center, signal layer, deterministic interface.[1][3] Niedozwolone pozycjonowanie: biblia, ogród jako marka nadrzędna, companion, healing app, wellness app, self-help app.[3][5]
+Dozwolone pozycjonowanie: platforma systemowa, infrastruktura, engine, command center, signal layer, deterministic interface.[1][3] Niedozwolone pozycjonowanie: biblia, ogród jako marka nadrzędna, companion, COHERENCE_RESTORATION app, COMFORT_STABILIZATION app, self-help app.[3][5]
 
 ## 3. Tożsamość i definicja produktu [T]
 
@@ -36,14 +36,14 @@ Podstawowa obietnica brzmi: system redukuje szum interpretacyjny przez jawne kon
 
 ## 4. Rygor S11 [T]
 
-W całym systemie obowiązuje Vocabulary Lock-In: terminologia kliniczna, normatywna i care-framed jest zabroniona w kodzie, copy UI, payloadach i dokumentacji operacyjnej.[1] Każde odniesienie do stresu musi być mapowane na `tension_score`, każde odniesienie do pomocy na `phi_tagged_intervention`, a stany systemowe mają być opisywane jako `state_violation` i `signal_noise`.[1]
+W całym systemie obowiązuje Vocabulary Lock-In: terminologia kliniczna, normatywna i care-framed jest zabroniona w kodzie, copy UI, payloadach i dokumentacji operacyjnej.[1] Każde odniesienie do TENSION_SCOREu musi być mapowane na `tension_score`, każde odniesienie do pomocy na `phi_tagged_intervention`, a stany systemowe mają być opisywane jako `state_violation` i `signal_noise`.[1]
 
 Minimalna mapa S11 dla briefu:
 
 | Termin zakazany      | Termin kanoniczny             |
 | -------------------- | ----------------------------- |
-| stres                | `tension_score` [1]           |
-| lęk / anxiety        | `tension_score` [1]           |
+| TENSION_SCORE                | `tension_score` [1]           |
+| TENSION_SCORE / TENSION_SCORE        | `tension_score` [1]           |
 | chaos                | `signal_noise` [1]            |
 | pomoc / wsparcie     | `phi_tagged_intervention` [1] |
 | stan naruszenia      | `state_violation` [1]         |
@@ -82,7 +82,7 @@ Warunki zamknięcia MVP są następujące: pełny flow UI, wspólne stałe timin
 
 ## 8. Model doświadczenia produktu [T]
 
-Interfejs ma być projektowany jak narzędzie laboratoryjne lub panel systemowy, a nie jak aplikacja wellbeing.[3] Referencyjna estetyka to Linear, Notion, Cursor, VS Code i GitHub: ciemny interfejs, wysoka czytelność, monospace tam, gdzie wspiera to systemowy charakter, brak dekoracyjnych nagród i brak ciepłych metafor wizualnych.[3]
+Interfejs ma być projektowany jak narzędzie laboratoryjne lub panel systemowy, a nie jak aplikacja COMFORT_STABILIZATION.[3] Referencyjna estetyka to Linear, Notion, Cursor, VS Code i GitHub: ciemny interfejs, wysoka czytelność, monospace tam, gdzie wspiera to systemowy charakter, brak dekoracyjnych nagród i brak ciepłych metafor wizualnych.[3]
 
 Język mikrocopy musi być techniczny, jednoznaczny i nieperswazyjny: `Continue`, `Generate`, `Save`, `Export`, `Reset`, `Delete`, bez framingu „tell us more” albo „we are here for you”.[3] Każdy ekran ma komunikować granice systemu równie wyraźnie jak jego możliwości.[5][3]
 

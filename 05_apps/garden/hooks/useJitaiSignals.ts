@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { evaluate, JitaiContext, JitaiSignal, ALL_RULES } from '@silence/jitai';
+import { evaluate, JitaiContext, JitaiSignal, ALL_RULES } from '@silence/sdk';
 import type { GardenState } from '@/lib/gardenTypes';
 
 function buildContext(state: GardenState | null): JitaiContext {
@@ -75,7 +75,7 @@ export function useJitaiSignals(state: GardenState | null) {
   const [signals, setSignals] = useState<readonly JitaiSignal[]>([]);
   const [lastEvaluated, setLastEvaluated] = useState<number>(0);
 
-  const context = useMemo(() => buildContext(state), [state, lastEvaluated]);
+  const context = useMemo(() => buildContext(state), [state]);
 
   const evaluateRules = useCallback(() => {
     const result = evaluate(context, { rules: ALL_RULES, maxSignals: 2 });

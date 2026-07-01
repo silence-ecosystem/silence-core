@@ -1,0 +1,74 @@
+:root {
+  /* Fibonacci Spacing */
+  --space-3xs: clamp(0.109rem, 0.146rem, 0.183rem);
+  --space-2xs: clamp(0.177rem, 0.236rem, 0.295rem);
+  --space-xs: clamp(0.287rem, 0.382rem, 0.478rem);
+  --space-sm: clamp(0.464rem, 0.618rem, 0.773rem);
+  --space-md: clamp(0.875rem, 1.000rem, 1.250rem);
+  --space-lg: clamp(1.214rem, 1.618rem, 2.023rem);
+  --space-xl: clamp(1.964rem, 2.618rem, 3.273rem);
+  --space-2xl: clamp(3.177rem, 4.236rem, 5.295rem);
+  --space-3xl: clamp(5.141rem, 6.854rem, 8.568rem);
+
+  /* Golden Second Cascade */
+  --dur-instant: 62ms;
+  --dur-micro: 100ms;
+  --dur-swift: 162ms;
+  --dur-standard: 262ms;
+  --dur-moderate: 424ms;
+  --dur-golden: 1618ms;
+  --dur-breathe: 2618ms;
+  --dur-rest: 4236ms;
+  --dur-ceremony: 6854ms;
+
+  /* Easing */
+  --ease-phi: cubic-bezier(0.382, 0.000, 0.618, 1.000);
+  --ease-golden: cubic-bezier(0.38, 0.0, 0.12, 1.0);
+
+  /* Surfaces */
+  --surface-base: hsl(220, 8%, 8%);
+  --surface-raised: hsl(220, 7%, 12%);
+  --surface-elevated: hsl(220, 6%, 16%);
+  --surface-overlay: hsl(220, 5%, 20%);
+  --text-primary: #E8E8F0;
+  --text-secondary: #CBD5E1;
+  --text-muted: #ADADBD;
+  --accent-gold: #C9A84C;
+  --accent-soft: #4A8DE8;
+  
+  /* Breathing Definitions */
+  --breath-focus-cycle: 9472ms;
+  --breath-calm-cycle: 12090ms;
+}
+
+/* Animations */
+@keyframes breathe-flow {
+  0%, 100% { opacity: 0.92; transform: scale(1.000); }
+  50% { opacity: 1.00; transform: scale(1.009); }
+}
+@keyframes breathe-focus {
+  0% { opacity: 0.90; transform: scale(1.000); }
+  31.7% { opacity: 0.95; transform: scale(1.009); }
+  48.8% { opacity: 0.95; transform: scale(1.009); }
+  100% { opacity: 0.90; transform: scale(1.000); }
+}
+@keyframes breathe-calm {
+  0% { opacity: 0.88; transform: scale(1.000); }
+  33.1% { opacity: 0.94; transform: scale(1.012); }
+  46.5% { opacity: 0.94; transform: scale(1.012); }
+  100% { opacity: 0.88; transform: scale(1.000); }
+}
+@keyframes golden-ring-pulse {
+  0% { opacity: 0; transform: scale(0.9); }
+  50% { opacity: 0.618; transform: scale(1.0); }
+  100% { opacity: 0; transform: scale(1.1); }
+}
+
+.breathing-surface-flow { animation: breathe-flow 5000ms var(--ease-phi) infinite; }
+.breathing-surface-focus { animation: breathe-focus var(--breath-focus-cycle) var(--ease-golden) infinite; }
+.breathing-surface-calm { animation: breathe-calm var(--breath-calm-cycle) var(--ease-golden) infinite; }
+.damping-ring {
+  position: absolute; inset: -4px; border: 2px solid var(--accent-gold);
+  border-radius: inherit; pointer-events: none;
+  animation: golden-ring-pulse var(--dur-breathe) var(--ease-golden) forwards;
+}

@@ -1,0 +1,103 @@
+name: Voice Pipeline CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/voice/**'
+      - 'apps/patternslab/web/app/voice/**'
+      - 'apps/patternslab/web/lib/voice-*'
+      - 'apps/patternlens/app/voice/**'
+      - 'apps/patternlens/components/Voice*'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/voice/**'
+      - 'apps/*/app/voice/**'
+
+jobs:
+  typecheck:
+    name: TypeScript Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @silence/voice typecheck
+      - run: pnpm --filter patternslab-web typecheck
+      - run: pnpm --filter patternlens typecheck
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: typecheck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @silence/voice test
+      - name: Upload Coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: voice-coverage
+          path: packages/voice/coverage/
+
+  contract-check:
+    name: Contract Compliance (Voice)
+    runs-on: ubuntu-latest
+    needs: typecheck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Run Contract Validator (voice scope)
+        run: node scripts/contract-validator.js --ci --scope=language,safety
+      - name: Upload Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: voice-contract-report
+          path: contract-report.json
+
+  build:
+    name: Build Voice Package
+    runs-on: ubuntu-latest
+    needs: [test, contract-check]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @silence/voice build
+      - name: Check bundle size
+        run: |
+          VOICE_SIZE=$(du -sb packages/voice/dist/ | cut -f1)
+          echo "Voice package size: ${VOICE_SIZE} bytes"
+          # 50KB gzipped limit
+          GZIP_SIZE=$(tar czf - packages/voice/dist/ | wc -c)
+          echo "Gzipped: ${GZIP_SIZE} bytes"
+          if [ "$GZIP_SIZE" -gt 51200 ]; then
+            echo "::error::Voice bundle exceeds 50KB gzipped limit (${GZIP_SIZE} bytes)"
+            exit 1
+          fi
+          echo "✅ Bundle size OK: ${GZIP_SIZE} bytes gzipped"

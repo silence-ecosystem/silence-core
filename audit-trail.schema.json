@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silence.system/schema/audit-trail.schema.json",
+  "title": "EffectLog Append Only Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "S11.COMMIT.ID",
+    "prevHash",
+    "timestamp_utc",
+    "PCS_SCORE",
+    "operator_id",
+    "artifact_path",
+    "event",
+    "status",
+    "hash"
+  ],
+  "properties": {
+    "S11.COMMIT.ID": {
+      "type": "string",
+      "pattern": "^KANON-1\\.0-[0-9]{8}-[0-9]{3}$"
+    },
+    "prevHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "PCS_SCORE": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "operator_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "artifact_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PASS", "PARTIAL", "BLOCKED", "WORLDHALT"]
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "append_only": {
+      "type": "boolean",
+      "const": true
+    }
+  }
+}

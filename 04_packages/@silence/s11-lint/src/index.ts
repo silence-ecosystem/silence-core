@@ -18,6 +18,51 @@ const DEFAULT_IGNORE = [
   'S11_CLEANUP_REPORT.md',
   'S11_POST_FIX_REPORT.md',
   'ROLES',
+  // PatternLens dead structures retained per repo policy; not scanned.
+  'patternlens/api',
+  'patternlens/app',
+  'patternlens/_app',
+  'patternlens/components',
+  'patternlens/_components',
+  'patternlens/config',
+  'patternlens/database',
+  'patternlens/demo',
+  'patternlens/docs',
+  'patternlens/ghost _patterns',
+  'patternlens/health',
+  'patternlens/hooks',
+  'patternlens/lib',
+  'patternlens/mobile-lens',
+  'patternlens/objects',
+  'patternlens/packages',
+  'patternlens/patternlens-agent',
+  'patternlens/schema',
+  'patternlens/scripts',
+  'patternlens/silence-objects-voice-module',
+  'patternlens/supabase',
+  'patternlens/tests',
+  'patternlens/types',
+  'patternlens/__tests__',
+  'patternlens/{src',
+  'patternlens/admin-panel',
+  'patternlens/AUDITS',
+  'patternlens/patternlens-content-bible.json',
+  'patternlens/patternlens-ci-cd.yml',
+  'patternlens/patternlens-superdashboard.jsx',
+  'patternlens/tailwind.config.ts',
+  'patternlens/tailwind.config.js',
+  'patternlens/health-route.ts',
+  'patternlens/health-route-v5.ts',
+  'patternlens/layout_0140_Compliance-Legal.tsx',
+  'patternlens/layout_Compliance-Legal.tsx',
+  'patternlens/page_Compliance-Legal.tsx',
+  'patternlens/support-page_0140_Compliance-Legal.tsx',
+  'patternlens/support-page_Compliance-Legal.tsx',
+  'patternlens/middleware.js',
+  'patternlens/middleware.ts',
+  'patternlens/next.config.js',
+  'patternlens/next.config.ts',
+  'patternlens/validate-strings.js',
 ];
 
 const S11_META_FILES = [
@@ -27,11 +72,22 @@ const S11_META_FILES = [
   'language/src/forbidden.ts',
   'PR_POST_MERGE_CHECKLIST_silence-core.md',
   'validator/README.md',
+  'S11_GOVERNANCE_SPRINT_2026-06-23.md',
+  'S11_VIOLATIONS_MAPPING_TEMPLATE.md',
+  'PATTERNLENS_SKELETON_AUDIT_20260625.md',
 ];
 
-function shouldIgnore(filePath: string, ignorePatterns: readonly string[]): boolean {
-  const parts = filePath.split(path.sep);
-  return parts.some((part) => ignorePatterns.includes(part));
+function normalizePathSeparators(filePath: string): string {
+  return filePath.split(path.sep).join('/');
+}
+
+function shouldIgnore(relativePath: string, ignorePatterns: readonly string[]): boolean {
+  const normalized = normalizePathSeparators(relativePath);
+  const parts = normalized.split('/');
+  // Exact segment match (legacy behaviour for simple directory/file names).
+  if (parts.some((part) => ignorePatterns.includes(part))) return true;
+  // Prefix match for explicit relative paths (e.g. patternlens/api, patternlens/ghost _patterns).
+  return ignorePatterns.some((pattern) => normalized === pattern || normalized.startsWith(`${pattern}/`));
 }
 
 function shouldScan(filePath: string, extensions: readonly string[]): boolean {
@@ -52,7 +108,8 @@ function scanFile(filePath: string, relativePath: string): readonly S11Violation
       content.includes('FORBIDDEN_CLASSES') ||
       content.includes('ALLOWED_ALTERNATIVES') ||
       content.includes('S11_FORBIDDEN_TERMS') ||
-      content.includes('S11 Policy Constants')
+      content.includes('S11 Policy Constants') ||
+      content.includes('S11_SAFETY_GUARD')
     ) {
       return violations;
     }
@@ -76,11 +133,13 @@ function scanDirectory(dirPath: string, baseDir: string, config: Required<S11Lin
     const relativePath = path.relative(baseDir, fullPath);
 
     if (entry.isDirectory()) {
-      if (!shouldIgnore(fullPath, config.ignorePatterns)) {
+      if (!shouldIgnore(relativePath, config.ignorePatterns)) {
         violations.push(...scanDirectory(fullPath, baseDir, config));
       }
     } else if (entry.isFile() && shouldScan(fullPath, config.extensions)) {
-      violations.push(...scanFile(fullPath, relativePath));
+      if (!shouldIgnore(relativePath, config.ignorePatterns)) {
+        violations.push(...scanFile(fullPath, relativePath));
+      }
     }
   }
 

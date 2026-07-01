@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   MATH_CORE_φ  —  Single Source of Truth
+   φ = 1.618033988749895
+   GOLDENSECOND = 1618ms
+   Fibonacci base 16px: 0,1,2,3,5,8,13,21,34,55,89,144
+   ============================================================ */
+
+:root {
+  /* — Soft Noir Palette — */
+  --color-bg:            hsl(220, 8%, 8%);       /* #111318  warm obsidian */
+  --color-surface:       hsl(220, 8%, 10%);      /* #151821 */
+  --color-surface-raised:hsl(220, 8%, 13%);      /* #1a1e27 */
+  --color-border:        rgba(255,255,255,0.06);
+  --color-text:          hsl(35, 15%, 88%);      /* #E8E4DF  warm white */
+  --color-text-secondary:hsl(35, 10%, 65%);
+  --color-text-muted:    hsl(35, 8%, 45%);
+  --color-accent:        hsl(234, 70%, 72%);     /* #7B8CFF  perceptual violet */
+  --color-accent-gold:   hsl(43, 60%, 52%);      /* #D4AF37  desaturated gold */
+  --color-accent-teal:   hsl(172, 48%, 48%);     /* #3DBFAE */
+
+  /* — GOLDENSECOND Cascade — */
+  --dur-instant:   62ms;   /* φ^-4 × 1000 */
+  --dur-micro:    100ms;
+  --dur-fast:     162ms;   /* φ^-2 × 1000 */
+  --dur-normal:   262ms;   /* φ^-1 × 1000 */
+  --dur-soft:     424ms;   /* φ^0  × 262  */
+  --dur-slow:     618ms;   /* φ^1  × 382  */
+  --dur-calm:    1000ms;
+  --dur-golden:  1618ms;   /* GOLDENSECOND */
+  --dur-breath:  2618ms;   /* φ^2 × 1000  */
+
+  /* — Fibonacci Spacing (base 16px) — */
+  --space-1:   1px;
+  --space-2:   2px;
+  --space-3:   3px;
+  --space-5:   5px;
+  --space-8:   8px;
+  --space-13:  13px;
+  --space-21:  21px;   /* --space-phi-1 */
+  --space-34:  34px;   /* --space-phi-2 */
+  --space-55:  55px;   /* --space-phi-3 */
+  --space-89:  89px;   /* --space-phi-4 */
+  --space-144: 144px;  /* --space-phi-5 */
+
+  /* Aliases matching token files */
+  --space-phi-1: var(--space-21);
+  --space-phi-2: var(--space-34);
+  --space-phi-3: var(--space-55);
+  --space-phi-4: var(--space-89);
+  --space-phi-5: var(--space-144);
+  --space-sm:  var(--space-13);
+  --space-md:  var(--space-21);
+  --space-lg:  var(--space-34);
+  --space-xl:  var(--space-55);
+  --space-2xl: var(--space-89);
+
+  /* — Easing — */
+  --ease-phi:   cubic-bezier(0.16, 1, 0.3, 1);      /* spring-like */
+  --ease-soft:  cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* — Golden Ratio Layout — */
+  --ratio-major: 61.8%;
+  --ratio-minor: 38.2%;
+
+  /* — iOS Safe Area — */
+  --safe-top:    env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+  --safe-left:   env(safe-area-inset-left);
+  --safe-right:  env(safe-area-inset-right);
+}
+
+/* ============================================================
+   GLOBAL RESET — iOS-first
+   ============================================================ */
+
+html, body {
+  /* iOS rubber-band fix: containment at root */
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  -webkit-text-size-adjust: 100%;  /* prevent font scaling on rotation */
+  scroll-behavior: smooth;
+}
+
+#app-root {
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ============================================================
+   MOTION — prefers-reduced-motion guard (WCAG 2.2)
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   @layer utilities — Tailwind extensions
+   ============================================================ */
+
+@layer utilities {
+
+  /* — Safe Area — */
+  .pt-safe    { padding-top:    var(--safe-top); }
+  .pb-safe    { padding-bottom: var(--safe-bottom); }
+  .pl-safe    { padding-left:   var(--safe-left); }
+  .pr-safe    { padding-right:  var(--safe-right); }
+  .px-safe    { padding-left: var(--safe-left); padding-right: var(--safe-right); }
+  .min-h-screen-safe {
+    min-height: calc(100vh - var(--safe-top) - var(--safe-bottom));
+  }
+
+  /* — Touch — */
+  .touch-manipulation { touch-action: manipulation; }
+
+  /* — Phi Spacing utilities — */
+  .p-phi-1  { padding:         var(--space-phi-1); }
+  .p-phi-2  { padding:         var(--space-phi-2); }
+  .px-phi-1 { padding-inline:  var(--space-phi-1); }
+  .px-phi-2 { padding-inline:  var(--space-phi-2); }
+  .gap-phi-1{ gap:             var(--space-phi-1); }
+  .gap-phi-2{ gap:             var(--space-phi-2); }
+
+  /* — GOLDENSECOND Duration utilities — */
+  .duration-instant { transition-duration: var(--dur-instant); }
+  .duration-262     { transition-duration: var(--dur-normal); }
+  .duration-golden  { transition-duration: var(--dur-golden); }
+
+  /* — Easing — */
+  .ease-phi   { transition-timing-function: var(--ease-phi); }
+  .ease-soft  { transition-timing-function: var(--ease-soft); }
+
+  /* — Soft Surfaces (Glassmorphism) — */
+  .soft-card {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(14, 14, 28, 0.6);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .soft-card-elevated {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(21, 21, 42, 0.8);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 16px 64px rgba(0,0,0,0.6);
+  }
+
+  /* — Bento Grid (12-column, golden ratio) — */
+  .bento   { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 1rem; }
+  .bento-2 { grid-column: span 2; }
+  .bento-3 { grid-column: span 3; }
+  .bento-4 { grid-column: span 4; }
+  .bento-5 { grid-column: span 5; }   /* minor  38.2% */
+  .bento-6 { grid-column: span 6; }
+  .bento-7 { grid-column: span 7; }   /* major  61.8% */
+  .bento-8 { grid-column: span 8; }
+  .bento-12{ grid-column: span 12; }
+
+  /* — Golden Silence breathing animation — */
+  .golden-breath {
+    animation: golden-pulse var(--dur-breath) ease-in-out infinite;
+  }
+  @keyframes golden-pulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50%       { opacity: 1;   transform: scale(1.03); }
+  }
+}

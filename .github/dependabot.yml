@@ -1,0 +1,30 @@
+// File: /home/ewa/silence/.github/dependabot.yml
+version: 2
+
+updates:
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    groups:
+      github-actions:
+        patterns:
+          - 'actions/*'
+          - 'pnpm/*'
+
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '06:00'
+      timezone: 'Europe/Warsaw'
+    groups:
+      turbo-stack:
+        patterns:
+          - 'turbo'
+      typescript-stack:
+        patterns:
+          - 'typescript'
+          - '@types/*'
+          - '@typescript-eslint/*'

@@ -1,0 +1,131 @@
+name: deploy
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+permissions: read-all
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: fetch-main
+        run: git fetch origin main --depth=1
+
+      - name: setup-pnpm
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+
+      - name: setup-node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: install
+        run: pnpm install --frozen-lockfile
+
+      - name: boundary-check
+        run: pnpm boundary-check
+
+      - name: build-s11-lint
+        run: pnpm --filter=@silence/s11-lint... run build
+      - name: s11-check
+        run: pnpm s11-check
+
+      - name: typecheck
+        run: pnpm typecheck
+
+      - name: build-affected
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+        run: pnpm exec turbo run build --filter=...[origin/main...HEAD]
+
+      - name: test-affected
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+        run: pnpm exec turbo run test --filter=...[origin/main...HEAD]
+
+      - name: verify-vercel-token
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: test "$(printf "%s" "$VERCEL_TOKEN" | wc -c)" -ge 2
+
+      - name: verify-turbo-token
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+        run: test "$(printf "%s" "$TURBO_TOKEN" | wc -c)" -ge 2
+
+      - name: verify-git-config-clean
+        run: |
+          if grep -r "ghp_" .git/config 2>/dev/null; then
+            echo "BLOCKED: ghp_ token detected in .git/config"
+            exit 1
+          fi
+
+  deploy-vercel:
+    name: deploy-vercel
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs:
+      - verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+
+      - name: setup-pnpm
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+
+      - name: setup-node
+        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: install
+        run: pnpm install --frozen-lockfile
+
+      - name: pull-vercel-environment
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: vercel-build
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel build --token="$VERCEL_TOKEN"
+
+      - name: vercel-deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"

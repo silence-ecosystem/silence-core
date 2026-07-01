@@ -1,0 +1,55 @@
+# .github/workflows/deploy-guard.yml
+name: deploy-guard
+on: [push, pull_request]
+
+jobs:
+  boundary-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7 # FIB(13) × GOLDENSECONDMS ÷ 1000
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: RULE-DOM-001 boundary scan
+        run: pnpm boundary-check
+      - name: Build s11-lint with dependencies
+        run: pnpm --filter=@silence/s11-lint... run build
+      - name: S11 vocabulary scan
+        run: pnpm s11-check
+
+  determinism-gate:
+    needs: boundary-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: core determinism test
+        run: pnpm --filter=@silence/core test:determinism
+
+  build-gate:
+    needs: determinism-gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        with:
+          fetch-depth: 0
+      - name: fetch-main
+        run: git fetch origin main --depth=1
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec turbo run build --filter=...[origin/main...HEAD]

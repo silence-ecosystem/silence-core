@@ -4,5 +4,5 @@
  * Public API for @silence/telemetry.
  */
 
-export * from './types';
-export * from './trackSilenceEvent';
+export * from './types.js';
+export * from './trackSilenceEvent.js';
