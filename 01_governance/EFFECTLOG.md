@@ -1757,3 +1757,35 @@ STATUS:           PASS
 - `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
 - `pnpm boundary-check`: PASS, 0 violations.
 - `pnpm typecheck`: PASS, 25/25 tasks successful.
+
+
+### ENTRY 050 — Modernize verify job runtime and remove pnpm/action-setup dependency
+
+```
+EFFECTLOG.ID:     EFFECTLOG-20260701-050
+TIMESTAMP:        2026-07-01T18:33:23Z
+EVENT_TYPE:       REMEDIATION
+ACTOR:            kimi-code CLI
+PREV_HASH:        9c8ea8ea30433d5a6ebafe16b3dc48727b87a16c5818d120f4c178ce224c01ac
+ENTRY_HASH:       c3c25af78bafe5418c06b793b35c53e2f5cdd580905c962a08468b72a0e7e602
+STATUS:           PASS
+```
+
+**CHANGE:**
+- Updated `verify` job in `.github/workflows/deploy.yml`:
+  - `actions/checkout` pinned to SHA of `v6.0.3`.
+  - `actions/setup-node` pinned to SHA of `v6.4.0` with `node-version: 24`.
+  - Removed `pnpm/action-setup`; pnpm is now provided via `corepack enable` + `corepack prepare pnpm@9.15.9 --activate`.
+  - Added `cache-dependency-path` for monorepo lockfiles.
+  - Added explicit tool-version reporting and cache-input verification steps.
+- Confirmed `.github/dependabot.yml` already covers `github-actions` ecosystem for future action updates.
+
+**RATIONALE:**
+- GitHub Actions is deprecating Node 20 runners; aligning the verify job with Node 24 reduces platform warning noise.
+- `corepack` removes one external action dependency from the critical setup path.
+- Cache is treated as best-effort optimization; missing cache must not fail the pipeline.
+
+**VERIFIED:**
+- `pnpm boundary-check`: PASS, 0 violations.
+- `pnpm s11-check`: PASS, 0 violations, 0 staleIgnores.
+- `pnpm typecheck`: PASS, 25/25 tasks successful.
